@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTheme } from '@/components/ThemeProvider'
 import { useEffect, useState } from 'react'
-import { ChevronDown } from 'lucide-react'
+import { ChevronDown, Menu, X } from 'lucide-react'
 
 const FRAMEWORKS = [
   { id: 'state-architecture', label: 'State Architecture' },
@@ -327,48 +327,6 @@ function SidebarNav() {
         </Link>
       </div>
 
-      {(isStateArch || isComponentComp || isDataFetching || isRenderingStrategy || isDesignSystems || isCodeOrg || isPerformanceArch || isPatternDetail || isStateMachines || isUseEffectCleanup || isGraphqlCaching || isStateMgmtInternals || isStateArchPractice) && (
-        <div>
-          <div className={sectionLabelClass}>On this page</div>
-          <ul className="space-y-0.5">
-            {(isPatternDetail
-              ? PATTERN_DETAIL_SECTIONS
-              : isStateArch
-              ? STATE_ARCH_SECTIONS
-              : isDataFetching
-              ? DATA_FETCHING_SECTIONS
-              : isRenderingStrategy
-              ? RENDERING_STRATEGY_SECTIONS
-              : isDesignSystems
-              ? DESIGN_SYSTEMS_SECTIONS
-              : isCodeOrg
-              ? CODE_ORG_SECTIONS
-              : isPerformanceArch
-              ? PERFORMANCE_ARCH_SECTIONS
-              : isStateMachines
-              ? STATE_MACHINES_SECTIONS
-              : isUseEffectCleanup
-              ? USEEFFECT_CLEANUP_SECTIONS
-              : isGraphqlCaching
-              ? GRAPHQL_CACHING_SECTIONS
-              : isStateMgmtInternals
-              ? STATE_MGMT_INTERNALS_SECTIONS
-              : isStateArchPractice
-              ? STATE_ARCH_PRACTICE_SECTIONS
-              : COMPONENT_COMP_SECTIONS
-            ).map((s) => (
-              <li key={s.id}>
-                <a
-                  href={`#${s.id}`}
-                  className={`${navAnchorBase} ${navAnchorInactive}`}
-                >
-                  {s.label}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
     </nav>
   )
 }
@@ -443,7 +401,7 @@ function RightSidebar() {
   if (!sections) return null
 
   return (
-    <aside className="hidden xl:flex flex-col w-56 shrink-0 border-l border-sidebar-border bg-sidebar-bg sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto py-6 px-4 text-sm">
+    <aside className="hidden lg:flex flex-col w-48 shrink-0 border-l border-sidebar-border bg-sidebar-bg sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto py-6 px-4 text-sm">
       <div className={sectionLabelClass}>On this page</div>
       <nav className="space-y-1">
         {sections.map((section) => (
@@ -462,9 +420,32 @@ function RightSidebar() {
 
 export function DocsShell({ children }: { children: React.ReactNode }) {
   const { theme, setTheme } = useTheme()
+  const pathname = usePathname()
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+
+  useEffect(() => {
+    setMobileMenuOpen(false)
+  }, [pathname])
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setMobileMenuOpen(false)
+    }
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
+
   return (
     <div className="min-h-screen flex flex-col">
       <header className="sticky top-0 z-50 border-b border-sidebar-border bg-header-bg shrink-0 flex items-center h-14 px-4 gap-6">
+        <button
+          type="button"
+          className="lg:hidden p-1 -ml-1 text-header-text-muted hover:text-header-text transition-colors"
+          onClick={() => setMobileMenuOpen((o) => !o)}
+          aria-label="Toggle navigation"
+        >
+          {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
         <Link
           href="/"
           className="font-bold text-header-text hover:opacity-90 transition-opacity"
@@ -517,6 +498,18 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
           */}
         </div>
       </header>
+
+      {mobileMenuOpen && (
+        <>
+          <div
+            className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+            onClick={() => setMobileMenuOpen(false)}
+          />
+          <div className="fixed top-14 left-0 bottom-0 z-40 w-72 bg-sidebar-bg border-r border-sidebar-border overflow-y-auto py-6 px-3 lg:hidden">
+            <SidebarNav />
+          </div>
+        </>
+      )}
 
       <div className="flex flex-1 min-h-0">
         <aside className="hidden lg:flex flex-col w-64 shrink-0 border-r border-sidebar-border bg-sidebar-bg sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto py-6 px-3">

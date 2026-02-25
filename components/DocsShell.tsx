@@ -1,0 +1,458 @@
+'use client'
+
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
+import { useTheme } from '@/components/ThemeProvider'
+import { useEffect, useState } from 'react'
+
+const FRAMEWORKS = [
+  { id: 'state-architecture', label: 'State Architecture' },
+  { id: 'component-composition', label: 'Component Composition' },
+  { id: 'data-fetching', label: 'Data Fetching & Sync' },
+  { id: 'rendering-strategy', label: 'Rendering Strategy' },
+  { id: 'design-systems', label: 'Design System Architecture' },
+  { id: 'code-organization', label: 'Code Organization' },
+  { id: 'performance-architecture', label: 'Performance Architecture' },
+]
+
+const DEEP_DIVES = [
+  { id: 'state-management-internals', label: 'State Management Internals' },
+  { id: 'state-architecture-in-practice', label: 'State Architecture in Practice' },
+  { id: 'state-machines', label: 'State Machines' },
+  { id: 'graphql-caching', label: 'GraphQL Caching' },
+  { id: 'useeffect-async-cleanup', label: 'useEffect & Async Cleanup' },
+]
+
+const STATE_ARCH_SECTIONS = [
+  { id: 'the-problem', label: 'The Problem' },
+  { id: 'the-solution', label: 'The Solution' },
+  { id: 'when-narrowing-fails', label: 'When Narrowing Fails' },
+  { id: 'react-compiler', label: 'React Compiler Impact' },
+  { id: 'decision-framework', label: 'Decision Framework' },
+  { id: 'decision-matrix', label: 'Decision Matrix' },
+  { id: 'in-practice', label: 'See It In Practice' },
+  { id: 'production-patterns', label: 'Production Patterns' },
+  { id: 'hot-takes', label: 'Hot Takes' },
+  { id: 'real-rollout', label: 'A Real Rollout' },
+  { id: 'related-frameworks', label: 'Related Frameworks' },
+]
+
+const COMPONENT_COMP_SECTIONS = [
+  { id: 'the-problem', label: 'The Problem' },
+  { id: 'the-solution', label: 'The Solution' },
+  { id: 'the-framework', label: 'The Framework' },
+  { id: 'decision-matrix', label: 'Decision Matrix' },
+  { id: 'progressive-complexity', label: 'Progressive Complexity' },
+  { id: 'production-patterns', label: 'Production Patterns' },
+  { id: 'hot-takes', label: 'Hot Takes' },
+  { id: 'real-rollout', label: 'A Real Rollout' },
+  { id: 'related-frameworks', label: 'Related Frameworks' },
+]
+
+const DATA_FETCHING_SECTIONS = [
+  { id: 'the-problem', label: 'The Problem' },
+  { id: 'the-solution', label: 'The Immediate Fix' },
+  { id: 'react-query', label: 'React Query' },
+  { id: 'the-framework', label: 'The Framework' },
+  { id: 'decision-matrix', label: 'Decision Matrix' },
+  { id: 'progressive-complexity', label: 'Progressive Complexity' },
+  { id: 'production-patterns', label: 'Production Patterns' },
+  { id: 'real-rollout', label: 'A Real Rollout' },
+  { id: 'hot-takes', label: 'Hot Takes' },
+  { id: 'related-frameworks', label: 'Related Frameworks' },
+]
+
+const RENDERING_STRATEGY_SECTIONS = [
+  { id: 'the-problem', label: 'The Problem' },
+  { id: 'rendering-modes', label: 'The Five Modes' },
+  { id: 'the-framework', label: 'The Framework' },
+  { id: 'decision-matrix', label: 'Decision Matrix' },
+  { id: 'progressive-complexity', label: 'Progressive Complexity' },
+  { id: 'production-patterns', label: 'Production Patterns' },
+  { id: 'real-rollout', label: 'A Real Rollout' },
+  { id: 'hot-takes', label: 'Hot Takes' },
+  { id: 'related-frameworks', label: 'Related Frameworks' },
+]
+
+const DESIGN_SYSTEMS_SECTIONS = [
+  { id: 'the-problem', label: 'The Problem' },
+  { id: 'the-solution', label: 'Three Layers' },
+  { id: 'design-tokens', label: 'Design Tokens' },
+  { id: 'variant-system', label: 'Variant System' },
+  { id: 'headless-primitives', label: 'Headless Primitives' },
+  { id: 'decision-matrix', label: 'Decision Matrix' },
+  { id: 'progressive-complexity', label: 'Progressive Complexity' },
+  { id: 'production-patterns', label: 'Production Patterns' },
+  { id: 'real-rollout', label: 'A Real Rollout' },
+  { id: 'portfolio-applied', label: 'Applied to This Portfolio' },
+  { id: 'hot-takes', label: 'Hot Takes' },
+  { id: 'related-frameworks', label: 'Related Frameworks' },
+]
+
+const CODE_ORG_SECTIONS = [
+  { id: 'the-problem', label: 'The Problem' },
+  { id: 'the-framework', label: 'The Framework' },
+  { id: 'decision-matrix', label: 'Decision Matrix' },
+  { id: 'progressive-examples', label: 'Progressive Examples' },
+  { id: 'production-patterns', label: 'Production Patterns' },
+  { id: 'real-rollout', label: 'A Real Rollout' },
+  { id: 'hot-takes', label: 'Hot Takes' },
+  { id: 'related-frameworks', label: 'Related Frameworks' },
+]
+
+const PERFORMANCE_ARCH_SECTIONS = [
+  { id: 'the-problem', label: 'The Problem' },
+  { id: 'the-triangle', label: 'The Performance Triangle' },
+  { id: 'the-framework', label: 'The Framework' },
+  { id: 'decision-matrix', label: 'Decision Matrix' },
+  { id: 'render-demo', label: 'Re-renders in Action' },
+  { id: 'bundle-demo', label: 'Bundle Splitting in Action' },
+  { id: 'progressive-examples', label: 'Progressive Examples' },
+  { id: 'production-patterns', label: 'Production Patterns' },
+  { id: 'hot-takes', label: 'Hot Takes' },
+  { id: 'real-rollout', label: 'A Real Rollout' },
+  { id: 'related-frameworks', label: 'Related Frameworks' },
+]
+
+const PATTERN_DETAIL_SECTIONS = [
+  { id: 'problem', label: 'Problem' },
+  { id: 'naive-approach', label: 'Naive Approach' },
+  { id: 'first-improvement', label: 'First Improvement' },
+  { id: 'remaining-issues', label: 'Remaining Issues' },
+  { id: 'production-pattern', label: 'Production Pattern' },
+  { id: 'when-i-use-this', label: 'When I Use This' },
+  { id: 'gotchas', label: 'Gotchas' },
+]
+
+const STATE_MACHINES_SECTIONS = [
+  { id: 'the-problem', label: 'The Problem' },
+  { id: 'discriminated-unions', label: 'Discriminated Unions' },
+  { id: 'use-reducer', label: 'useReducer' },
+  { id: 'xstate', label: 'XState' },
+  { id: 'the-forms-trap', label: 'The Forms Trap' },
+  { id: 'decision', label: 'Decision' },
+]
+
+const USEEFFECT_CLEANUP_SECTIONS = [
+  { id: 'the-race-condition', label: 'The Race Condition' },
+  { id: 'fix-cancelled-flag', label: 'Fix 1: Cancelled Flag' },
+  { id: 'fix-abortcontroller', label: 'Fix 2: AbortController' },
+  { id: 'what-you-still-need', label: 'What You Still Need' },
+  { id: 'when-to-use-useeffect', label: 'When to Still Use useEffect' },
+]
+
+const GRAPHQL_CACHING_SECTIONS = [
+  { id: 'the-problem', label: 'The Problem' },
+  { id: 'query-invalidation', label: 'Query Invalidation' },
+  { id: 'normalized-cache', label: 'Normalized Cache' },
+  { id: 'the-antipattern', label: 'The Antipattern' },
+  { id: 'decision', label: 'Decision' },
+]
+
+const STATE_MGMT_INTERNALS_SECTIONS = [
+  { id: 'the-core-question', label: 'The Core Question' },
+  { id: 'usesyncexternalstore', label: 'useSyncExternalStore' },
+  { id: 'how-zustand-uses-it', label: 'How Zustand Uses It' },
+  { id: 'context-vs-external-store', label: 'Context vs External Store' },
+  { id: 'before-usesyncexternalstore', label: 'Before useSyncExternalStore' },
+  { id: 'selector-patterns', label: 'Selector Patterns' },
+]
+
+const STATE_ARCH_PRACTICE_SECTIONS = [
+  { id: 'progressive-complexity', label: 'Progressive Complexity' },
+  { id: 'production-patterns', label: 'Production Patterns' },
+  { id: 'decision-signals', label: 'Decision Signals' },
+]
+
+const sectionLabelClass =
+  'px-3 mb-3 text-[10px] font-bold uppercase tracking-widest text-sidebar-text border-b border-sidebar-border pb-2'
+
+const navLinkBase = 'block px-3 py-2 rounded-md transition-colors'
+const navLinkActive = 'text-primary font-medium'
+const navLinkInactive = 'text-sidebar-text-muted hover:text-sidebar-text hover:bg-black/5'
+
+const navAnchorBase = 'block px-3 py-1.5 rounded-md text-xs transition-colors'
+const navAnchorActive = 'font-medium text-primary'
+const navAnchorInactive = 'text-sidebar-text-muted hover:text-sidebar-text hover:bg-black/5'
+
+function SidebarNav() {
+  const pathname = usePathname()
+
+  const isHome = pathname === '/'
+  const isPatterns = pathname === '/patterns'
+  const isPatternDetail = pathname?.startsWith('/patterns/') && pathname !== '/patterns'
+  const isStateArch = pathname === '/frameworks/state-architecture'
+  const isComponentComp = pathname === '/frameworks/component-composition'
+  const isDataFetching = pathname === '/frameworks/data-fetching'
+  const isRenderingStrategy = pathname === '/frameworks/rendering-strategy'
+  const isDesignSystems = pathname === '/frameworks/design-systems'
+  const isCodeOrg = pathname === '/frameworks/code-organization'
+  const isPerformanceArch = pathname === '/frameworks/performance-architecture'
+  const isStateMachines = pathname === '/deep-dives/state-machines'
+  const isUseEffectCleanup = pathname === '/deep-dives/useeffect-async-cleanup'
+  const isGraphqlCaching = pathname === '/deep-dives/graphql-caching'
+  const isStateMgmtInternals = pathname === '/deep-dives/state-management-internals'
+  const isStateArchPractice = pathname === '/deep-dives/state-architecture-in-practice'
+
+  return (
+    <nav className="flex flex-col gap-6 text-sm">
+      <div>
+        <div className={sectionLabelClass}>Menu</div>
+        <ul className="space-y-0.5">
+          <li>
+            <Link
+              href="/"
+              className={`${navLinkBase} ${isHome ? navLinkActive : navLinkInactive}`}
+            >
+              Home
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/patterns"
+              className={`${navLinkBase} ${(isPatterns || isPatternDetail) ? navLinkActive : navLinkInactive}`}
+            >
+              Patterns
+            </Link>
+          </li>
+        </ul>
+      </div>
+
+      <div>
+        <div className={sectionLabelClass}>Frameworks</div>
+        <ul className="space-y-0.5">
+          {FRAMEWORKS.map((fw) => {
+            const href = `/frameworks/${fw.id}`
+            const active = pathname === href
+            return (
+              <li key={fw.id}>
+                <Link
+                  href={href}
+                  className={`${navLinkBase} ${active ? navLinkActive : navLinkInactive}`}
+                >
+                  {fw.label}
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+
+      <div>
+        <div className={sectionLabelClass}>Deep Dives</div>
+        <ul className="space-y-0.5">
+          {DEEP_DIVES.map((dd) => {
+            const href = `/deep-dives/${dd.id}`
+            const active = pathname === href
+            return (
+              <li key={dd.id}>
+                <Link
+                  href={href}
+                  className={`${navLinkBase} ${active ? navLinkActive : navLinkInactive}`}
+                >
+                  {dd.label}
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+
+      {(isStateArch || isComponentComp || isDataFetching || isRenderingStrategy || isDesignSystems || isCodeOrg || isPerformanceArch || isPatternDetail || isStateMachines || isUseEffectCleanup || isGraphqlCaching || isStateMgmtInternals || isStateArchPractice) && (
+        <div>
+          <div className={sectionLabelClass}>On this page</div>
+          <ul className="space-y-0.5">
+            {(isPatternDetail
+              ? PATTERN_DETAIL_SECTIONS
+              : isStateArch
+              ? STATE_ARCH_SECTIONS
+              : isDataFetching
+              ? DATA_FETCHING_SECTIONS
+              : isRenderingStrategy
+              ? RENDERING_STRATEGY_SECTIONS
+              : isDesignSystems
+              ? DESIGN_SYSTEMS_SECTIONS
+              : isCodeOrg
+              ? CODE_ORG_SECTIONS
+              : isPerformanceArch
+              ? PERFORMANCE_ARCH_SECTIONS
+              : isStateMachines
+              ? STATE_MACHINES_SECTIONS
+              : isUseEffectCleanup
+              ? USEEFFECT_CLEANUP_SECTIONS
+              : isGraphqlCaching
+              ? GRAPHQL_CACHING_SECTIONS
+              : isStateMgmtInternals
+              ? STATE_MGMT_INTERNALS_SECTIONS
+              : isStateArchPractice
+              ? STATE_ARCH_PRACTICE_SECTIONS
+              : COMPONENT_COMP_SECTIONS
+            ).map((s) => (
+              <li key={s.id}>
+                <a
+                  href={`#${s.id}`}
+                  className={`${navAnchorBase} ${navAnchorInactive}`}
+                >
+                  {s.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </nav>
+  )
+}
+
+function RightSidebar() {
+  const pathname = usePathname()
+  const [activeId, setActiveId] = useState<string>('')
+
+  const isStateArch = pathname === '/frameworks/state-architecture'
+  const isComponentComp = pathname === '/frameworks/component-composition'
+  const isDataFetchingRight = pathname === '/frameworks/data-fetching'
+  const isRenderingStrategyRight = pathname === '/frameworks/rendering-strategy'
+  const isDesignSystemsRight = pathname === '/frameworks/design-systems'
+  const isCodeOrgRight = pathname === '/frameworks/code-organization'
+  const isPerformanceArchRight = pathname === '/frameworks/performance-architecture'
+  const isPatternDetailRight = pathname?.startsWith('/patterns/') && pathname !== '/patterns'
+  const isStateMachinesRight = pathname === '/deep-dives/state-machines'
+  const isUseEffectCleanupRight = pathname === '/deep-dives/useeffect-async-cleanup'
+  const isGraphqlCachingRight = pathname === '/deep-dives/graphql-caching'
+  const isStateMgmtInternalsRight = pathname === '/deep-dives/state-management-internals'
+  const isStateArchPracticeRight = pathname === '/deep-dives/state-architecture-in-practice'
+  const sections = isPatternDetailRight
+    ? PATTERN_DETAIL_SECTIONS
+    : isStateArch
+    ? STATE_ARCH_SECTIONS
+    : isComponentComp
+    ? COMPONENT_COMP_SECTIONS
+    : isDataFetchingRight
+    ? DATA_FETCHING_SECTIONS
+    : isRenderingStrategyRight
+    ? RENDERING_STRATEGY_SECTIONS
+    : isDesignSystemsRight
+    ? DESIGN_SYSTEMS_SECTIONS
+    : isCodeOrgRight
+    ? CODE_ORG_SECTIONS
+    : isPerformanceArchRight
+    ? PERFORMANCE_ARCH_SECTIONS
+    : isStateMachinesRight
+    ? STATE_MACHINES_SECTIONS
+    : isUseEffectCleanupRight
+    ? USEEFFECT_CLEANUP_SECTIONS
+    : isGraphqlCachingRight
+    ? GRAPHQL_CACHING_SECTIONS
+    : isStateMgmtInternalsRight
+    ? STATE_MGMT_INTERNALS_SECTIONS
+    : isStateArchPracticeRight
+    ? STATE_ARCH_PRACTICE_SECTIONS
+    : null
+
+  useEffect(() => {
+    if (!sections) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveId(entry.target.id)
+          }
+        })
+      },
+      { rootMargin: '-50% 0px -50% 0px' }
+    )
+
+    sections.forEach((section) => {
+      const element = document.getElementById(section.id)
+      if (element) observer.observe(element)
+    })
+
+    return () => observer.disconnect()
+  }, [sections])
+
+  if (!sections) return null
+
+  return (
+    <aside className="hidden xl:flex flex-col w-56 shrink-0 border-l border-sidebar-border bg-sidebar-bg sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto py-6 px-4 text-sm">
+      <div className={sectionLabelClass}>On this page</div>
+      <nav className="space-y-1">
+        {sections.map((section) => (
+          <a
+            key={section.id}
+            href={`#${section.id}`}
+            className={`${navAnchorBase} ${activeId === section.id ? navAnchorActive : navAnchorInactive}`}
+          >
+            {section.label}
+          </a>
+        ))}
+      </nav>
+    </aside>
+  )
+}
+
+export function DocsShell({ children }: { children: React.ReactNode }) {
+  const { theme, setTheme } = useTheme()
+  return (
+    <div className="min-h-screen flex flex-col">
+      <header className="sticky top-0 z-50 border-b border-sidebar-border bg-header-bg shrink-0 flex items-center h-14 px-4 gap-6">
+        <Link
+          href="/"
+          className="font-bold text-header-text hover:opacity-90 transition-opacity"
+        >
+          Frameworks
+        </Link>
+        <div className="flex items-center gap-4 text-sm">
+          <Link href="/" className="text-header-text-muted hover:text-header-text">
+            Home
+          </Link>
+          <Link href="/patterns" className="text-header-text-muted hover:text-header-text">
+            Patterns
+          </Link>
+          <Link
+            href="/deep-dives/state-management-internals"
+            className="text-header-text-muted hover:text-header-text"
+          >
+            Deep Dives
+          </Link>
+        </div>
+        <div className="ml-auto flex items-center gap-4">
+          <div className="flex items-center gap-1 text-xs text-header-text-muted">
+            {(['light', 'auto', 'dark'] as const).map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => setTheme(t)}
+                className={`px-2 py-1 rounded capitalize ${
+                  theme === t
+                    ? 'bg-white/20 text-header-text'
+                    : 'hover:bg-white/10 hover:text-header-text'
+                }`}
+              >
+                {t}
+              </button>
+            ))}
+          </div>
+          {/* TODO: implement command palette search
+          <div className="flex items-center gap-2 text-xs text-header-text-muted">
+            <kbd className="px-1.5 py-0.5 rounded bg-white/10 font-mono">K</kbd>
+            <span>Search</span>
+          </div>
+          */}
+        </div>
+      </header>
+
+      <div className="flex flex-1 min-h-0">
+        <aside className="hidden lg:flex flex-col w-64 shrink-0 border-r border-sidebar-border bg-sidebar-bg sticky top-14 h-[calc(100vh-3.5rem)] overflow-y-auto py-6 px-3">
+          <SidebarNav />
+        </aside>
+
+        <main className="flex-1 min-w-0 overflow-auto">
+          {children}
+        </main>
+
+        <RightSidebar />
+      </div>
+    </div>
+  )
+}

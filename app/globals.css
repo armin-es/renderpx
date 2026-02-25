@@ -1,0 +1,134 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* TanStack-style docs theme: light (default) and dark. Supports dark / auto / light mode. */
+@layer base {
+  /* Light theme (default and when .theme-light) */
+  :root,
+  .theme-light {
+    --sidebar-bg: 0 0% 98%;
+    --sidebar-text: 0 0% 15%;
+    --sidebar-text-muted: 0 0% 50%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-accent: 317 77% 55%;
+    --header-bg: 0 0% 100%;
+    --header-text: 0 0% 15%;
+    --header-text-muted: 0 0% 50%;
+    --content-bg: 0 0% 99%;
+    --content-text: 0 0% 9%;
+    --content-text-muted: 0 0% 45%;
+    --content-border: 0 0% 90%;
+    --code-bg: 0 0% 100%;
+    --preview-bg: 0 0% 98%;
+    --card-bg: 0 0% 100%;
+    --card-toolbar-bg: 0 0% 97%;
+    --link: 317 77% 55%;
+    --inline-code-bg: 0 0% 93%;
+    --box-info-bg: 317 77% 55% / 0.08;
+    --box-info-border: 317 77% 55% / 0.35;
+    --box-success-bg: 142 76% 36% / 0.1;
+    --box-success-border: 142 76% 36% / 0.4;
+    --box-warning-bg: 38 92% 50% / 0.1;
+    --box-warning-border: 38 92% 50% / 0.4;
+    --box-yellow-bg: 48 96% 53% / 0.12;
+    --box-yellow-border: 48 96% 53% / 0.4;
+    --table-row-alt: 0 0% 97%;
+    --ring-offset: 0 0% 99%;
+    --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono: 'JetBrains Mono', Menlo, Monaco, Consolas, monospace, 'Courier New';
+  }
+
+  /* Dark theme when system preference is dark and user hasn't forced light (auto mode) */
+  @media (prefers-color-scheme: dark) {
+    :root:not(.theme-light) {
+      --sidebar-bg: 0 0% 7%;
+      --sidebar-text: 0 0% 98%;
+      --sidebar-text-muted: 0 0% 60%;
+      --sidebar-border: 0 0% 18%;
+      --header-bg: 0 0% 9%;
+      --header-text: 0 0% 98%;
+      --header-text-muted: 0 0% 60%;
+      --content-bg: 0 0% 11%;
+      --content-text: 0 0% 95%;
+      --content-text-muted: 0 0% 55%;
+      --content-border: 0 0% 22%;
+      --code-bg: 0 0% 12%;
+      --preview-bg: 0 0% 13%;
+      --card-bg: 0 0% 12%;
+      --card-toolbar-bg: 0 0% 16%;
+      --link: 317 77% 55%;
+      --inline-code-bg: 0 0% 20%;
+      --box-info-bg: 317 77% 55% / 0.15;
+      --box-info-border: 317 77% 55% / 0.4;
+      --box-success-bg: 142 76% 36% / 0.2;
+      --box-success-border: 142 76% 36% / 0.5;
+      --box-warning-bg: 38 92% 50% / 0.2;
+      --box-warning-border: 38 92% 50% / 0.5;
+      --box-yellow-bg: 48 96% 53% / 0.15;
+      --box-yellow-border: 48 96% 53% / 0.45;
+      --table-row-alt: 0 0% 16%;
+      --ring-offset: 0 0% 11%;
+    }
+  }
+
+  /* Dark theme when user explicitly chooses dark */
+  .theme-dark {
+    --sidebar-bg: 0 0% 7%;
+    --sidebar-text: 0 0% 98%;
+    --sidebar-text-muted: 0 0% 60%;
+    --sidebar-border: 0 0% 18%;
+    --header-bg: 0 0% 9%;
+    --header-text: 0 0% 98%;
+    --header-text-muted: 0 0% 60%;
+    --content-bg: 0 0% 11%;
+    --content-text: 0 0% 95%;
+    --content-text-muted: 0 0% 55%;
+    --content-border: 0 0% 22%;
+    --code-bg: 0 0% 12%;
+    --preview-bg: 0 0% 13%;
+    --card-bg: 0 0% 12%;
+    --card-toolbar-bg: 0 0% 16%;
+    --link: 317 77% 55%;
+    --inline-code-bg: 0 0% 20%;
+    --box-info-bg: 317 77% 55% / 0.15;
+    --box-info-border: 317 77% 55% / 0.4;
+    --box-success-bg: 142 76% 36% / 0.2;
+    --box-success-border: 142 76% 36% / 0.5;
+    --box-warning-bg: 38 92% 50% / 0.2;
+    --box-warning-border: 38 92% 50% / 0.5;
+    --box-yellow-bg: 48 96% 53% / 0.15;
+    --box-yellow-border: 48 96% 53% / 0.45;
+    --table-row-alt: 0 0% 16%;
+    --ring-offset: 0 0% 11%;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--content-border));
+  }
+  body {
+    background: hsl(var(--content-bg));
+    color: hsl(var(--content-text));
+    font-family: var(--font-sans);
+  }
+  input::placeholder {
+    color: hsl(var(--content-text-muted));
+  }
+  /* Text selection highlight with primary color */
+  ::selection {
+    background-color: hsl(var(--link));
+    color: white;
+  }
+  /* Action buttons */
+  button {
+    transition-colors: 150ms ease-in-out;
+  }
+  button:hover:not(:disabled) {
+    opacity: 0.9;
+  }
+  button:active:not(:disabled) {
+    opacity: 0.8;
+  }
+}

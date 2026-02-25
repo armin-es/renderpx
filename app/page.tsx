@@ -3,10 +3,16 @@ import { ArrowRight } from 'lucide-react'
 
 const sections = [
   {
-    href: '/frameworks/state-architecture',
+    href: '/frameworks',
     label: 'Frameworks',
     description: 'Decision frameworks for architectural choices: where state lives, how components compose, when to use SSR.',
-    meta: '6 frameworks',
+    meta: '7 frameworks',
+  },
+  {
+    href: '/deep-dives',
+    label: 'Deep Dives',
+    description: 'How the tools actually work under the hood: useSyncExternalStore, React Compiler, context subscriptions.',
+    meta: '5 deep dives',
   },
   {
     href: '/patterns',
@@ -15,16 +21,10 @@ const sections = [
     meta: '10+ patterns',
   },
   {
-    href: '/system-design/reddit',
+    href: '/system-design',
     label: 'System Design',
     description: 'Frontend architecture for real products: data models, component structure, state strategy, performance.',
     meta: '1 case study',
-  },
-  {
-    href: '/deep-dives/state-management-internals',
-    label: 'Deep Dives',
-    description: 'How the tools actually work under the hood: useSyncExternalStore, React Compiler, context subscriptions.',
-    meta: '4 deep dives',
   },
 ]
 

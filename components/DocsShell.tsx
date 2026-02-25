@@ -220,10 +220,12 @@ const navAnchorInactive = 'text-sidebar-text-muted hover:text-sidebar-text hover
 
 function CollapsibleSection({
   label,
+  href,
   isActive,
   children,
 }: {
   label: string
+  href?: string
   isActive: boolean
   children: React.ReactNode
 }) {
@@ -235,14 +237,26 @@ function CollapsibleSection({
 
   return (
     <div>
-      <button
-        type="button"
-        onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between px-3 mb-3 text-[10px] font-bold uppercase tracking-widest text-sidebar-text border-b border-sidebar-border pb-2 hover:opacity-70 transition-opacity"
-      >
-        <span>{label}</span>
-        <ChevronDown size={10} className={`transition-transform ${open ? '' : '-rotate-90'}`} />
-      </button>
+      <div className="flex items-center justify-between px-3 mb-3 border-b border-sidebar-border pb-2">
+        {href ? (
+          <Link
+            href={href}
+            className="text-[10px] font-bold uppercase tracking-widest text-sidebar-text hover:opacity-70 transition-opacity"
+          >
+            {label}
+          </Link>
+        ) : (
+          <span className="text-[10px] font-bold uppercase tracking-widest text-sidebar-text">{label}</span>
+        )}
+        <button
+          type="button"
+          onClick={() => setOpen(!open)}
+          className="text-sidebar-text hover:opacity-70 transition-opacity"
+          aria-label={open ? 'Collapse' : 'Expand'}
+        >
+          <ChevronDown size={10} className={`transition-transform ${open ? '' : '-rotate-90'}`} />
+        </button>
+      </div>
       {open && children}
     </div>
   )
@@ -267,14 +281,14 @@ function SidebarNav() {
   const isStateArchPractice = pathname === '/deep-dives/state-architecture-in-practice'
 
   const isReddit = pathname === '/system-design/reddit'
-  const isSystemDesign = isReddit
+  const isSystemDesign = isReddit || pathname === '/system-design'
 
-  const isFramework = isStateArch || isComponentComp || isDataFetching || isRenderingStrategy || isDesignSystems || isCodeOrg || isPerformanceArch
-  const isDeepDive = isStateMachines || isUseEffectCleanup || isGraphqlCaching || isStateMgmtInternals || isStateArchPractice
+  const isFramework = pathname === '/frameworks' || isStateArch || isComponentComp || isDataFetching || isRenderingStrategy || isDesignSystems || isCodeOrg || isPerformanceArch
+  const isDeepDive = pathname === '/deep-dives' || isStateMachines || isUseEffectCleanup || isGraphqlCaching || isStateMgmtInternals || isStateArchPractice
 
   return (
     <nav className="flex flex-col gap-6 text-sm">
-      <CollapsibleSection label="Frameworks" isActive={isFramework}>
+      <CollapsibleSection label="Frameworks" href="/frameworks" isActive={isFramework}>
         <ul className="space-y-0.5">
           {FRAMEWORKS.map((fw) => {
             const href = `/frameworks/${fw.id}`
@@ -293,34 +307,7 @@ function SidebarNav() {
         </ul>
       </CollapsibleSection>
 
-      <CollapsibleSection label="Patterns" isActive={isPatterns || isPatternDetail}>
-        <ul className="space-y-0.5">
-          <li>
-            <Link
-              href="/patterns"
-              className={`${navLinkBase} ${isPatterns ? navLinkActive : navLinkInactive}`}
-            >
-              All Patterns
-            </Link>
-          </li>
-          {PATTERNS.map((p) => {
-            const href = `/patterns/${p.id}`
-            const active = pathname === href
-            return (
-              <li key={p.id}>
-                <Link
-                  href={href}
-                  className={`${navLinkBase} ${active ? navLinkActive : navLinkInactive}`}
-                >
-                  {p.label}
-                </Link>
-              </li>
-            )
-          })}
-        </ul>
-      </CollapsibleSection>
-
-      <CollapsibleSection label="Deep Dives" isActive={isDeepDive}>
+      <CollapsibleSection label="Deep Dives" href="/deep-dives" isActive={isDeepDive}>
         <ul className="space-y-0.5">
           {DEEP_DIVES.map((dd) => {
             const href = `/deep-dives/${dd.id}`
@@ -339,7 +326,26 @@ function SidebarNav() {
         </ul>
       </CollapsibleSection>
 
-      <CollapsibleSection label="System Design" isActive={isSystemDesign}>
+      <CollapsibleSection label="Patterns" href="/patterns" isActive={isPatterns || isPatternDetail}>
+        <ul className="space-y-0.5">
+          {PATTERNS.map((p) => {
+            const href = `/patterns/${p.id}`
+            const active = pathname === href
+            return (
+              <li key={p.id}>
+                <Link
+                  href={href}
+                  className={`${navLinkBase} ${active ? navLinkActive : navLinkInactive}`}
+                >
+                  {p.label}
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      </CollapsibleSection>
+
+      <CollapsibleSection label="System Design" href="/system-design" isActive={isSystemDesign}>
         <ul className="space-y-0.5">
           {SYSTEM_DESIGNS.map((sd) => {
             const href = `/system-design/${sd.id}`
@@ -496,19 +502,16 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
           renderpx
         </Link>
         <div className="flex items-center gap-4 text-sm">
-          <Link href="/" className="text-header-text-muted hover:text-header-text">
+          <Link href="/frameworks" className="text-header-text-muted hover:text-header-text">
             Frameworks
+          </Link>
+          <Link href="/deep-dives" className="text-header-text-muted hover:text-header-text">
+            Deep Dives
           </Link>
           <Link href="/patterns" className="text-header-text-muted hover:text-header-text">
             Patterns
           </Link>
-          <Link
-            href="/deep-dives/state-management-internals"
-            className="text-header-text-muted hover:text-header-text"
-          >
-            Deep Dives
-          </Link>
-          <Link href="/system-design/reddit" className="text-header-text-muted hover:text-header-text">
+          <Link href="/system-design" className="text-header-text-muted hover:text-header-text">
             System Design
           </Link>
           <Link href="/about" className="text-header-text-muted hover:text-header-text">

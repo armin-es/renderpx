@@ -1,173 +1,75 @@
 import Link from 'next/link'
-import { ArrowRight, Code2, Layers, Database, Zap, Layout, FolderTree } from 'lucide-react'
-import { Button } from '@/components/ui'
+import { ArrowRight } from 'lucide-react'
 
-const frameworks = [
+const sections = [
   {
-    id: 'state-architecture',
-    title: 'State Architecture',
-    question: 'Where does state live and why?',
-    hotTake: 'URL state is the most underused pattern in modern React',
-    icon: Database,
-    complexity: 'Beginner → Production Scale',
+    href: '/frameworks/state-architecture',
+    label: 'Frameworks',
+    description: 'Decision frameworks for architectural choices: where state lives, how components compose, when to use SSR.',
+    meta: '6 frameworks',
   },
   {
-    id: 'component-composition',
-    title: 'Component Composition',
-    question: 'How do components talk to each other?',
-    hotTake: 'Render props are making a comeback for the right reasons',
-    icon: Layers,
-    complexity: 'Props → Headless Patterns',
+    href: '/patterns',
+    label: 'Patterns',
+    description: 'Implementation patterns for recurring problems: optimistic updates, infinite scroll, cache invalidation.',
+    meta: '10+ patterns',
   },
   {
-    id: 'data-fetching',
-    title: 'Data Fetching & Sync',
-    question: 'How does UI stay in sync with backend?',
-    hotTake: 'Most apps need optimistic updates earlier than you think',
-    icon: Zap,
-    complexity: 'useEffect → Real-time',
+    href: '/system-design/reddit',
+    label: 'System Design',
+    description: 'Frontend architecture for real products: data models, component structure, state strategy, performance.',
+    meta: '1 case study',
   },
   {
-    id: 'rendering-strategy',
-    title: 'Rendering Strategy',
-    question: 'When does code run and where?',
-    hotTake: 'SSR is overused; many apps would be better as SPA + CDN',
-    icon: Code2,
-    complexity: 'CSR → Streaming SSR',
-  },
-  {
-    id: 'design-systems',
-    title: 'Design System Architecture',
-    question: 'How do we build reusable UI?',
-    hotTake: 'Composition beats configuration for long-term flexibility',
-    icon: Layout,
-    complexity: 'Components → Themeable Primitives',
-  },
-  {
-    id: 'code-organization',
-    title: 'Code Organization',
-    question: 'How do we prevent the big ball of mud?',
-    hotTake: 'Feature folders scale better than technical layers',
-    icon: FolderTree,
-    complexity: 'Folders → Monorepo Packages',
+    href: '/deep-dives/state-management-internals',
+    label: 'Deep Dives',
+    description: 'How the tools actually work under the hood: useSyncExternalStore, React Compiler, context subscriptions.',
+    meta: '4 deep dives',
   },
 ]
-
-const contentClass = 'max-w-4xl mx-auto px-6 py-10'
 
 export default function Home() {
   return (
     <div className="min-h-full bg-content-bg">
-      <div className={contentClass}>
-        {/* Hero Section */}
+      <div className="max-w-4xl mx-auto px-6 py-10">
         <header className="pt-8 pb-12">
-          <div className="space-y-6">
-            <div className="flex items-center gap-4 flex-wrap">
-              <span className="font-medium text-content">Armin Eslami · Senior Frontend Engineer</span>
-              <div className="flex items-center gap-3 text-sm">
-                <a href="https://github.com/armin-es" target="_blank" rel="noopener noreferrer" className="text-link hover:underline">GitHub ↗</a>
-                <a href="https://www.linkedin.com/in/armin-eslami-845885231/" target="_blank" rel="noopener noreferrer" className="text-link hover:underline">LinkedIn ↗</a>
-              </div>
-            </div>
-            <h1 className="text-4xl font-bold tracking-tight text-content">
-              How I Architect Frontend Systems That Scale
-            </h1>
-            <p className="text-lg max-w-3xl text-content-muted">
-              Decision frameworks and patterns from building production applications.
-              Not just what to use, but <em>when</em> and <em>why</em>.
-            </p>
-            <div className="flex gap-4">
-              <Button asChild variant="primary" size="lg">
-                <a href="#frameworks" className="inline-flex items-center gap-2">
-                  Explore the frameworks
-                  <ArrowRight size={16} />
-                </a>
-              </Button>
-              <Button asChild variant="secondary" size="lg">
-                <Link href="/patterns">
-                  Quick Pattern Lookup
-                </Link>
-              </Button>
+          <div className="flex items-center gap-4 flex-wrap mb-6">
+            <span className="font-medium text-content">Armin Eslami</span>
+            <span className="text-content-muted">Senior Frontend Engineer</span>
+            <div className="flex items-center gap-3 text-sm">
+              <a href="https://github.com/armin-es" target="_blank" rel="noopener noreferrer" className="text-link hover:underline">GitHub</a>
+              <a href="https://www.linkedin.com/in/armin-eslami-845885231/" target="_blank" rel="noopener noreferrer" className="text-link hover:underline">LinkedIn</a>
             </div>
           </div>
+          <h1 className="text-4xl font-bold tracking-tight text-content mb-4">
+            How I Architect Frontend Systems
+          </h1>
+          <p className="text-lg text-content-muted max-w-2xl">
+            Decision frameworks, implementation patterns, and system design case studies from building production React applications.
+          </p>
         </header>
 
-        {/* Featured Framework Preview */}
-        <section className="py-8 border-t border-content-border">
-          <div className="rounded-xl border border-content-border p-6">
-            <div className="flex items-start gap-4 mb-4">
-              <Database className="mt-1 shrink-0 text-primary" size={24} />
-              <div>
-                <span className="text-sm font-medium text-primary">Featured Framework</span>
-                <h2 className="text-2xl font-bold mt-1 text-content">State Architecture</h2>
-              </div>
-            </div>
-            <p className="mb-4 text-content-muted">
-              Where state lives isn&apos;t about choosing tools. It&apos;s about coordination costs and sources of truth.
-              I once inherited a React app where a single form field triggered 47 re-renders. Here&apos;s how I think about state to prevent this.
-            </p>
+        <section className="grid sm:grid-cols-2 gap-4 pb-12 border-b border-content-border">
+          {sections.map((section) => (
             <Link
-              href="/frameworks/state-architecture"
-              className="inline-flex items-center gap-2 font-medium hover:underline text-primary"
+              key={section.href}
+              href={section.href}
+              className="group rounded-lg border border-content-border p-5 hover:shadow-sm transition-all"
             >
-              Read the full framework
-              <ArrowRight size={16} />
+              <div className="flex items-center justify-between mb-2">
+                <h2 className="font-bold text-primary group-hover:underline">{section.label}</h2>
+                <ArrowRight size={16} className="text-content-muted group-hover:text-primary transition-colors" />
+              </div>
+              <p className="text-sm text-content-muted mb-3">{section.description}</p>
+              <span className="text-xs text-content-muted">{section.meta}</span>
             </Link>
-          </div>
+          ))}
         </section>
 
-        {/* Frameworks Grid */}
-        <section id="frameworks" className="py-12 border-t border-content-border">
-          <h2 className="text-2xl font-bold mb-6 text-content">The 6 Decision Frameworks</h2>
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {frameworks.map((framework) => {
-              const Icon = framework.icon
-              return (
-                <Link
-                  key={framework.id}
-                  href={`/frameworks/${framework.id}`}
-                  className="group rounded-lg border border-content-border p-5 transition-all hover:shadow-sm"
-                >
-                  <Icon className="mb-3 shrink-0 text-content-muted" size={22} />
-                  <h3 className="font-bold mb-2 group-hover:underline text-primary">
-                    {framework.title}
-                  </h3>
-                  <p className="text-sm mb-2 text-content-muted">
-                    {framework.question}
-                  </p>
-                  <div className="text-sm italic mb-2 text-content-muted">
-                    &quot;{framework.hotTake}&quot;
-                  </div>
-                  <div className="text-xs text-content-muted">
-                    {framework.complexity}
-                  </div>
-                </Link>
-              )
-            })}
-          </div>
-        </section>
-
-        {/* About Section */}
-        <section className="py-12 border-t border-content-border">
-          <div className="max-w-3xl">
-            <h2 className="text-2xl font-bold mb-4 text-content">Why I Built This</h2>
-            <div className="space-y-4 text-content-muted">
-              <p>
-                After years of building frontend applications at scale, I found myself explaining
-                the same architectural decisions over and over. Not just to interviewers, but to
-                teammates, mentees, and my future self when revisiting old choices.
-              </p>
-              <p>
-                This site is my answer: a living document of how I think about frontend architecture.
-                Each framework represents patterns I&apos;ve learned, mistakes I&apos;ve made, and mental models
-                that have proven useful in production.
-              </p>
-              <p>
-                It&apos;s simultaneously my reference guide and my portfolio: documentation of technical
-                depth through both explanation and implementation.
-              </p>
-            </div>
-          </div>
+        <section className="py-12 max-w-2xl">
+          <p className="text-content-muted">
+            After years of building frontend applications at scale, I found myself explaining the same architectural decisions over and over - to teammates, mentees, and my future self when revisiting old choices. This site is my answer: a living reference for how I think about frontend architecture, written in the style of a tech talk: problem, naive approach, why it fails, production solution.
+          </p>
         </section>
 
         <footer className="py-8 border-t border-content-border text-sm text-content-muted flex items-center justify-between flex-wrap gap-4">

@@ -24,6 +24,10 @@ const DEEP_DIVES = [
   { id: 'useeffect-async-cleanup', label: 'useEffect & Async Cleanup' },
 ]
 
+const SYSTEM_DESIGNS = [
+  { id: 'reddit', label: 'Reddit' },
+]
+
 const PATTERNS = [
   { id: 'optimistic-updates', label: 'Optimistic Updates' },
   { id: 'infinite-scroll', label: 'Infinite Scroll' },
@@ -189,6 +193,20 @@ const STATE_ARCH_PRACTICE_SECTIONS = [
   { id: 'decision-signals', label: 'Decision Signals' },
 ]
 
+const REDDIT_SECTIONS = [
+  { id: 'the-challenge', label: 'The Challenge' },
+  { id: 'data-model', label: 'Data Model' },
+  { id: 'architecture-map', label: 'Architecture Map' },
+  { id: 'feed-architecture', label: 'Feed Architecture' },
+  { id: 'comment-threads', label: 'Comment Threads' },
+  { id: 'voting-system', label: 'Voting System' },
+  { id: 'real-time-strategy', label: 'Real-Time Strategy' },
+  { id: 'state-architecture', label: 'State Architecture' },
+  { id: 'performance', label: 'Performance' },
+  { id: 'building-blocks', label: 'Building Blocks' },
+  { id: 'tradeoffs', label: "What I'd Do Differently" },
+]
+
 const sectionLabelClass =
   'px-3 mb-3 text-[10px] font-bold uppercase tracking-widest text-sidebar-text border-b border-sidebar-border pb-2'
 
@@ -247,6 +265,9 @@ function SidebarNav() {
   const isGraphqlCaching = pathname === '/deep-dives/graphql-caching'
   const isStateMgmtInternals = pathname === '/deep-dives/state-management-internals'
   const isStateArchPractice = pathname === '/deep-dives/state-architecture-in-practice'
+
+  const isReddit = pathname === '/system-design/reddit'
+  const isSystemDesign = isReddit
 
   const isFramework = isStateArch || isComponentComp || isDataFetching || isRenderingStrategy || isDesignSystems || isCodeOrg || isPerformanceArch
   const isDeepDive = isStateMachines || isUseEffectCleanup || isGraphqlCaching || isStateMgmtInternals || isStateArchPractice
@@ -318,6 +339,25 @@ function SidebarNav() {
         </ul>
       </CollapsibleSection>
 
+      <CollapsibleSection label="System Design" isActive={isSystemDesign}>
+        <ul className="space-y-0.5">
+          {SYSTEM_DESIGNS.map((sd) => {
+            const href = `/system-design/${sd.id}`
+            const active = pathname === href
+            return (
+              <li key={sd.id}>
+                <Link
+                  href={href}
+                  className={`${navLinkBase} ${active ? navLinkActive : navLinkInactive}`}
+                >
+                  {sd.label}
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      </CollapsibleSection>
+
       <div>
         <Link
           href="/about"
@@ -348,6 +388,7 @@ function RightSidebar() {
   const isGraphqlCachingRight = pathname === '/deep-dives/graphql-caching'
   const isStateMgmtInternalsRight = pathname === '/deep-dives/state-management-internals'
   const isStateArchPracticeRight = pathname === '/deep-dives/state-architecture-in-practice'
+  const isRedditRight = pathname === '/system-design/reddit'
   const sections = isPatternDetailRight
     ? PATTERN_DETAIL_SECTIONS
     : isStateArch
@@ -374,6 +415,8 @@ function RightSidebar() {
     ? STATE_MGMT_INTERNALS_SECTIONS
     : isStateArchPracticeRight
     ? STATE_ARCH_PRACTICE_SECTIONS
+    : isRedditRight
+    ? REDDIT_SECTIONS
     : null
 
   useEffect(() => {
@@ -464,6 +507,9 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
             className="text-header-text-muted hover:text-header-text"
           >
             Deep Dives
+          </Link>
+          <Link href="/system-design/reddit" className="text-header-text-muted hover:text-header-text">
+            System Design
           </Link>
           <Link href="/about" className="text-header-text-muted hover:text-header-text">
             About

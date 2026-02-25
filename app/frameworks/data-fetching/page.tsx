@@ -250,7 +250,7 @@ export default async function DataFetchingPage() {
           >
             But there&apos;s a hidden problem that only surfaces when the user
             interacts: <strong>race conditions</strong>. If a component re-fetches
-            based on some input—a search term, a selected user, a tab—each
+            based on some input, a search term, a selected user, a tab, each
             change fires a new request. Requests don&apos;t always resolve in the
             order they were sent. A slow first request can arrive after a fast
             second one, overwriting the correct result with stale data.
@@ -261,7 +261,7 @@ export default async function DataFetchingPage() {
           >
             Try it below. Even IDs trigger a slow 1200ms request, odd IDs are
             fast (400ms). Click <strong>User 2</strong>, then immediately{" "}
-            <strong>User 1</strong>. User 1 arrives first—then User 2 overwrites
+            <strong>User 1</strong>. User 1 arrives first, then User 2 overwrites
             it.
           </p>
         </div>
@@ -320,7 +320,7 @@ export default async function DataFetchingPage() {
             >
               AbortController
             </code>{" "}
-            uses—except instead of cancelling the network request (which matters
+            uses; except instead of cancelling the network request (which matters
             more for bandwidth), you&apos;re just telling the response handler to
             discard its result.
           </p>
@@ -357,7 +357,7 @@ export default async function DataFetchingPage() {
             fetching. There&apos;s also: no caching (every mount re-fetches), no
             request deduplication (two components fetching the same user = two
             API calls), no background refresh, no auto-retry. The cancellation
-            flag fixes the symptom—React Query fixes the whole class of problems.{" "}
+            flag fixes the symptom; React Query fixes the whole class of problems.{" "}
             <Link
               href="/deep-dives/useeffect-async-cleanup"
               style={{ color: "hsl(var(--link))" }}
@@ -384,8 +384,8 @@ export default async function DataFetchingPage() {
           >
             The core insight behind React Query (and SWR) is that{" "}
             <strong>server state is fundamentally different from client state</strong>
-            . Client state lives in your app—it&apos;s synchronous and always
-            up-to-date. Server state lives remotely—it can change without your
+            . Client state lives in your app; it&apos;s synchronous and always
+            up-to-date. Server state lives remotely; it can change without your
             knowledge, it needs to be fetched asynchronously, and it can become
             stale.
           </p>
@@ -408,7 +408,7 @@ export default async function DataFetchingPage() {
             >
               useQuery
             </code>{" "}
-            with the same key shares that cache entry—so duplicate components,
+            with the same key shares that cache entry, so duplicate components,
             parallel renders, and concurrent requests all collapse into a single
             network call.
           </p>
@@ -438,7 +438,7 @@ export default async function DataFetchingPage() {
             style={{ color: "hsl(var(--content-text-muted))" }}
           >
             React Query solves client-side data fetching. But if the data is
-            needed for the initial render—especially for SEO or performance—
+            needed for the initial render (especially for SEO or performance),
             fetching on the server is better. React Server Components make this
             trivial: just{" "}
             <code
@@ -678,7 +678,7 @@ export default async function DataFetchingPage() {
           className="mb-6"
           style={{ color: "hsl(var(--content-text-muted))" }}
         >
-          The same feature—fetching a user profile—built five ways. Each step
+          The same feature (fetching a user profile) built five ways. Each step
           shows exactly what problem the next tool solves and when you actually
           need to reach for it.
         </p>
@@ -728,7 +728,7 @@ export default async function DataFetchingPage() {
                 >
                   revalidate: 3600
                 </code>
-                . No client JS needed—data is stable, SEO matters, fast initial
+                . No client JS needed; data is stable, SEO matters, fast initial
                 load.
               </div>
               <div>
@@ -739,7 +739,7 @@ export default async function DataFetchingPage() {
                 >
                   staleTime: 5 * 60 * 1000
                 </code>
-                . Users filter by date range interactively—client state drives
+                . Users filter by date range interactively; client state drives
                 the{" "}
                 <code
                   className="text-xs px-1 py-0.5 rounded"
@@ -757,7 +757,7 @@ export default async function DataFetchingPage() {
                 >
                   refetchInterval: 10000
                 </code>
-                . Polling was sufficient—real-time to the second wasn&apos;t a
+                . Polling was sufficient; real-time to the second wasn&apos;t a
                 requirement.
               </div>
             </div>
@@ -772,7 +772,7 @@ export default async function DataFetchingPage() {
               >
                 refetchIntervalInBackground: false
               </code>{" "}
-              earlier—we were polling even when the tab was hidden, which was
+              earlier; we were polling even when the tab was hidden, which was
               unnecessary load.
             </div>
           </div>
@@ -848,7 +848,7 @@ export default async function DataFetchingPage() {
                 useEffect
               </code>{" "}
               + fetch to measure scope, then find the screens where users complain
-              about stale data — those are the migration entry points, not the
+              about stale data; those are the migration entry points, not the
               files with the messiest code.
             </p>
             <p
@@ -862,7 +862,7 @@ export default async function DataFetchingPage() {
               >
                 useQuery
               </code>{" "}
-              wraps the same fetch function — the UI doesn&apos;t change, only the
+              wraps the same fetch function; the UI doesn&apos;t change, only the
               plumbing does. Old useEffect fetches stay until they become a
               visible problem; no migration sprint, no feature freeze. The
               migration is done when new code stops using useEffect for data
@@ -911,7 +911,7 @@ function UserList() {
           style={{ color: "hsl(var(--content-text-muted))" }}
         >
           What it actually looks like to introduce a shared cache layer into a
-          team that already has opinions — with a product that can&apos;t stop
+          team that already has opinions, with a product that can&apos;t stop
           shipping.
         </p>
         <div className="space-y-8">
@@ -932,7 +932,7 @@ function UserList() {
               Dashboard-heavy B2B app, eight engineers, three teams each owning
               different panels. Each team had built their own fetch logic: custom
               hooks, loading state, error state, cache invalidation after
-              mutations — all manual, all slightly different. The same endpoint
+              mutations, all manual, all slightly different. The same endpoint
               was being called independently from four places on the same screen.
             </p>
           </div>
@@ -952,10 +952,10 @@ function UserList() {
               style={{ color: "hsl(var(--content-text))" }}
             >
               Cache inconsistency. Different panels on the same screen showed
-              different values for the same metric — because each team invalidated
+              different values for the same metric because each team invalidated
               their local state independently after mutations, or didn&apos;t at
               all. Support tickets blamed &ldquo;the dashboard showing wrong
-              numbers.&rdquo; The root cause wasn&apos;t the data — it was that
+              numbers.&rdquo; The root cause wasn&apos;t the data; it was that
               four independent caches each had a slightly different view of it.
               The business framing: every support ticket about stale data required
               an engineer to investigate and reassure the customer. At scale, that
@@ -977,7 +977,7 @@ function UserList() {
               className="text-sm leading-relaxed"
               style={{ color: "hsl(var(--content-text))" }}
             >
-              Proposed React Query as a shared cache layer — not a rewrite, not a
+              Proposed React Query as a shared cache layer, not a rewrite, not a
               migration sprint. Added a single{" "}
               <code
                 className="text-xs px-1 py-0.5 rounded"
@@ -987,7 +987,7 @@ function UserList() {
               </code>{" "}
               at the app root, migrated one panel as a proof of concept, and let
               other teams adopt at their own pace. Skipped optimistic updates in
-              the first pass — added them only to the mutations that generated the
+              the first pass, adding them only to the mutations that generated the
               most support tickets. The call I&apos;d make differently: I should
               have standardized query key naming conventions earlier. Two teams
               used different key shapes for the same endpoint, which meant the
@@ -1025,9 +1025,9 @@ function UserList() {
                 useQuery
               </code>
               , the loading/error/refetch states you wrote manually are now 3
-              lines — and they&apos;re correct.&rdquo; One team adopted
+              lines, and they&apos;re correct.&rdquo; One team adopted
               immediately. Another needed to see it survive a production incident
-              first — stale data was auto-refreshed on tab focus, with no code
+              first; stale data was auto-refreshed on tab focus, with no code
               change. After that, adoption was pull, not push. I wrote a shared{" "}
               <code
                 className="text-xs px-1 py-0.5 rounded"
@@ -1035,7 +1035,7 @@ function UserList() {
               >
                 queryKeys.ts
               </code>{" "}
-              file to standardize key shapes across teams — that&apos;s what
+              file to standardize key shapes across teams; that&apos;s what
               actually made the shared cache work.
             </p>
           </div>
@@ -1065,7 +1065,7 @@ function UserList() {
                 useQuery(queryKey, fetchFn)
               </code>
               . We never finished migrating every old useEffect. We didn&apos;t
-              need to — the problem was solved at the boundary: new panels used
+              need to; the problem was solved at the boundary: new panels used
               React Query and shared the cache, which is where the inconsistency
               lived.
             </p>
@@ -1086,19 +1086,19 @@ function UserList() {
           {[
             {
               mistake: "Fetching in useEffect in 2025",
-              take: "This is now an anti-pattern for production. Not because useEffect is bad—it's fine—but because it doesn't handle caching, deduplication, or background refresh. You're reimplementing React Query badly. If you need client-side data fetching, use React Query or SWR. They're not heavy dependencies—they solve hard problems so you don't have to.",
+              take: "This is now an anti-pattern for production. Not because useEffect is bad (it's fine) but because it doesn't handle caching, deduplication, or background refresh. You're reimplementing React Query badly. If you need client-side data fetching, use React Query or SWR. They're not heavy dependencies; they solve hard problems so you don't have to.",
             },
             {
               mistake: "Putting server state in Zustand/Redux",
-              take: "I've seen teams reach for Zustand to store API responses, then manually invalidate it on mutations. This is React Query's entire job. Redux/Zustand is for client state (UI state, user preferences, form drafts). Server state has different semantics—staleness, revalidation, deduplication—that Zustand doesn't model.",
+              take: "I've seen teams reach for Zustand to store API responses, then manually invalidate it on mutations. This is React Query's entire job. Redux/Zustand is for client state (UI state, user preferences, form drafts). Server state has different semantics (staleness, revalidation, deduplication) that Zustand doesn't model.",
             },
             {
               mistake: "Over-using optimistic updates",
-              take: "Optimistic updates are excellent for low-stakes reversible actions (like, follow, reaction). They feel wrong for high-stakes actions (payment, delete, publish). If the rollback is jarring—imagine a \"Delete\" button that appears to work and then un-deletes—a loading spinner is the better UX. Not every mutation needs to be optimistic.",
+              take: "Optimistic updates are excellent for low-stakes reversible actions (like, follow, reaction). They feel wrong for high-stakes actions (payment, delete, publish). If the rollback is jarring (imagine a \"Delete\" button that appears to work and then un-deletes), a loading spinner is the better UX. Not every mutation needs to be optimistic.",
             },
             {
               mistake: "Adding WebSockets before you need them",
-              take: "Polling is simpler, reliable, and works everywhere. For most \"real-time\" requirements, polling every 10–30 seconds is genuinely good enough. I've shipped real-time notification systems on polling that users never noticed weren't true push. Add WebSockets when polling becomes visibly inadequate—usually when you need sub-5-second updates or bidirectional communication.",
+              take: "Polling is simpler, reliable, and works everywhere. For most \"real-time\" requirements, polling every 10–30 seconds is genuinely good enough. I've shipped real-time notification systems on polling that users never noticed weren't true push. Add WebSockets when polling becomes visibly inadequate, usually when you need sub-5-second updates or bidirectional communication.",
             },
           ].map(({ mistake, take }) => (
             <div
@@ -1131,7 +1131,7 @@ function UserList() {
             </div>
             <p className="text-sm" style={{ color: "hsl(var(--content-text-muted))" }}>
               I&apos;ve seen teams using GraphQL with React Query build a custom normalized
-              entity store — often with Jotai or Zustand — to solve the &quot;same entity in
+              entity store (often with Jotai or Zustand) to solve the &quot;same entity in
               multiple queries&quot; consistency problem. Every query response gets piped into
               the store; components read from the store instead of React Query directly. This
               creates two sources of truth: the React Query cache and the store can drift apart,
@@ -1178,8 +1178,8 @@ function UserList() {
               style={{ color: "hsl(var(--content-text-muted))" }}
             >
               Server state (React Query) and client state (Zustand, Context) are
-              fundamentally different. Understanding the distinction—and knowing
-              which tool handles each—is the foundation of good state
+              fundamentally different. Understanding the distinction, and knowing
+              which tool handles each, is the foundation of good state
               architecture.
             </p>
           </div>

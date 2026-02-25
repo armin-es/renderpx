@@ -70,7 +70,7 @@ export default async function StateArchitecturePage() {
         <div className="space-y-4 text-content">
           <p className="text-lg leading-relaxed">
             A form with a sticky action bar (Save button at top) and scrollable inputs below
-            needs shared state. You lift it and put it in Context — then every keystroke
+            needs shared state. You lift it and put it in Context, and then every keystroke
             re-renders <strong>every component</strong> inside the Provider, including
             Sidebar and Footer that never read the form data. That&apos;s how &quot;lift state up&quot; goes wrong.
           </p>
@@ -118,11 +118,11 @@ export default async function StateArchitecturePage() {
           <strong>Tree topology:</strong> consumers must be inside the Provider, so if they&apos;re
           far apart you wrap everything in between and intermediate components re-render.{" "}
           <strong>Whole-object subscription:</strong> calling <InlineCode>useContext()</InlineCode> subscribes
-          you to the entire context value — any property change re-renders you, even if you only use one field.
+          you to the entire context value; any property change re-renders you, even if you only use one field.
         </p>
         <Callout variant="info" title="The rule">
           If you call <InlineCode>useContext(MyContext)</InlineCode>, you re-render whenever the context
-          value changes. Destructuring or ignoring parts of the value doesn&apos;t help — React doesn&apos;t
+          value changes. Destructuring or ignoring parts of the value doesn&apos;t help. React doesn&apos;t
           track which properties you use.
         </Callout>
 
@@ -160,7 +160,7 @@ const SortContext = createContext()
           Splitting fixes the &quot;whole object&quot; issue. It doesn&apos;t fix topology: if consumers are
           scattered, you still wrap a large tree. <InlineCode>memo()</InlineCode> on every node in between
           can help; React 19&apos;s Compiler does that automatically. For truly scattered, high-frequency
-          state, Zustand (or Redux) is simpler — no Provider tree, fine-grained subscriptions.
+          state, Zustand (or Redux) is simpler: no Provider tree, fine-grained subscriptions.
         </Callout>
 
         <div className="mt-6">
@@ -202,9 +202,9 @@ const useFormStore = create((set) => ({
           <p className="leading-relaxed">
             <InlineCode>memo()</InlineCode> prevents child components from re-rendering when a parent re-renders.
             In React 18, the tree topology workaround required manually wrapping every intermediate
-            component—tedious, error-prone, and easy to miss. The Compiler eliminates that chore entirely.
+            component, which is tedious, error-prone, and easy to miss. The Compiler eliminates that chore entirely.
             (<InlineCode>useCallback</InlineCode> and <InlineCode>useMemo</InlineCode> are also handled automatically,
-            but those are about reference stability and computation caching—less critical to architecture.)
+            but those are about reference stability and computation caching, which is less critical to architecture.)
             What it <strong>cannot</strong> fix is the subscription model: all <InlineCode>useContext()</InlineCode> consumers
             still re-render when the context value changes. That&apos;s where Zustand still wins.
           </p>
@@ -217,7 +217,7 @@ const useFormStore = create((set) => ({
           </h3>
 
           <Callout variant="info" title="The Win" className="mb-4">
-            The Compiler makes every component behave as if it&apos;s wrapped in <InlineCode>memo()</InlineCode>—child components skip re-renders when their props haven&apos;t changed. In React 18, forgetting a single <InlineCode>memo()</InlineCode> could cascade re-renders across a whole subtree. Now it&apos;s automatic. This narrows exactly when you need Zustand.
+            The Compiler makes every component behave as if it&apos;s wrapped in <InlineCode>memo()</InlineCode>, so child components skip re-renders when their props haven&apos;t changed. In React 18, forgetting a single <InlineCode>memo()</InlineCode> could cascade re-renders across a whole subtree. Now it&apos;s automatic. This narrows exactly when you need Zustand.
           </Callout>
 
           {/* memo() vs no-memo: How it reduces Zustand need */}
@@ -226,7 +226,7 @@ const useFormStore = create((set) => ({
               How memo() Reduces the Need for External State
             </h4>
             <p className="mb-4 text-sm text-content-muted">
-              Without <InlineCode>memo()</InlineCode>, every parent state change cascades down. This is why teams reached for Zustand even for simple cases—to move state out of the parent and avoid the cascade entirely. With automatic <InlineCode>memo()</InlineCode>, that specific pain point disappears.
+              Without <InlineCode>memo()</InlineCode>, every parent state change cascades down. This is why teams reached for Zustand even for simple cases, just to move state out of the parent and avoid the cascade entirely. With automatic <InlineCode>memo()</InlineCode>, that specific pain point disappears.
             </p>
             <CodeBlock
               code={`// ❌ React 18 without memo(): Parent state cascades to ALL children
@@ -271,7 +271,7 @@ function Dashboard({ userEmail }) {
               lang="tsx"
             />
             <Callout variant="warning" className="mt-4" title="The nuance">
-              Automatic <InlineCode>memo()</InlineCode> eliminates cascade re-renders from <em>parent state</em>. It does <em>not</em> fix cascade re-renders from <em>Context</em>—a component that calls <InlineCode>useContext()</InlineCode> still re-renders whenever any part of that context changes. That&apos;s the remaining reason to reach for Zustand.
+              Automatic <InlineCode>memo()</InlineCode> eliminates cascade re-renders from <em>parent state</em>. It does <em>not</em> fix cascade re-renders from <em>Context</em>. A component that calls <InlineCode>useContext()</InlineCode> still re-renders whenever any part of that context changes. That&apos;s the remaining reason to reach for Zustand.
             </Callout>
           </div>
         </div>
@@ -344,22 +344,22 @@ function Dashboard({ userEmail }) {
         <Callout variant="info" className="mt-8" title="TL;DR: React Compiler Changes (And Doesn't Change)">
           <ul className="space-y-2 text-sm text-content list-disc pl-4">
             <li>
-              ✅ <strong>memo() is now automatic</strong> — The Compiler applies <InlineCode>memo()</InlineCode> to every component, eliminating cascade re-renders from parent state. This is the most architecturally significant change—it removes one of the main reasons teams previously reached for Zustand.
+              ✅ <strong>memo() is now automatic.</strong> The Compiler applies <InlineCode>memo()</InlineCode> to every component, eliminating cascade re-renders from parent state. This is the most architecturally significant change: it removes one of the main reasons teams previously reached for Zustand.
             </li>
             <li>
-              ✅ <strong>Context is more viable</strong> — Low-frequency updates
+              ✅ <strong>Context is more viable.</strong> Low-frequency updates
               (auth, theme) work well with Compiler optimization.
             </li>
             <li>
-              ❌ <strong>Zustand still wins for high-frequency updates</strong>{" "}
-              — Fine-grained subscriptions beat Context, even with Compiler.
+              ❌ <strong>Zustand still wins for high-frequency updates.</strong>{" "}
+              Fine-grained subscriptions beat Context, even with Compiler.
             </li>
             <li>
-              📊 <strong>Measure, don&apos;t guess</strong> — The Compiler does so
+              📊 <strong>Measure, don&apos;t guess.</strong> The Compiler does so
               much that preemptive optimization often wastes time.
             </li>
             <li>
-              🎯 <strong>Same decision tree, fewer dependencies</strong> — Your
+              🎯 <strong>Same decision tree, fewer dependencies.</strong> Your
               state architecture decisions remain the same; you just have fewer
               manual optimizations to maintain.
             </li>
@@ -407,8 +407,8 @@ function Dashboard({ userEmail }) {
               state.
             </p>
             <p className="text-content-muted mt-2 text-sm">
-              For UI state with complex transitions — or multi-step flows where
-              the path depends on previous steps —{" "}
+              For UI state with complex transitions, or multi-step flows where
+              the path depends on previous steps,{" "}
               <Link href="/deep-dives/state-machines" className="text-primary hover:underline">
                 state machines
               </Link>{" "}
@@ -493,14 +493,14 @@ function Dashboard({ userEmail }) {
               A settings form with a sticky Save button at the top and scrollable
               inputs below. The form state lived in a Context provider that wrapped
               the entire layout. On every keystroke, all four layout zones
-              re-rendered — including the sidebar and footer that never read the form
+              re-rendered, including the sidebar and footer that never read the form
               data.
             </p>
             <div className="text-sm space-y-2 text-content">
               <div>
                 <strong>Root cause:</strong> The provider was placed at the layout
                 root for convenience, not because the outer components needed it.
-                Context doesn&apos;t know which consumers are interested — every
+                Context doesn&apos;t know which consumers are interested; every
                 descendant re-renders on every change.
               </div>
               <div>
@@ -509,13 +509,13 @@ function Dashboard({ userEmail }) {
                 <InlineCode>Content</InlineCode>. Sidebar and Footer move outside
                 the provider and stop re-rendering entirely. For high-frequency
                 form state that truly is needed across a scattered tree, move to
-                Zustand with selectors — each component subscribes only to the
+                Zustand with selectors; each component subscribes only to the
                 field it uses.
               </div>
               <div>
                 <strong>The lesson:</strong> Context is a broadcast channel. Every
                 call to <InlineCode>useContext(FormContext)</InlineCode> subscribes
-                that component to every change — not just the fields it reads.
+                that component to every change, not just the fields it reads.
               </div>
             </div>
           </div>
@@ -526,7 +526,7 @@ function Dashboard({ userEmail }) {
             </h3>
             <p className="text-sm mb-3 text-content-muted">
               A people search feature. Users would type a name, browse results,
-              click into a profile, press back — and land on an empty search page
+              click into a profile, press back, and land on an empty search page
               with no filters applied. Every support ticket started with &ldquo;the
               search isn&apos;t working.&rdquo;
             </p>
@@ -534,14 +534,14 @@ function Dashboard({ userEmail }) {
               <div>
                 <strong>Root cause:</strong>{" "}
                 <InlineCode>useState</InlineCode> for search query, filters, and
-                pagination. Component state doesn&apos;t survive navigation — back
+                pagination. Component state doesn&apos;t survive navigation. The back
                 button destroyed the session.
               </div>
               <div>
                 <strong>Fix:</strong> Moved to{" "}
                 <InlineCode>useSearchParams</InlineCode>. The URL became the source
                 of truth. Back button works. Deep links work. Analytics captures the
-                actual filter state users are applying — not just &ldquo;search page
+                actual filter state users are applying, not just &ldquo;search page
                 viewed.&rdquo;
               </div>
               <div>
@@ -568,11 +568,11 @@ function Dashboard({ userEmail }) {
             },
             {
               mistake: "Reaching for Zustand before feeling the pain",
-              take: "If you're adding Redux or Zustand before you've felt the pain of prop drilling, you're adding ceremony in advance of the problem. Start local. Lift when it actually hurts. The threshold should be: 'I've been asked to pass this same value through three layers of components that don't use it.' That's when you reach for global state — not when you start a project.",
+              take: "If you're adding Redux or Zustand before you've felt the pain of prop drilling, you're adding ceremony in advance of the problem. Start local. Lift when it actually hurts. The threshold should be: 'I've been asked to pass this same value through three layers of components that don't use it.' That's when you reach for global state, not when you start a project.",
             },
             {
               mistake: "Context for high-frequency state",
-              take: "Context is the right tool for low-frequency, wide-access state: theme, locale, auth, feature flags. It's the wrong tool for data that updates on keystrokes, scroll position, or animations. If it updates faster than once per second and multiple components subscribe to it, you want Zustand with selectors — not Context. The difference is fine-grained subscriptions: Zustand re-renders only the components that read the changed slice.",
+              take: "Context is the right tool for low-frequency, wide-access state: theme, locale, auth, feature flags. It's the wrong tool for data that updates on keystrokes, scroll position, or animations. If it updates faster than once per second and multiple components subscribe to it, you want Zustand with selectors, not Context. The difference is fine-grained subscriptions: Zustand re-renders only the components that read the changed slice.",
             },
             {
               mistake: "Treating server state and client state as the same category",

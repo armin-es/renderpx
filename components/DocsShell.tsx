@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTheme } from '@/components/ThemeProvider'
 import { useEffect, useState } from 'react'
+import { ChevronDown } from 'lucide-react'
 
 const FRAMEWORKS = [
   { id: 'state-architecture', label: 'State Architecture' },
@@ -21,6 +22,30 @@ const DEEP_DIVES = [
   { id: 'state-machines', label: 'State Machines' },
   { id: 'graphql-caching', label: 'GraphQL Caching' },
   { id: 'useeffect-async-cleanup', label: 'useEffect & Async Cleanup' },
+]
+
+const PATTERNS = [
+  { id: 'optimistic-updates', label: 'Optimistic Updates' },
+  { id: 'infinite-scroll', label: 'Infinite Scroll' },
+  { id: 'debouncing-throttling', label: 'Debouncing & Throttling' },
+  { id: 'form-validation', label: 'Form Validation' },
+  { id: 'loading-states', label: 'Loading States' },
+  { id: 'error-boundaries', label: 'Error Boundaries' },
+  { id: 'cache-invalidation', label: 'Cache Invalidation' },
+  { id: 'polling-vs-websockets', label: 'Polling vs WebSockets' },
+  { id: 'multi-step-forms', label: 'Multi-Step Forms' },
+  { id: 'virtualized-lists', label: 'Virtualized Lists' },
+  { id: 'stale-while-revalidate', label: 'Stale-While-Revalidate' },
+  { id: 'autosave-draft', label: 'Autosave / Draft' },
+  { id: 'dependent-fields', label: 'Dependent Fields' },
+  { id: 'toasts', label: 'Toasts' },
+  { id: 'modal-management', label: 'Modal Management' },
+  { id: 'compound-components', label: 'Compound Components' },
+  { id: 'render-props-vs-hooks', label: 'Render Props vs Hooks' },
+  { id: 'controlled-vs-uncontrolled', label: 'Controlled vs Uncontrolled' },
+  { id: 'hocs-vs-composition', label: 'HOCs vs Composition' },
+  { id: 'code-splitting-lazy-loading', label: 'Code Splitting & Lazy Loading' },
+  { id: 'memoization', label: 'Memoization' },
 ]
 
 const STATE_ARCH_SECTIONS = [
@@ -175,10 +200,39 @@ const navAnchorBase = 'block px-3 py-1.5 rounded-md text-xs transition-colors'
 const navAnchorActive = 'font-medium text-primary'
 const navAnchorInactive = 'text-sidebar-text-muted hover:text-sidebar-text hover:bg-black/5'
 
+function CollapsibleSection({
+  label,
+  isActive,
+  children,
+}: {
+  label: string
+  isActive: boolean
+  children: React.ReactNode
+}) {
+  const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    if (isActive) setOpen(true)
+  }, [isActive])
+
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => setOpen(!open)}
+        className="w-full flex items-center justify-between px-3 mb-3 text-[10px] font-bold uppercase tracking-widest text-sidebar-text border-b border-sidebar-border pb-2 hover:opacity-70 transition-opacity"
+      >
+        <span>{label}</span>
+        <ChevronDown size={10} className={`transition-transform ${open ? '' : '-rotate-90'}`} />
+      </button>
+      {open && children}
+    </div>
+  )
+}
+
 function SidebarNav() {
   const pathname = usePathname()
 
-  const isHome = pathname === '/'
   const isPatterns = pathname === '/patterns'
   const isPatternDetail = pathname?.startsWith('/patterns/') && pathname !== '/patterns'
   const isStateArch = pathname === '/frameworks/state-architecture'
@@ -194,40 +248,21 @@ function SidebarNav() {
   const isStateMgmtInternals = pathname === '/deep-dives/state-management-internals'
   const isStateArchPractice = pathname === '/deep-dives/state-architecture-in-practice'
 
+  const isFramework = isStateArch || isComponentComp || isDataFetching || isRenderingStrategy || isDesignSystems || isCodeOrg || isPerformanceArch
+  const isDeepDive = isStateMachines || isUseEffectCleanup || isGraphqlCaching || isStateMgmtInternals || isStateArchPractice
+
   return (
     <nav className="flex flex-col gap-6 text-sm">
       <div>
-        <div className={sectionLabelClass}>Menu</div>
-        <ul className="space-y-0.5">
-          <li>
-            <Link
-              href="/"
-              className={`${navLinkBase} ${isHome ? navLinkActive : navLinkInactive}`}
-            >
-              Home
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/patterns"
-              className={`${navLinkBase} ${(isPatterns || isPatternDetail) ? navLinkActive : navLinkInactive}`}
-            >
-              Patterns
-            </Link>
-          </li>
-          <li>
-            <Link
-              href="/about"
-              className={`${navLinkBase} ${pathname === '/about' ? navLinkActive : navLinkInactive}`}
-            >
-              About
-            </Link>
-          </li>
-        </ul>
+        <Link
+          href="/about"
+          className="block px-3 mb-3 text-[10px] font-bold uppercase tracking-widest border-b border-sidebar-border pb-2 transition-opacity hover:opacity-70 text-sidebar-text"
+        >
+          About
+        </Link>
       </div>
 
-      <div>
-        <div className={sectionLabelClass}>Frameworks</div>
+      <CollapsibleSection label="Frameworks" isActive={isFramework}>
         <ul className="space-y-0.5">
           {FRAMEWORKS.map((fw) => {
             const href = `/frameworks/${fw.id}`
@@ -244,10 +279,36 @@ function SidebarNav() {
             )
           })}
         </ul>
-      </div>
+      </CollapsibleSection>
 
-      <div>
-        <div className={sectionLabelClass}>Deep Dives</div>
+      <CollapsibleSection label="Patterns" isActive={isPatterns || isPatternDetail}>
+        <ul className="space-y-0.5">
+          <li>
+            <Link
+              href="/patterns"
+              className={`${navLinkBase} ${isPatterns ? navLinkActive : navLinkInactive}`}
+            >
+              All Patterns
+            </Link>
+          </li>
+          {PATTERNS.map((p) => {
+            const href = `/patterns/${p.id}`
+            const active = pathname === href
+            return (
+              <li key={p.id}>
+                <Link
+                  href={href}
+                  className={`${navLinkBase} ${active ? navLinkActive : navLinkInactive}`}
+                >
+                  {p.label}
+                </Link>
+              </li>
+            )
+          })}
+        </ul>
+      </CollapsibleSection>
+
+      <CollapsibleSection label="Deep Dives" isActive={isDeepDive}>
         <ul className="space-y-0.5">
           {DEEP_DIVES.map((dd) => {
             const href = `/deep-dives/${dd.id}`
@@ -264,7 +325,7 @@ function SidebarNav() {
             )
           })}
         </ul>
-      </div>
+      </CollapsibleSection>
 
       {(isStateArch || isComponentComp || isDataFetching || isRenderingStrategy || isDesignSystems || isCodeOrg || isPerformanceArch || isPatternDetail || isStateMachines || isUseEffectCleanup || isGraphqlCaching || isStateMgmtInternals || isStateArchPractice) && (
         <div>

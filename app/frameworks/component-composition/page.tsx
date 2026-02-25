@@ -211,7 +211,7 @@ export default async function ComponentCompositionPage() {
               style={{ backgroundColor: "hsl(var(--inline-code-bg))" }}
             >
               tabs
-            </code> prop—an array of objects with <code
+            </code> prop, an array of objects with <code
               className="text-sm px-1.5 py-0.5 rounded"
               style={{ backgroundColor: "hsl(var(--inline-code-bg))" }}
             >
@@ -254,7 +254,7 @@ export default async function ComponentCompositionPage() {
             style={{ color: "hsl(var(--content-text))" }}
           >
             This is the composition problem. When a component owns all of its
-            own rendering, consumers can only customize through props—and every
+            own rendering, consumers can only customize through props, and every
             possible variation must be anticipated in advance.
           </p>
         </div>
@@ -289,8 +289,8 @@ export default async function ComponentCompositionPage() {
               Instead of the component owning rendering, give rendering back to
               the consumer.
             </strong>{" "}
-            The component keeps what it&apos;s good at—managing active state,
-            keyboard navigation, ARIA attributes—and exposes composable pieces
+            The component keeps what it&apos;s good at: managing active state,
+            keyboard navigation, and ARIA attributes. It exposes composable pieces
             the consumer assembles.
           </p>
           <p
@@ -344,7 +344,7 @@ export default async function ComponentCompositionPage() {
         >
           There are four distinct levels of composition, each transferring more
           rendering control to the consumer. The question isn&apos;t which is
-          best—it&apos;s which is appropriate for the component&apos;s use
+          best; it&apos;s which is appropriate for the component&apos;s use
           case.
         </p>
 
@@ -499,7 +499,7 @@ export default async function ComponentCompositionPage() {
                     Reach for this when:
                   </strong>{" "}
                   Building a UI library component where consumers need
-                  structural control—tabs, accordions, menus, selects, dialogs.
+                  structural control: tabs, accordions, menus, selects, dialogs.
                   This is how Radix UI, Headless UI, and Ark UI are designed.
                   The API is discoverable and the JSX reads naturally.
                 </p>
@@ -534,7 +534,7 @@ export default async function ComponentCompositionPage() {
                   style={{ color: "hsl(var(--content-text-muted))" }}
                 >
                   A hook returns only state and behavior. No rendering
-                  whatsoever—the consumer builds the entire UI.
+                  whatsoever; the consumer builds the entire UI.
                 </p>
                 <CodeBlock
                   code={`function MyCustomTabs() {
@@ -595,7 +595,7 @@ export default async function ComponentCompositionPage() {
             needs to render, use props. If the consumer knows better what should
             be rendered, give them control via compound components or a headless
             hook. The library author doesn&apos;t know every badge, icon, or
-            tooltip the product team will ask for—so don&apos;t make them
+            tooltip the product team will ask for, so don&apos;t make them
             decide.
           </p>
         </div>
@@ -614,7 +614,7 @@ export default async function ComponentCompositionPage() {
           style={{ color: "hsl(var(--content-text-muted))" }}
         >
           A quick reference for choosing the right level. These aren&apos;t
-          mutually exclusive—a complex component often uses render props for one
+          mutually exclusive; a complex component often uses render props for one
           slot and compound components for structure.
         </p>
 
@@ -710,7 +710,7 @@ export default async function ComponentCompositionPage() {
           className="mb-6"
           style={{ color: "hsl(var(--content-text-muted))" }}
         >
-          The same feature—a Tabs component—built five ways. Each step adds
+          The same feature (a Tabs component) built five ways. Each step adds
           more consumer control and shows exactly when to reach for the next
           level.
         </p>
@@ -823,7 +823,7 @@ export default async function ComponentCompositionPage() {
                 >
                   aria-*
                 </code>{" "}
-                wiring via context — consumers get horizontal label, inline error,
+                wiring via context; consumers get horizontal label, inline error,
                 or floating label by assembling the pieces differently.
               </div>
               <div>
@@ -897,7 +897,7 @@ export default async function ComponentCompositionPage() {
               >
                 renderItem
               </code>{" "}
-              props. It worked well — until one product area needed keyboard
+              props. It worked well until one product area needed keyboard
               navigation with async search, and another needed grouped options with
               a create-new option at the bottom.
             </p>
@@ -932,7 +932,7 @@ export default async function ComponentCompositionPage() {
                 >
                   renderFooter
                 </code>
-                . The prop count was a symptom — the abstraction was fighting the
+                . The prop count was a symptom: the abstraction was fighting the
                 use cases.
               </div>
               <div>
@@ -951,7 +951,7 @@ export default async function ComponentCompositionPage() {
               <div>
                 <strong>The lesson:</strong> A growing prop count on a UI
                 component is often a signal that the abstraction is at the wrong
-                level — you&apos;re fighting layout variations that composition
+                level; you&apos;re fighting layout variations that composition
                 handles naturally.
               </div>
             </div>
@@ -971,8 +971,8 @@ export default async function ComponentCompositionPage() {
         <div className="space-y-4">
           {[
             {
-              mistake: "Compound components are overkill — until they're not",
-              take: "You'll know when you need them because you'll have a prop called renderHeaderLeft. Compound components have real overhead: they're more complex to build, harder to document, and less obvious for new consumers. But when a component starts accumulating layout-related props—things that control where and how subpieces render—composition is almost always the right answer. The signal isn't the number of props. It's whether the props describe data (fine) or layout (reach for compounds).",
+              mistake: "Compound components are overkill, until they're not",
+              take: "You'll know when you need them because you'll have a prop called renderHeaderLeft. Compound components have real overhead: they're more complex to build, harder to document, and less obvious for new consumers. But when a component starts accumulating layout-related props, things that control where and how subpieces render, composition is almost always the right answer. The signal isn't the number of props. It's whether the props describe data (fine) or layout (reach for compounds).",
             },
             {
               mistake: "Not using children for content that varies",
@@ -984,7 +984,7 @@ export default async function ComponentCompositionPage() {
             },
             {
               mistake: "Reaching for Radix (or Headless UI) for everything",
-              take: "Headless libraries are valuable when you control the design system and need to apply token-based styles to behavior-heavy components. They're overkill for a two-component demo, a prototype, or an app where the design is stable and variations are minimal. The complexity of a headless library — the mental model, the prop-gets pattern, the ARIA wiring — only pays off when you're building for multiple design contexts. Know the tradeoff before adding the dependency.",
+              take: "Headless libraries are valuable when you control the design system and need to apply token-based styles to behavior-heavy components. They're overkill for a two-component demo, a prototype, or an app where the design is stable and variations are minimal. The complexity of a headless library (the mental model, the prop-gets pattern, the ARIA wiring) only pays off when you're building for multiple design contexts. Know the tradeoff before adding the dependency.",
             },
           ].map(({ mistake, take }) => (
             <div
@@ -1019,7 +1019,7 @@ export default async function ComponentCompositionPage() {
           style={{ color: "hsl(var(--content-text-muted))" }}
         >
           What it actually looks like to refactor a prop-heavy component library
-          — with multiple teams using it, a product that can&apos;t stop shipping,
+          with multiple teams using it, a product that can&apos;t stop shipping,
           and an API that can&apos;t break.
         </p>
         <div className="space-y-8">
@@ -1046,7 +1046,7 @@ export default async function ComponentCompositionPage() {
               >
                 Card
               </code>{" "}
-              component had accumulated 14 props over 18 months — one new prop
+              component had accumulated 14 props over 18 months, one new prop
               per product request, each request reasonable on its own.
             </p>
           </div>
@@ -1065,7 +1065,7 @@ export default async function ComponentCompositionPage() {
               className="text-sm leading-relaxed"
               style={{ color: "hsl(var(--content-text))" }}
             >
-              Every new product area needed a slightly different card layout —
+              Every new product area needed a slightly different card layout:
               header on the right, actions in the footer, collapsible body.{" "}
               <code
                 className="text-xs px-1 py-0.5 rounded"
@@ -1116,7 +1116,7 @@ export default async function ComponentCompositionPage() {
                 onCollapse
               </code>
               . The component was testing the limits of what a prop-based API can
-              express — and every new request required a design system PR that
+              express, and every new request required a design system PR that
               touched the component, the types, the Storybook story, and the
               documentation.
             </p>
@@ -1186,7 +1186,7 @@ export default async function ComponentCompositionPage() {
               >
                 Button
               </code>{" "}
-              — Button has one layout and one job; compound components there would
+              Button has one layout and one job; compound components there would
               be complexity for no benefit.
             </p>
           </div>

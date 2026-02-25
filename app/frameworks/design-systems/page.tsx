@@ -116,7 +116,7 @@ const DECISION_MATRIX = [
   {
     approach: "Roll your own (CSS + variants)",
     whenToUse: "Small team, custom brand, full control",
-    tradeoffs: "You build everything — tokens, variants, accessibility",
+    tradeoffs: "You build everything: tokens, variants, accessibility",
     bestFor: "Teams with a dedicated design systems engineer",
     avoid: "Complex interactive components (modals, selects)",
   },
@@ -165,7 +165,7 @@ export default async function DesignSystemsPage() {
           Design System Architecture
         </h1>
         <p className="text-xl" style={{ color: "hsl(var(--content-text-muted))" }}>
-          Three layers: tokens, variants, primitives — and when each layer is enough.
+          Three layers: tokens, variants, primitives, and when each layer is enough.
         </p>
       </div>
 
@@ -232,7 +232,7 @@ export default async function DesignSystemsPage() {
             className="leading-relaxed"
             style={{ color: "hsl(var(--content-text))" }}
           >
-            A maintainable design system isn&apos;t a single component library —
+            A maintainable design system isn&apos;t a single component library;
             it&apos;s three distinct layers that solve three distinct problems.
             Most teams build Layer 1, think they&apos;re done, and hit the wall
             when Layer 2 or 3 problems appear.
@@ -333,8 +333,8 @@ export default async function DesignSystemsPage() {
             className="leading-relaxed"
             style={{ color: "hsl(var(--content-text))" }}
           >
-            Design tokens are the vocabulary of your visual language — colors,
-            spacing, typography, radii — stored as CSS custom properties. The
+            Design tokens are the vocabulary of your visual language: colors,
+            spacing, typography, radii, stored as CSS custom properties. The
             critical distinction is between <strong>primitive tokens</strong>{" "}
             (raw values like{" "}
             <code
@@ -359,7 +359,7 @@ export default async function DesignSystemsPage() {
           >
             Semantic tokens are what components reference. Primitive tokens are
             what semantic tokens point to. When you rebrand, you update the
-            pointer — all components follow automatically. When you add dark
+            pointer; all components follow automatically. When you add dark
             mode, you swap the semantic tokens inside a{" "}
             <code
               className="text-sm px-1.5 py-0.5 rounded"
@@ -501,7 +501,7 @@ export default async function DesignSystemsPage() {
             The configuration vs. composition trap:
           </p>
           <p className="text-sm" style={{ color: "hsl(var(--content-text))" }}>
-            A Button with 47 props is configuration explosion — it tries to
+            A Button with 47 props is configuration explosion; it tries to
             handle every future use case upfront. Prefer a narrow prop surface
             (variant, size, loading, disabled) and let callers compose via{" "}
             <code
@@ -539,8 +539,8 @@ export default async function DesignSystemsPage() {
             have complex interactive behavior that is genuinely hard to
             implement correctly: modal dialogs need focus trapping, dropdowns
             need keyboard navigation, tooltips need proper ARIA relationships.
-            Getting all of this right — and keeping it right across browser
-            updates — is a full-time job.
+            Getting all of this right, and keeping it right across browser
+            updates, is a full-time job.
           </p>
           <p
             className="leading-relaxed"
@@ -557,7 +557,7 @@ export default async function DesignSystemsPage() {
           >
             For simpler interactive components, you can build the behavior
             yourself with proper ARIA attributes. The accordion below is fully
-            accessible with no library — correct{" "}
+            accessible with no library: correct{" "}
             <code
               className="text-sm px-1.5 py-0.5 rounded"
               style={{ backgroundColor: "hsl(var(--inline-code-bg))" }}
@@ -607,7 +607,7 @@ export default async function DesignSystemsPage() {
           className="mb-6 leading-relaxed"
           style={{ color: "hsl(var(--content-text))" }}
         >
-          The real question isn&apos;t "what&apos;s best" — it&apos;s what fits your team&apos;s
+          The real question isn&apos;t "what&apos;s best"; it&apos;s what fits your team&apos;s
           current constraints. Here&apos;s how I think about the tradeoffs:
         </p>
 
@@ -670,7 +670,7 @@ export default async function DesignSystemsPage() {
             most product work. It gives you Radix primitives + a solid token
             system + a Tailwind variant pattern, and you own every file. If your
             brand requirements diverge from what shadcn gives you, you already
-            have the architecture to diverge — you just modify the files you
+            have the architecture to diverge; you just modify the files you
             copied.
           </p>
         </div>
@@ -688,9 +688,8 @@ export default async function DesignSystemsPage() {
           className="mb-8 leading-relaxed"
           style={{ color: "hsl(var(--content-text))" }}
         >
-          The same feature — a Button component — at five stages of
-          architectural maturity. Each step solves a real problem the previous
-          step couldn&apos;t.
+          The same feature (a Button component) at five stages of architectural
+          maturity. Each step solves a real problem the previous step couldn&apos;t.
         </p>
 
         <ExampleViewer
@@ -728,7 +727,7 @@ export default async function DesignSystemsPage() {
               style={{ color: "hsl(var(--content-text-muted))" }}
             >
               I once worked on a SaaS platform that was white-labeled for 40+
-              enterprise clients — each with their own brand colors. The naive
+              enterprise clients, each with their own brand colors. The naive
               approach would be a per-tenant CSS file that overrides hardcoded
               values. With semantic tokens, it was a 10-line JSON file per
               client that set{" "}
@@ -809,7 +808,7 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
               >
                 href
               </code>{" "}
-              prop detection and conditional rendering — messy. Radix&apos;s{" "}
+              prop detection and conditional rendering is messy. Radix&apos;s{" "}
               <code
                 className="text-xs px-1 py-0.5 rounded"
                 style={{ backgroundColor: "hsl(var(--inline-code-bg))" }}
@@ -853,7 +852,7 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
             >
               The handoff gap kills design system adoption. Designers work in
               Figma with named styles. Developers implement in CSS with hex
-              values. When the names match — Figma&apos;s{" "}
+              values. When the names match, Figma&apos;s{" "}
               <em>Color/Primary/Default</em> maps to{" "}
               <code
                 className="text-xs px-1 py-0.5 rounded"
@@ -861,7 +860,7 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
               >
                 --color-primary
               </code>{" "}
-              — implementation becomes mechanical. Token mismatch means
+              implementation becomes mechanical. Token mismatch means
               engineers are constantly guessing intent. Tools like{" "}
               <a
                 href="https://www.figma.com/community/plugin/843461159747178978/tokens-studio-for-figma"
@@ -872,7 +871,7 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
               >
                 Tokens Studio for Figma
               </a>{" "}
-              can sync Figma styles directly to CSS variables — but even without
+              can sync Figma styles directly to CSS variables, but even without
               tooling, aligning the naming convention cuts handoff time in half.
             </p>
           </div>
@@ -907,8 +906,8 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
               Grep the codebase for hardcoded color values to measure the scope
               of token drift. Identify which components are actually used versus
               which were built speculatively. Find the two or three components
-              that touch the most screens — usually Button, Input, and a card
-              container — those are the migration entry points. Let old and new
+              that touch the most screens: usually Button, Input, and a card
+              container; those are the migration entry points. Let old and new
               code coexist while the product keeps shipping; deprecate,
               don&apos;t delete. The migration is done when old patterns stop
               appearing in <em>new</em> code, not when they&apos;ve been removed
@@ -919,7 +918,7 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
               style={{ color: "hsl(var(--content-text-muted))" }}
             >
               The key call: incremental token introduction versus a larger
-              cut-over. Incremental is almost always right — add CSS variables
+              cut-over. Incremental is almost always right: add CSS variables
               alongside existing hardcoded values, migrate component by
               component. A cut-over is only justified when the codebase is small
               enough to finish in one sprint. A half-done cut-over is worse than
@@ -954,7 +953,7 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
           className="text-sm mb-8"
           style={{ color: "hsl(var(--content-text-muted))" }}
         >
-          What it actually looks like to ship this in a company — with a team,
+          What it actually looks like to ship this in a company, with a team,
           constraints, and a product that can&apos;t stop.
         </p>
         <div className="space-y-8">
@@ -974,7 +973,7 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
             >
               We were a small team of engineers and designers building a
               white-label SaaS platform for enterprise clients. The product was
-              two years old and growing — fast enough that no one had stopped to
+              two years old and growing, fast enough that no one had stopped to
               think about visual consistency. Components had hex values hardcoded
               everywhere. No token layer. No shared conventions. Three slightly
               different versions of what was supposed to be the same primary
@@ -1001,7 +1000,7 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
               codebase, update it, ship it, miss a few, patch them. We were
               doing this for every client. With 40+ clients in the pipeline,
               onboarding capacity was becoming a real bottleneck. The business
-              case wasn&apos;t &ldquo;our buttons are inconsistent&rdquo; — it was
+              case wasn&apos;t &ldquo;our buttons are inconsistent&rdquo;; it was
               &ldquo;we&apos;re leaving revenue on the table because what should be a
               configuration change costs us a sprint.&rdquo;
             </p>
@@ -1024,7 +1023,7 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
               I proposed a token layer and only a token layer. No new component
               library, no migration sprint, no stopping the product to refactor.
               New code uses tokens; old code stays as-is. Layer 2 could wait
-              until we felt the pain of inconsistent APIs — which happened about
+              until we felt the pain of inconsistent APIs, which happened about
               three months in. We skipped building Layer 3 and reached for Radix
               only when we hit real accessibility gaps. The call I&apos;d make
               differently: I waited too long to align on token naming with
@@ -1065,11 +1064,11 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
               </code>{" "}
               in CSS. Designers took ownership of the naming; I committed to
               matching it exactly in code. Getting engineers to change was
-              slower — the team had shipped successfully with hardcoded values
+              slower; the team had shipped successfully with hardcoded values
               for two years. What worked: a linting rule that flagged hardcoded
               hex values in new files only, not old ones. No migration sprint.
               No stopping feature work. Adoption happened because the new
-              pattern was visibly easier — changing a client&apos;s brand was
+              pattern was visibly easier: changing a client&apos;s brand was
               editing one JSON file instead of grepping the codebase.
             </p>
           </div>
@@ -1110,8 +1109,8 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
               >
                 --radius-base
               </code>{" "}
-              at runtime — zero component changes. We never finished migrating
-              the old hardcoded values. We didn&apos;t need to: the problem was
+              at runtime with zero component changes. We never finished
+              migrating the old hardcoded values. We didn&apos;t need to: the problem was
               solved at the boundary, not the interior. Old code stayed; new
               code used tokens; clients got onboarded without touching the
               codebase.
@@ -1126,7 +1125,7 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
           Applied to This Portfolio
         </h2>
         <p className="text-content-muted mb-10">
-          This portfolio doesn&apos;t just teach the three-layer architecture — it uses it. The components below are the actual{" "}
+          This portfolio doesn&apos;t just teach the three-layer architecture. It uses it. The components below are the actual{" "}
           <InlineCode>components/ui/</InlineCode> library built for this site using the CVA pattern described above.
         </p>
 
@@ -1195,7 +1194,7 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
         <div className="mb-10">
           <h3 className="font-bold text-lg mb-1 text-content">Badge</h3>
           <p className="text-sm text-content-muted mb-4">
-            Semantic variants for labeling content — used for complexity indicators, status tags, and metadata.
+            Semantic variants for labeling content, used for complexity indicators, status tags, and metadata.
           </p>
           <div className="rounded-xl border border-content-border bg-card-bg overflow-hidden">
             <div className="p-6">
@@ -1309,7 +1308,7 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
         </div>
 
         <Callout variant="info" title="The token bridge">
-          The key step: <InlineCode>tailwind.config.js</InlineCode> maps CSS custom properties to Tailwind color utilities —{" "}
+          The key step: <InlineCode>tailwind.config.js</InlineCode> maps CSS custom properties to Tailwind color utilities,{" "}
           <InlineCode>text-content</InlineCode> resolves to <InlineCode>hsl(var(--content-text))</InlineCode>. This means the CSS variables in{" "}
           <InlineCode>globals.css</InlineCode> stay unchanged, dark mode keeps working, and every component drops its inline styles.
         </Callout>
@@ -1338,12 +1337,12 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
             {
               claim: "\"We'll add dark mode later\" is a lie.",
               detail:
-                "I've heard it on every project that didn't ship with dark mode. The later never comes. CSS tokens make dark mode a near-zero-cost addition from day one — one `prefers-color-scheme` block in globals.css. Retrofitting dark mode into hardcoded styles is a 2-week project that touches 200 files.",
+                "I've heard it on every project that didn't ship with dark mode. The later never comes. CSS tokens make dark mode a near-zero-cost addition from day one: one `prefers-color-scheme` block in globals.css. Retrofitting dark mode into hardcoded styles is a 2-week project that touches 200 files.",
             },
             {
               claim: "Your design system is not a product.",
               detail:
-                "Teams that treat their internal component library as a product — with versioning, changelogs, and a dedicated team — are over-engineering. Unless you're shipping the library externally or supporting 10+ separate app codebases, the overhead kills engineering velocity faster than it helps.",
+                "Teams that treat their internal component library as a product, with versioning, changelogs, and a dedicated team, are over-engineering. Unless you're shipping the library externally or supporting 10+ separate app codebases, the overhead kills engineering velocity faster than it helps.",
             },
           ].map((take, i) => (
             <div
@@ -1381,12 +1380,12 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
             {
               href: "/frameworks/component-composition",
               title: "Component Composition",
-              desc: "Compound components and render props — how to build flexible component APIs.",
+              desc: "Compound components and render props: how to build flexible component APIs.",
             },
             {
               href: "/frameworks/state-architecture",
               title: "State Architecture",
-              desc: "Where design tokens live in state (hint: they don't — they're in CSS).",
+              desc: "Where design tokens live in state (hint: they're in CSS, not state).",
             },
             {
               href: "/frameworks/rendering-strategy",

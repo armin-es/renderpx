@@ -201,7 +201,7 @@ export default async function RenderingStrategyPage() {
           className="text-xl"
           style={{ color: "hsl(var(--content-text-muted))" }}
         >
-          When does your page render — and where?
+          When does your page render, and where?
         </p>
       </div>
 
@@ -235,7 +235,7 @@ export default async function RenderingStrategyPage() {
             >
               {"<div id=\"root\"></div>"}
             </code>
-            —not your content. Second, the loading waterfall punishes users on
+            , not your content. Second, the loading waterfall punishes users on
             slow connections: blank page → JS downloads → fetch starts → fetch
             resolves → page finally renders. Four sequential steps before
             anything useful appears.
@@ -244,7 +244,7 @@ export default async function RenderingStrategyPage() {
             className="leading-relaxed"
             style={{ color: "hsl(var(--content-text))" }}
           >
-            Simulate it below. The timeline shows why CSR feels slow—each step
+            Simulate it below. The timeline shows why CSR feels slow; each step
             only starts after the previous one finishes.
           </p>
         </div>
@@ -273,7 +273,7 @@ export default async function RenderingStrategyPage() {
           className="mb-6"
           style={{ color: "hsl(var(--content-text))" }}
         >
-          The answer isn&apos;t to replace CSR — it&apos;s to understand what
+          The answer isn&apos;t to replace CSR; it&apos;s to understand what
           each mode trades off, and match it to the page&apos;s actual needs.
           Select a mode below to see what HTML arrives in the browser and what
           the tradeoffs are.
@@ -292,7 +292,7 @@ export default async function RenderingStrategyPage() {
             <p style={{ color: "hsl(var(--content-text))" }}>
               <strong>The key insight:</strong> SSR, SSG, and ISR all send
               fully-populated HTML to the browser. The difference is{" "}
-              <em>when</em> that HTML was generated—on every request (SSR), at
+              <em>when</em> that HTML was generated: on every request (SSR), at
               build time (SSG), or from a CDN cache that refreshes on a timer
               (ISR). CSR sends nothing and generates it in the browser.
             </p>
@@ -381,7 +381,7 @@ export default async function RenderingStrategyPage() {
             >
               For most public-facing pages where data changes, ISR is the right
               default. It gives you static file performance (CDN, sub-5ms TTFB)
-              with automatic freshness—no rebuild pipeline needed.
+              with automatic freshness; no rebuild pipeline needed.
             </p>
             <CodeBlock code={ISR_CODE} lang="tsx" />
           </div>
@@ -398,9 +398,9 @@ export default async function RenderingStrategyPage() {
               style={{ color: "hsl(var(--content-text))" }}
             >
               A product page isn&apos;t one piece of data. The product details
-              change rarely—ISR is fine. The live review count changes
-              constantly—it needs a fresh fetch. The &quot;Add to Cart&quot;
-              button is interactive—it needs JavaScript. React Server Components
+              change rarely; ISR is fine. The live review count changes
+              constantly; it needs a fresh fetch. The &quot;Add to Cart&quot;
+              button is interactive; it needs JavaScript. React Server Components
               let you make these decisions per component, not per page.
             </p>
             <CodeBlock code={RSC_STREAMING_CODE} lang="tsx" />
@@ -423,7 +423,7 @@ export default async function RenderingStrategyPage() {
                 </code>{" "}
                 chunk separately as it resolves. The user sees a complete product
                 page with a reviews skeleton, and the reviews fill in ~200ms
-                later—no full-page loading spinner.
+                later, with no full-page loading spinner.
               </p>
             </div>
           </div>
@@ -532,7 +532,7 @@ export default async function RenderingStrategyPage() {
           className="mb-6"
           style={{ color: "hsl(var(--content-text-muted))" }}
         >
-          The same feature—a product detail page—built with each rendering
+          The same feature (a product detail page) built with each rendering
           strategy. Each example shows exactly what changes, what it gains, and
           what constraint drives you to the next step.
         </p>
@@ -587,7 +587,7 @@ export default async function RenderingStrategyPage() {
                   revalidate: 300
                 </code>{" "}
                 (5 minutes). The CDN now absorbs ~95% of traffic. DB queries
-                dropped to a trickle—only when cache entries expire.
+                dropped to a trickle, only when cache entries expire.
               </div>
               <div>
                 <strong>The one edge case:</strong> Flash sales. We added an
@@ -599,7 +599,7 @@ export default async function RenderingStrategyPage() {
                   revalidatePath
                 </code>
                 ) triggered when a sale starts. The CDN invalidates those pages
-                immediately—no waiting for the TTL.
+                immediately; no waiting for the TTL.
               </div>
             </div>
             <div
@@ -639,14 +639,14 @@ export default async function RenderingStrategyPage() {
             <div className="text-sm space-y-1" style={{ color: "hsl(var(--content-text))" }}>
               <div>
                 <strong>What happened:</strong> The entire page tree was a Client
-                Component. No RSC benefit—same JS bundle size as before, same
+                Component. No RSC benefit; same JS bundle size as before, same
                 CSR waterfall.
               </div>
               <div>
                 <strong>The fix:</strong> Draw a clear boundary. The page shell,
                 nav, and header are Server Components (static, no JS shipped).
                 The data-fetching layer is Server Components (async/await,
-                directly to DB). Only interactive islands—charts, filters, modals—
+                directly to DB). Only interactive islands (charts, filters, modals)
                 are Client Components.
               </div>
               <div>
@@ -678,7 +678,7 @@ export default async function RenderingStrategyPage() {
               right instinct is to start with the pages that hurt most: the ones
               Google can&apos;t index, or the ones with the worst LCP on mobile.
               Next.js supports both CSR components and SSR/SSG pages in the same
-              app — you&apos;re adding a rendering layer, not rewriting components.
+              app; you&apos;re adding a rendering layer, not rewriting components.
             </p>
             <p
               className="text-sm mb-4"
@@ -689,7 +689,7 @@ export default async function RenderingStrategyPage() {
               answers determine the rendering strategy. The key call per route: if
               the content doesn&apos;t change per user, default to SSG. If it
               changes hourly, use ISR. Only reach for SSR when you genuinely need
-              per-request freshness — not as a cautious default.
+              per-request freshness, not as a cautious default.
             </p>
             <CodeBlock
               code={`// Before: pure CSR component (works unchanged in Next.js)
@@ -729,7 +729,7 @@ export default async function ProductPage({ params }) {
           style={{ color: "hsl(var(--content-text-muted))" }}
         >
           What it actually looks like to split rendering strategy across a
-          codebase — with a marketing team, an engineering team, and a product
+          codebase, with a marketing team, an engineering team, and a product
           that can&apos;t stop shipping.
         </p>
         <div className="space-y-8">
@@ -750,7 +750,7 @@ export default async function ProductPage({ params }) {
               Marketing site and logged-in app in the same Next.js codebase. The
               marketing pages needed SEO and sub-second first contentful paint;
               the logged-in app was data-heavy and highly interactive. Both were
-              being served from the same deployment — but with the same rendering
+              being served from the same deployment, but with the same rendering
               strategy applied to everything.
             </p>
           </div>
@@ -769,10 +769,10 @@ export default async function ProductPage({ params }) {
               className="text-sm leading-relaxed"
               style={{ color: "hsl(var(--content-text))" }}
             >
-              Marketing pages were rendering client-side — part of the same SPA
+              Marketing pages were rendering client-side, part of the same SPA
               entrypoint. Google wasn&apos;t indexing landing page content
               correctly; Core Web Vitals flagged poor LCP across the board.
-              Switching everything to SSR would hurt the logged-in experience —
+              Switching everything to SSR would hurt the logged-in experience;
               the app had too many per-user queries to run server-side efficiently
               on every pageview. The team was treating &ldquo;rendering
               strategy&rdquo; as an app-level decision rather than a route-level
@@ -824,7 +824,7 @@ export default async function ProductPage({ params }) {
               </code>
               ) → CSR with React Query, serving from a CDN-cached shell. The
               line was drawn at the route prefix. RSC was considered but the team
-              wasn&apos;t ready for the mental model shift — and the marketing
+              wasn&apos;t ready for the mental model shift, and the marketing
               pages didn&apos;t need per-component rendering control.
             </p>
           </div>
@@ -846,10 +846,10 @@ export default async function ProductPage({ params }) {
               The hardest conversation was with the marketing team. &ldquo;Static
               generation&rdquo; sounds like old-school websites to people used to
               live CMSes. The reframe that worked: &ldquo;the page rebuilds on
-              publish, just like your CMS preview — but it&apos;s instant for
+              publish, just like your CMS preview, but it&apos;s instant for
               every visitor instead of re-rendering on every request.&rdquo;
               Engineers needed reassurance that ISR wouldn&apos;t serve stale
-              pricing — we added a CMS webhook that triggered{" "}
+              pricing; we added a CMS webhook that triggered{" "}
               <code
                 className="text-xs px-1 py-0.5 rounded"
                 style={{ backgroundColor: "hsl(var(--inline-code-bg))" }}
@@ -876,7 +876,7 @@ export default async function ProductPage({ params }) {
               style={{ color: "hsl(var(--content-text))" }}
             >
               LCP on marketing pages improved significantly within weeks of
-              deployment. Organic search indexing improved — Google could now read
+              deployment. Organic search indexing improved; Google could now read
               page content on first crawl. The{" "}
               <code
                 className="text-xs px-1 py-0.5 rounded"
@@ -886,7 +886,7 @@ export default async function ProductPage({ params }) {
               </code>{" "}
               section stayed fully interactive with no regression. Server costs
               dropped because marketing pages no longer consumed SSR capacity on
-              every visitor request — they served from CDN. The marketing team
+              every visitor request; they served from CDN. The marketing team
               adopted the CMS publish workflow as their new normal within two
               weeks.
             </p>
@@ -907,15 +907,15 @@ export default async function ProductPage({ params }) {
           {[
             {
               mistake: "Defaulting to SSR because it's 'safe'",
-              take: "SSR is not free. Every request spins up a server process, runs a DB query, and sends a response. Under load, this is expensive and slow. If data doesn't change per-request, use ISR. If data doesn't change per-day, use SSG. SSR should be your choice when you actually need per-request freshness — not your fallback when you don't know what else to use.",
+              take: "SSR is not free. Every request spins up a server process, runs a DB query, and sends a response. Under load, this is expensive and slow. If data doesn't change per-request, use ISR. If data doesn't change per-day, use SSG. SSR should be your choice when you actually need per-request freshness, not your fallback when you don't know what else to use.",
             },
             {
               mistake: "Putting 'use client' at the top of the page",
-              take: "This is the App Router equivalent of opting out of everything that makes it interesting. I've seen large Next.js 13+ apps that are functionally identical to their Vite SPA predecessors because every component was marked 'use client'. The rule: 'use client' belongs at the leaf components that actually need interactivity — buttons, forms, charts. Not at the page root.",
+              take: "This is the App Router equivalent of opting out of everything that makes it interesting. I've seen large Next.js 13+ apps that are functionally identical to their Vite SPA predecessors because every component was marked 'use client'. The rule: 'use client' belongs at the leaf components that actually need interactivity: buttons, forms, charts. Not at the page root.",
             },
             {
               mistake: "Treating ISR's stale window as a problem to eliminate",
-              take: "The 60-second staleness window is a feature, not a bug. A user who loaded a product page at 9:00am and the price changed at 9:00:30am is fine — they didn't know to expect a different price. The mental model shift is: ISR gives you an accuracy guarantee, not a real-time one. Real-time is for live prices on a trading platform, not an e-commerce catalog.",
+              take: "The 60-second staleness window is a feature, not a bug. A user who loaded a product page at 9:00am and the price changed at 9:00:30am is fine; they didn't know to expect a different price. The mental model shift is: ISR gives you an accuracy guarantee, not a real-time one. Real-time is for live prices on a trading platform, not an e-commerce catalog.",
             },
             {
               mistake: "Building complex SSR APIs instead of using RSC",
@@ -968,7 +968,7 @@ export default async function ProductPage({ params }) {
               className="text-sm"
               style={{ color: "hsl(var(--content-text-muted))" }}
             >
-              Rendering strategy decides <em>where</em> data is fetched — server
+              Rendering strategy decides <em>where</em> data is fetched: server
               or client. Data Fetching &amp; Sync covers <em>how</em>: race
               conditions, caching, deduplication, and the React Query vs. RSC
               fetch decision in detail.
@@ -992,7 +992,7 @@ export default async function ProductPage({ params }) {
               className="text-sm"
               style={{ color: "hsl(var(--content-text-muted))" }}
             >
-              RSC changes where data lives — it pushes server state out of
+              RSC changes where data lives; it pushes server state out of
               client-side stores entirely. Understanding the boundary between
               server state and client state is essential when adopting RSC at
               scale.

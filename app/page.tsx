@@ -103,7 +103,7 @@ export default function Home() {
               </div>
             </div>
             <p className="mb-4 text-content-muted">
-              Where state lives isn&apos;t about choosing tools—it&apos;s about coordination costs and sources of truth.
+              Where state lives isn&apos;t about choosing tools. It&apos;s about coordination costs and sources of truth.
               I once inherited a React app where a single form field triggered 47 re-renders. Here&apos;s how I think about state to prevent this.
             </p>
             <Link
@@ -163,7 +163,7 @@ export default function Home() {
                 that have proven useful in production.
               </p>
               <p>
-                It&apos;s simultaneously my reference guide and my portfolio—documentation of technical
+                It&apos;s simultaneously my reference guide and my portfolio: documentation of technical
                 depth through both explanation and implementation.
               </p>
             </div>

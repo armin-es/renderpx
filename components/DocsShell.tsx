@@ -253,15 +253,6 @@ function SidebarNav() {
 
   return (
     <nav className="flex flex-col gap-6 text-sm">
-      <div>
-        <Link
-          href="/about"
-          className="block px-3 mb-3 text-[10px] font-bold uppercase tracking-widest border-b border-sidebar-border pb-2 transition-opacity hover:opacity-70 text-sidebar-text"
-        >
-          About
-        </Link>
-      </div>
-
       <CollapsibleSection label="Frameworks" isActive={isFramework}>
         <ul className="space-y-0.5">
           {FRAMEWORKS.map((fw) => {
@@ -326,6 +317,15 @@ function SidebarNav() {
           })}
         </ul>
       </CollapsibleSection>
+
+      <div>
+        <Link
+          href="/about"
+          className="block px-3 mb-3 text-[10px] font-bold uppercase tracking-widest border-b border-sidebar-border pb-2 transition-opacity hover:opacity-70 text-sidebar-text"
+        >
+          About
+        </Link>
+      </div>
 
       {(isStateArch || isComponentComp || isDataFetching || isRenderingStrategy || isDesignSystems || isCodeOrg || isPerformanceArch || isPatternDetail || isStateMachines || isUseEffectCleanup || isGraphqlCaching || isStateMgmtInternals || isStateArchPractice) && (
         <div>
@@ -473,7 +473,7 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
         </Link>
         <div className="flex items-center gap-4 text-sm">
           <Link href="/" className="text-header-text-muted hover:text-header-text">
-            Home
+            Frameworks
           </Link>
           <Link href="/patterns" className="text-header-text-muted hover:text-header-text">
             Patterns

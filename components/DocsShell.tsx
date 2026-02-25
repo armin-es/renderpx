@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useTheme } from '@/components/ThemeProvider'
 import { useEffect, useState } from 'react'
-import { ChevronDown, Menu, X } from 'lucide-react'
+import { ChevronDown, Menu, Moon, Monitor, Sun, X } from 'lucide-react'
 
 const FRAMEWORKS = [
   { id: 'state-architecture', label: 'State Architecture' },
@@ -474,21 +474,21 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
             <a href="https://github.com/armin-es" target="_blank" rel="noopener noreferrer" className="hover:text-header-text transition-colors">GitHub</a>
             <a href="https://www.linkedin.com/in/armin-eslami-845885231/" target="_blank" rel="noopener noreferrer" className="hover:text-header-text transition-colors">LinkedIn</a>
           </div>
-          <div className="flex items-center gap-1 text-xs text-header-text-muted">
-            {(['light', 'auto', 'dark'] as const).map((t) => (
-              <button
-                key={t}
-                type="button"
-                onClick={() => setTheme(t)}
-                className={`px-2 py-1 rounded capitalize ${
-                  theme === t
-                    ? 'bg-white/20 text-header-text'
-                    : 'hover:bg-white/10 hover:text-header-text'
-                }`}
-              >
-                {t}
-              </button>
-            ))}
+          <div className="relative group">
+            <button
+              type="button"
+              onClick={() => {
+                const next = { light: 'dark', dark: 'auto', auto: 'light' } as const
+                setTheme(next[theme])
+              }}
+              className="p-1.5 rounded hover:bg-white/10 text-header-text-muted hover:text-header-text transition-colors"
+              aria-label={`Theme: ${theme}`}
+            >
+              {theme === 'light' ? <Sun size={16} /> : theme === 'dark' ? <Moon size={16} /> : <Monitor size={16} />}
+            </button>
+            <span className="pointer-events-none absolute -bottom-7 right-0 whitespace-nowrap rounded bg-black/80 px-2 py-0.5 text-xs text-white opacity-0 group-hover:opacity-100 transition-opacity duration-100">
+              Theme: {theme}
+            </span>
           </div>
           {/* TODO: implement command palette search
           <div className="flex items-center gap-2 text-xs text-header-text-muted">

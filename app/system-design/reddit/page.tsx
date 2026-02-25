@@ -31,12 +31,12 @@ interface Comment {
   score: number
   userVote: 1 | 0 | -1
   depth: number          // 0 = top-level; used to indent
-  replies: Comment[]     // nested — tree structure
+  replies: Comment[]     // nested tree structure
   createdAt: string
   collapsed: boolean     // local UI state, not from API
 }
 
-// Feed response — cursor-paginated
+// Feed response - cursor-paginated
 interface FeedPage {
   posts: Post[]
   nextCursor: string | null
@@ -73,7 +73,7 @@ function Feed({ subreddit, sort }: { subreddit: string; sort: 'hot' | 'new' | 't
   )
 }`
 
-const COMMENT_TREE_CODE = `// Recursive component — works well up to ~200 comments
+const COMMENT_TREE_CODE = `// Recursive component - works well up to ~200 comments
 function CommentNode({ comment, depth = 0 }: { comment: Comment; depth?: number }) {
   const [collapsed, setCollapsed] = useState(false)
 
@@ -104,7 +104,7 @@ function CommentNode({ comment, depth = 0 }: { comment: Comment; depth?: number 
   )
 }
 
-// collapse state is local — no need for global state or URL params.
+// collapse state is local - no need for global state or URL params.
 // for threads with 500+ visible nodes, flatten and virtualize instead (see note below).`
 
 const FLAT_TREE_CODE = `// For deep threads: flatten the tree, carry depth as a field
@@ -116,7 +116,7 @@ function flattenTree(comments: Comment[], depth = 0): FlatComment[] {
 }
 
 // Then virtualize the flat array with @tanstack/react-virtual
-// Each row uses depth to compute the left indent — no DOM nesting.`
+// Each row uses depth to compute the left indent - no DOM nesting.`
 
 const VOTE_CODE = `import { useMutation, useQueryClient } from '@tanstack/react-query'
 
@@ -153,7 +153,7 @@ function useVote(postId: string, queryKey: unknown[]) {
 // applyVote handles both shapes: a single Post and a paginated FeedPage[]
 function applyVote(data: any, postId: string, direction: 1 | 0 | -1) {
   if (Array.isArray(data?.pages)) {
-    // Infinite query — walk pages to find the post
+    // Infinite query - walk pages to find the post
     return {
       ...data,
       pages: data.pages.map((page: FeedPage) => ({
@@ -164,14 +164,14 @@ function applyVote(data: any, postId: string, direction: 1 | 0 | -1) {
       })),
     }
   }
-  // Post detail query — single object
+  // Post detail query - single object
   return data?.id === postId
     ? { ...data, userVote: direction, score: data.score + (direction - data.userVote) }
     : data
 }`
 
 const REALTIME_CODE = `// Reddit's actual strategy: polling for most surfaces, no WebSocket for feed
-// Vote counts: polling every 60s is fine — users tolerate slight drift
+// Vote counts: polling every 60s is fine - users tolerate slight drift
 const { data: post } = useQuery({
   queryKey: ['post', postId],
   queryFn: () => fetchPost(postId),
@@ -190,44 +190,44 @@ const { data: comments } = useQuery({
 // Notifications (inbox): poll every 60s
 // Direct messages or live chat (r/place, awards): WebSocket
 // The rule: if the user expects instant delivery, use WebSocket.
-//            If a 30–60s delay is acceptable, polling is fine and simpler.`
+//            If a 30-60s delay is acceptable, polling is fine and simpler.`
 
-const STATE_MAP_CODE = `// What lives where — the full picture
+const STATE_MAP_CODE = `// What lives where - the full picture
 
-// 1. Auth (global client state — Zustand)
+// 1. Auth (global client state - Zustand)
 const useAuth = create<AuthStore>()(...)
 
-// 2. Feed + post data (server state — React Query)
+// 2. Feed + post data (server state - React Query)
 useInfiniteQuery({ queryKey: ['feed', subreddit, sort], ... })
 useQuery({ queryKey: ['post', postId], ... })
 useQuery({ queryKey: ['comments', postId], ... })
 
-// 3. Feed sort / subreddit (URL — searchParams)
-// /r/reactjs?sort=hot  →  read with useSearchParams(); update with router.push()
+// 3. Feed sort / subreddit (URL - searchParams)
+// /r/reactjs?sort=hot  ->  read with useSearchParams(); update with router.push()
 // Shareable, survives refresh, back/forward works correctly
 
 // 4. Comment collapse (local component state)
 const [collapsed, setCollapsed] = useState(false)
-// No need to lift this — it's ephemeral UI for one comment node
+// No need to lift this - it's ephemeral UI for one comment node
 
-// 5. Compose post / comment form (local form state — React Hook Form)
+// 5. Compose post / comment form (local form state - React Hook Form)
 // Only lifted to server state when the mutation succeeds
 
 // 6. Theme / subreddit color (CSS variables set by layout)
 // Read from server on page load; applied as inline style on <body>
-// No client state needed — it's a CSS concern`
+// No client state needed - it's a CSS concern`
 
-const PERF_CODE = `// 1. Route-based code splitting — automatic in Next.js App Router
+const PERF_CODE = `// 1. Route-based code splitting - automatic in Next.js App Router
 // Each page in /app is its own bundle
 
-// 2. Lazy-load the rich text editor — it's heavy (~200kb gzipped)
+// 2. Lazy-load the rich text editor - it's heavy (~200kb gzipped)
 const RichTextEditor = dynamic(() => import('@/components/RichTextEditor'), {
   loading: () => <Textarea placeholder="Write your post..." />,
   ssr: false,
 })
 // Only loads when the user opens the compose modal
 
-// 3. Virtualize the feed — past ~50 posts, rendering all is wasteful
+// 3. Virtualize the feed - past ~50 posts, rendering all is wasteful
 import { useVirtualizer } from '@tanstack/react-virtual'
 const virtualizer = useVirtualizer({
   count: posts.length,
@@ -236,10 +236,10 @@ const virtualizer = useVirtualizer({
   overscan: 5,
 })
 
-// 4. Images — next/image with lazy loading and responsive sizes
+// 4. Images - next/image with lazy loading and responsive sizes
 <Image src={post.imageUrl} alt="" fill sizes="(max-width: 768px) 100vw, 640px" />
 
-// 5. Prefetch on hover — feels instant when the user navigates
+// 5. Prefetch on hover - feels instant when the user navigates
 <Link href={\`/r/\${subreddit}/comments/\${post.id}\`} prefetch={false}
   onMouseEnter={() => router.prefetch(\`/r/\${subreddit}/comments/\${post.id}\`)}
 >`
@@ -255,7 +255,7 @@ export default function RedditSystemDesignPage() {
       <div className="mb-12">
         <h1 className="text-4xl font-bold mb-4 text-content">Reddit</h1>
         <p className="text-xl text-content-muted">
-          Feed + nested comments + voting + real-time feel. How I'd architect the frontend — which patterns handle which surfaces, where state lives, and the tradeoffs I'd make.
+          Feed + nested comments + voting + real-time feel. How I'd architect the frontend: which patterns handle which surfaces, where state lives, and the tradeoffs I'd make.
         </p>
       </div>
 
@@ -263,13 +263,13 @@ export default function RedditSystemDesignPage() {
       <section id="the-challenge" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">The Challenge</h2>
         <p className="text-content mb-4">
-          Reddit's frontend looks deceptively simple — it's a list of posts and a tree of comments. The actual complexity is in four places:
+          Reddit's frontend looks deceptively simple: it's a list of posts and a tree of comments. The actual complexity is in four places:
         </p>
         <ul className="list-disc pl-6 space-y-2 text-content mb-4">
           <li><strong>The feed is paginated and ranked.</strong> Hot/new/top sorts produce different orderings; the user expects infinite scroll without the feed jumping or re-ordering under them.</li>
           <li><strong>Comment threads are recursive trees.</strong> A single post can have thousands of comments nested 10+ levels deep. Naive recursion kills render performance at scale.</li>
           <li><strong>Voting must feel instant.</strong> Every vote is an optimistic mutation against a server that may reject it. The same post appears in multiple query cache entries (feed + post detail), so you have to update both without introducing inconsistency.</li>
-          <li><strong>Real-time feel without WebSockets.</strong> Reddit historically used polling — not WebSockets — for vote counts and new comments. The question is what interval is acceptable, and what actually warrants a persistent connection.</li>
+          <li><strong>Real-time feel without WebSockets.</strong> Reddit historically used polling (not WebSockets) for vote counts and new comments. The question is what interval is acceptable, and what actually warrants a persistent connection.</li>
         </ul>
         <p className="text-content">
           The decisions below are the ones that actually matter. I'll skip the boilerplate.
@@ -283,9 +283,9 @@ export default function RedditSystemDesignPage() {
           Getting the shape right up front determines how simple or painful every downstream decision is. Three things worth calling out:
         </p>
         <ul className="list-disc pl-6 space-y-2 text-content mb-6">
-          <li><InlineCode>userVote: 1 | 0 | -1</InlineCode> lives on both <InlineCode>Post</InlineCode> and <InlineCode>Comment</InlineCode>. This is the user's current vote state — not a separate entity. It makes optimistic updates trivial: toggle the value and adjust <InlineCode>score</InlineCode> arithmetically.</li>
-          <li><InlineCode>replies: Comment[]</InlineCode> makes the tree recursive. The server sends the full subtree up to a depth limit (~3–5 levels). "Load more replies" is a separate fetch appended to that node.</li>
-          <li><InlineCode>depth</InlineCode> is a derived field. The API doesn't need to return it — you compute it as you traverse the tree. But keeping it on the flat model is useful for virtualized rendering.</li>
+          <li><InlineCode>userVote: 1 | 0 | -1</InlineCode> lives on both <InlineCode>Post</InlineCode> and <InlineCode>Comment</InlineCode>. This is the user's current vote state, not a separate entity. It makes optimistic updates trivial: toggle the value and adjust <InlineCode>score</InlineCode> arithmetically.</li>
+          <li><InlineCode>replies: Comment[]</InlineCode> makes the tree recursive. The server sends the full subtree up to a depth limit (~3-5 levels). "Load more replies" is a separate fetch appended to that node.</li>
+          <li><InlineCode>depth</InlineCode> is a derived field. The API doesn't need to return it - you compute it as you traverse the tree. But keeping it on the flat model is useful for virtualized rendering.</li>
         </ul>
         <CodeBlock code={DATA_MODEL_CODE} lang="ts" />
       </section>
@@ -360,14 +360,14 @@ export default function RedditSystemDesignPage() {
       <section id="feed-architecture" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">Feed Architecture</h2>
         <p className="text-content mb-4">
-          The feed is cursor-paginated — not offset. Offset pagination breaks when posts are inserted or promoted between pages (the user sees duplicates or skips). A cursor points to the last-seen item and the server returns the next batch from there.
+          The feed is cursor-paginated, not offset. Offset pagination breaks when posts are inserted or promoted between pages (the user sees duplicates or skips). A cursor points to the last-seen item and the server returns the next batch from there.
         </p>
         <p className="text-content mb-4">
-          React Query's <InlineCode>useInfiniteQuery</InlineCode> manages pages as a flat list you concatenate for rendering. The query key includes both <InlineCode>subreddit</InlineCode> and <InlineCode>sort</InlineCode> — changing sort invalidates the cache and starts fresh, which is the correct behavior (a "new" sort fetch is not the same data as "hot").
+          React Query's <InlineCode>useInfiniteQuery</InlineCode> manages pages as a flat list you concatenate for rendering. The query key includes both <InlineCode>subreddit</InlineCode> and <InlineCode>sort</InlineCode>. Changing sort invalidates the cache and starts fresh, which is the correct behavior (a "new" sort fetch is not the same data as "hot").
         </p>
         <CodeBlock code={FEED_CODE} lang="tsx" />
         <Callout variant="info" title="When to virtualize" className="mt-6">
-          For a standard subreddit browsing session, a user rarely sees more than 30–40 posts before navigating to a post detail. Virtualization is worth adding when you have evidence users are scrolling deep — or if post cards are heavy (images, video previews). Add it after you've profiled, not before.
+          For a standard subreddit browsing session, a user rarely sees more than 30-40 posts before navigating to a post detail. Virtualization is worth adding when you have evidence users are scrolling deep - or if post cards are heavy (images, video previews). Add it after you've profiled, not before.
         </Callout>
         <p className="text-content mt-4">
           <InlineCode>staleTime: 60_000</InlineCode> prevents the feed from re-sorting itself when the user navigates back. Without it, the first query after 0ms of staleness re-fetches, and "hot" posts in different positions make the list jump. One minute of staleness is a deliberate UX choice.
@@ -378,15 +378,15 @@ export default function RedditSystemDesignPage() {
       <section id="comment-threads" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">Comment Threads</h2>
         <p className="text-content mb-4">
-          Collapse state is local. This is the first decision people get wrong — they reach for Zustand or URL params for comment collapse. Don't. It's ephemeral UI state owned by one component instance. When the user refreshes, comments should all start expanded. Local <InlineCode>useState</InlineCode> is correct.
+          Collapse state is local. This is the first decision people get wrong: they reach for Zustand or URL params for comment collapse. Don't. It's ephemeral UI state owned by one component instance. When the user refreshes, comments should all start expanded. Local <InlineCode>useState</InlineCode> is correct.
         </p>
         <CodeBlock code={COMMENT_TREE_CODE} lang="tsx" />
         <p className="text-content mt-6 mb-4">
-          The recursive approach works up to ~200 visible comment nodes before you start seeing layout jank on lower-end devices. For threads that regularly exceed that — AMAs, viral posts — you need to flatten the tree and virtualize.
+          The recursive approach works up to ~200 visible comment nodes before you start seeing layout jank on lower-end devices. For threads that regularly exceed that (AMAs, viral posts) you need to flatten the tree and virtualize.
         </p>
         <CodeBlock code={FLAT_TREE_CODE} lang="ts" label="Flatten tree for virtualization" />
         <Callout variant="warning" title="The depth limit problem" className="mt-6">
-          The server typically returns comments up to depth 5–7. "Load more replies" at deep nodes is a separate API call that appends into the tree. When you flatten for virtualization, re-inserting those new nodes at the right index is the tricky part — keep the flat array derived (not a separate state) so re-deriving it on data change is always correct.
+          The server typically returns comments up to depth 5-7. "Load more replies" at deep nodes is a separate API call that appends into the tree. When you flatten for virtualization, re-inserting those new nodes at the right index is the tricky part. Keep the flat array derived (not a separate state) so re-deriving it on data change is always correct.
         </Callout>
       </section>
 
@@ -401,7 +401,7 @@ export default function RedditSystemDesignPage() {
         </p>
         <CodeBlock code={VOTE_CODE} lang="tsx" />
         <Callout variant="info" title="Why not normalize?" className="mt-6">
-          A normalized cache (Apollo-style) would automatically update every reference to the same post across all queries. That's appealing. But React Query's flat cache is simpler and the dual-shape <InlineCode>applyVote</InlineCode> function handles it cleanly. I'd add normalization only if I had many more surfaces that share the same post entity — and even then I'd use TanStack Query's <InlineCode>queryClient.setQueriesData</InlineCode> with a predicate before reaching for a third-party normalized cache.
+          A normalized cache (Apollo-style) would automatically update every reference to the same post across all queries. That's appealing. But React Query's flat cache is simpler and the dual-shape <InlineCode>applyVote</InlineCode> function handles it cleanly. I'd add normalization only if I had many more surfaces that share the same post entity - and even then I'd use TanStack Query's <InlineCode>queryClient.setQueriesData</InlineCode> with a predicate before reaching for a third-party normalized cache.
         </Callout>
       </section>
 
@@ -409,11 +409,11 @@ export default function RedditSystemDesignPage() {
       <section id="real-time-strategy" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">Real-Time Strategy</h2>
         <p className="text-content mb-4">
-          Reddit does not use WebSockets for the feed or comments in its standard experience. This surprises people. The actual strategy is deliberate polling — and it's the right call for most surfaces:
+          Reddit does not use WebSockets for the feed or comments in its standard experience. This surprises people. The actual strategy is deliberate polling - and it's the right call for most surfaces:
         </p>
         <ul className="list-disc pl-6 space-y-2 text-content mb-6">
           <li><strong>Vote counts on the feed:</strong> 60s poll while the page is visible. Users tolerate stale vote counts; a number jumping from 847 to 852 while they're reading doesn't matter.</li>
-          <li><strong>New comments on a post detail:</strong> 30s poll. A "X new comments — click to load" banner is the right UX rather than auto-inserting comments and shifting the user's reading position.</li>
+          <li><strong>New comments on a post detail:</strong> 30s poll. A "X new comments - click to load" banner is the right UX rather than auto-inserting comments and shifting the user's reading position.</li>
           <li><strong>Live notifications / inbox:</strong> 60s poll. For most users this is fine; power users can enable browser notifications via the Push API.</li>
           <li><strong>r/place, live threads, chat:</strong> WebSocket. These are the minority of surfaces where sub-second latency actually matters.</li>
         </ul>
@@ -427,14 +427,14 @@ export default function RedditSystemDesignPage() {
       <section id="state-architecture" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">State Architecture</h2>
         <p className="text-content mb-4">
-          The most common mistake I see in Reddit-like apps is over-centralizing state. Everything ends up in a Zustand store or global Context — feed data, comment collapse, vote state, form values. The result is a store that becomes a dumping ground and components that re-render whenever anything in it changes.
+          The most common mistake I see in Reddit-like apps is over-centralizing state. Everything ends up in a Zustand store or global Context - feed data, comment collapse, vote state, form values. The result is a store that becomes a dumping ground and components that re-render whenever anything in it changes.
         </p>
         <p className="text-content mb-4">
           The right approach is to put each piece of state in the layer that owns it:
         </p>
         <CodeBlock code={STATE_MAP_CODE} lang="tsx" />
         <Callout variant="success" title="The test" className="mt-6">
-          For any piece of state, ask: does it need to survive navigation? Does more than one distant component need it? If yes to either — lift it. URL for navigation-safe data; React Query for server data; Zustand for cross-cutting client state like auth. If no — keep it local.
+          For any piece of state, ask: does it need to survive navigation? Does more than one distant component need it? If yes to either - lift it. URL for navigation-safe data; React Query for server data; Zustand for cross-cutting client state like auth. If no - keep it local.
         </Callout>
       </section>
 
@@ -445,14 +445,14 @@ export default function RedditSystemDesignPage() {
           Reddit has two distinct performance problems: initial load (LCP) and scroll performance. They require different tools.
         </p>
         <p className="text-content mb-4">
-          For LCP: SSR the first page of the feed and the post detail. The above-the-fold content needs to be in the HTML — both for SEO (Google indexes the first page of each subreddit) and for perceived performance (no loading spinner on the first paint). Next.js App Router with React Query's server prefetching handles this cleanly.
+          For LCP: SSR the first page of the feed and the post detail. The above-the-fold content needs to be in the HTML - both for SEO (Google indexes the first page of each subreddit) and for perceived performance (no loading spinner on the first paint). Next.js App Router with React Query's server prefetching handles this cleanly.
         </p>
         <p className="text-content mb-4">
           For scroll: the rich text editor is the single biggest bundle hit (~200kb gzipped for a full Quill or TipTap install). Lazy-load it behind a dynamic import that only triggers when the user opens the compose modal. The rest of scroll performance comes from virtualization and stable keys.
         </p>
         <CodeBlock code={PERF_CODE} lang="tsx" />
         <Callout variant="info" title="Prefetch on hover" className="mt-6">
-          The last snippet — prefetching the post detail route on mouse enter — is one of the highest-ROI performance wins available in Next.js. It makes navigation feel instant because the JS bundle and initial data are already loaded before the user clicks. Use it on any link the user is likely to navigate to.
+          The last snippet - prefetching the post detail route on mouse enter - is one of the highest-ROI performance wins available in Next.js. It makes navigation feel instant because the JS bundle and initial data are already loaded before the user clicks. Use it on any link the user is likely to navigate to.
         </Callout>
       </section>
 
@@ -516,13 +516,13 @@ export default function RedditSystemDesignPage() {
             <strong>I'd skip the dual-shape <InlineCode>applyVote</InlineCode> helper and use <InlineCode>queryClient.setQueriesData</InlineCode> with a predicate instead.</strong> Setting data on all matching queries in one call is cleaner than passing the specific <InlineCode>queryKey</InlineCode> down through props. The predicate lets you match any query whose key starts with <InlineCode>['feed']</InlineCode> or equals <InlineCode>['post', postId]</InlineCode> in one sweep.
           </li>
           <li>
-            <strong>I'd add a "new comments available" banner before auto-polling inserts comments.</strong> Automatically inserting new comments while a user is mid-read shifts their scroll position. The correct UX is to show a dismissible banner ("12 new comments") and let the user decide when to load them — same as Twitter's "See X new Tweets."
+            <strong>I'd add a "new comments available" banner before auto-polling inserts comments.</strong> Automatically inserting new comments while a user is mid-read shifts their scroll position. The correct UX is to show a dismissible banner ("12 new comments") and let the user decide when to load them - similar to Twitter's "See X new Tweets."
           </li>
           <li>
             <strong>I would not virtualize comment threads by default.</strong> It adds real complexity (tree flattening, index management for "load more" insertions, scroll restoration). I'd ship the recursive component, profile on a real device with a high-comment thread, and only reach for virtualization if I had data showing jank. Most posts don't have 500+ visible comments.
           </li>
           <li>
-            <strong>I'd use URL hash for active comment.</strong> Deep-linking to a specific comment (<InlineCode>/comments/abc#comment-xyz</InlineCode>) is a Reddit feature that requires the target comment to be scrolled into view on load. This is non-trivial with a virtualized list — you have to scroll the virtualizer to the index before the user sees the page. With the recursive DOM approach, the browser handles it natively for free.
+            <strong>I'd use URL hash for active comment.</strong> Deep-linking to a specific comment (<InlineCode>/comments/abc#comment-xyz</InlineCode>) is a Reddit feature that requires the target comment to be scrolled into view on load. This is non-trivial with a virtualized list - you have to scroll the virtualizer to the index before the user sees the page. With the recursive DOM approach, the browser handles it natively for free.
           </li>
         </ul>
       </section>

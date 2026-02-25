@@ -62,6 +62,13 @@ export default function Home() {
         {/* Hero Section */}
         <header className="pt-8 pb-12">
           <div className="space-y-6">
+            <div className="flex items-center gap-4 flex-wrap">
+              <span className="font-medium text-content">Armin Eslami · Senior Frontend Engineer</span>
+              <div className="flex items-center gap-3 text-sm">
+                <a href="https://github.com/armin-es" target="_blank" rel="noopener noreferrer" className="text-link hover:underline">GitHub ↗</a>
+                <a href="https://www.linkedin.com/in/armin-eslami-845885231/" target="_blank" rel="noopener noreferrer" className="text-link hover:underline">LinkedIn ↗</a>
+              </div>
+            </div>
             <h1 className="text-4xl font-bold tracking-tight text-content">
               How I Architect Frontend Systems That Scale
             </h1>
@@ -163,8 +170,12 @@ export default function Home() {
           </div>
         </section>
 
-        <footer className="py-8 border-t border-content-border text-sm text-content-muted">
-          © 2025 Frontend Architecture Frameworks
+        <footer className="py-8 border-t border-content-border text-sm text-content-muted flex items-center justify-between flex-wrap gap-4">
+          <span>© 2026 Armin Eslami</span>
+          <div className="flex items-center gap-4">
+            <a href="https://github.com/armin-es" target="_blank" rel="noopener noreferrer" className="hover:text-content transition-colors">GitHub</a>
+            <a href="https://www.linkedin.com/in/armin-eslami-845885231/" target="_blank" rel="noopener noreferrer" className="hover:text-content transition-colors">LinkedIn</a>
+          </div>
         </footer>
       </div>
     </div>

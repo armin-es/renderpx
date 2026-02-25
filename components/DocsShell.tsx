@@ -215,6 +215,14 @@ function SidebarNav() {
               Patterns
             </Link>
           </li>
+          <li>
+            <Link
+              href="/about"
+              className={`${navLinkBase} ${pathname === '/about' ? navLinkActive : navLinkInactive}`}
+            >
+              About
+            </Link>
+          </li>
         </ul>
       </div>
 
@@ -400,7 +408,7 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
           href="/"
           className="font-bold text-header-text hover:opacity-90 transition-opacity"
         >
-          Frameworks
+          renderpx
         </Link>
         <div className="flex items-center gap-4 text-sm">
           <Link href="/" className="text-header-text-muted hover:text-header-text">
@@ -415,8 +423,15 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
           >
             Deep Dives
           </Link>
+          <Link href="/about" className="text-header-text-muted hover:text-header-text">
+            About
+          </Link>
         </div>
         <div className="ml-auto flex items-center gap-4">
+          <div className="hidden sm:flex items-center gap-3 text-xs text-header-text-muted">
+            <a href="https://github.com/armin-es" target="_blank" rel="noopener noreferrer" className="hover:text-header-text transition-colors">GitHub</a>
+            <a href="https://www.linkedin.com/in/armin-eslami-845885231/" target="_blank" rel="noopener noreferrer" className="hover:text-header-text transition-colors">LinkedIn</a>
+          </div>
           <div className="flex items-center gap-1 text-xs text-header-text-muted">
             {(['light', 'auto', 'dark'] as const).map((t) => (
               <button

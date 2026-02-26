@@ -91,12 +91,20 @@ export default async function StateArchitecturePage() {
         <h2 className="text-2xl font-bold mb-4 text-content">
           The Solution
         </h2>
-        <p className="text-content mb-6">
+        <p className="text-content mb-4">
           Put the provider as close as possible to the components that use the state.
           <InlineCode>FormStateWrapper</InlineCode> wraps only{" "}
           <InlineCode>StickyActionBar</InlineCode> and <InlineCode>Content</InlineCode>.
           Sidebar and Footer stay outside; they never re-render when you type.
         </p>
+        <Callout variant="info" title="Why this actually works" className="mb-6">
+          <InlineCode>FormStateWrapper</InlineCode> moves the <InlineCode>useState</InlineCode> declaration
+          out of <InlineCode>SettingsForm</InlineCode> entirely. This is the key:{" "}
+          <InlineCode>SettingsForm</InlineCode> no longer owns state, so it doesn&apos;t re-render on keystrokes.{" "}
+          <InlineCode>Sidebar</InlineCode> and <InlineCode>Footer</InlineCode> are created in{" "}
+          <InlineCode>SettingsForm</InlineCode>&apos;s render scope. Because their parent never re-renders, neither
+          do they. It&apos;s not the provider boundary that protects them; it&apos;s that their parent component is now stable.
+        </Callout>
         <div className="mt-8">
           <CodeWithPreview
             code={SOLUTION_CODE}
@@ -165,6 +173,11 @@ const SortContext = createContext()
 
         <div className="mt-6">
           <h3 className="font-bold mb-3 text-content">Zustand: no Provider, fine-grained subscriptions</h3>
+          <p className="text-sm text-content mb-4">
+            Zustand sidesteps both problems. There&apos;s no Provider tree: components subscribe from anywhere in the app.
+            Each subscription takes a selector, so a component only re-renders when the specific slice it reads changes,
+            not when any part of the store updates.
+          </p>
           <CodeWithPreview
             code={`import { create } from 'zustand'
 const useFormStore = create((set) => ({
@@ -183,12 +196,96 @@ const useFormStore = create((set) => ({
 
         <p className="mt-6 text-sm text-content-muted">
           <Link href="/deep-dives/state-management-internals" className="text-primary hover:underline">
-            Deep Dive: How state libraries use useSyncExternalStore →
+            Deep Dive: State Management Internals →
           </Link>
         </p>
       </section>
 
-      {/* Section 4: React Compiler Impact */}
+      {/* The Decision Framework */}
+      <section id="decision-framework" className="mb-16">
+        <h2 className="text-2xl font-bold mb-4 text-content">
+          The Decision Framework
+        </h2>
+        <div className="prose max-w-none text-content">
+          <p className="leading-relaxed">
+            State architecture isn&apos;t about choosing Redux vs Context vs
+            Zustand. Those are implementation details. The real question is:{" "}
+            <strong>what makes state &quot;belong&quot; somewhere?</strong>
+          </p>
+          <p className="leading-relaxed">
+            I answer this with three questions:
+          </p>
+        </div>
+
+        <div className="mt-6 space-y-4">
+          <div className="border-l-4 border-primary pl-4 py-2">
+            <h3 className="font-bold text-lg mb-1 text-content">
+              1. Who coordinates this data?
+            </h3>
+            <p className="text-content-muted">
+              How many components need to read or write this state? If it&apos;s
+              one component, keep it local. If it&apos;s siblings, lift to
+              parent. If it&apos;s across the tree, consider URL or global
+              state.
+            </p>
+          </div>
+
+          <div className="border-l-4 border-[hsl(142_76%_36%)] pl-4 py-2">
+            <h3 className="font-bold text-lg mb-1 text-content">
+              2. What&apos;s the source of truth?
+            </h3>
+            <p className="text-content-muted">
+              Does this state derive from the backend? The URL? User input?
+              Server state should use React Query. URL state should use
+              searchParams. Only ephemeral UI state belongs in local React
+              state.
+            </p>
+            <p className="text-content-muted mt-2 text-sm">
+              For UI state with complex transitions, or multi-step flows where
+              the path depends on previous steps,{" "}
+              <Link href="/deep-dives/state-machines" className="text-primary hover:underline">
+                state machines
+              </Link>{" "}
+              make impossible states unrepresentable.
+            </p>
+          </div>
+
+          <div className="border-l-4 border-[hsl(38_92%_50%)] pl-4 py-2">
+            <h3 className="font-bold text-lg mb-1 text-content">
+              3. What&apos;s the cost of getting it wrong?
+            </h3>
+            <p className="text-content-muted">
+              Wrong patterns create technical debt. Too local = prop drilling
+              hell. Too global = performance death. The right pattern makes the
+              next feature easy.
+            </p>
+          </div>
+        </div>
+
+        <Callout variant="info" className="mt-8" title="My Mental Model">
+          When I look at a piece of state, I ask: &quot;If this was in a
+          database, what would the schema be?&quot; That usually reveals the
+          natural boundaries. Form input? Single record. Filter state? Query
+          parameters. Shopping cart? Could be either client or server,
+          depending on whether you want it persisted across devices.
+        </Callout>
+      </section>
+
+      {/* Decision Matrix */}
+      <section id="decision-matrix" className="mb-16">
+        <h2 className="text-2xl font-bold mb-4 text-content">
+          Decision Matrix
+        </h2>
+        <DecisionMatrix />
+
+        <Callout variant="warning" className="mt-6" title="Key insight">
+          Most apps need a <em>combination</em> of these patterns. The art is knowing which state belongs where. A
+          common mistake is picking one tool (usually Context or Redux) and
+          forcing all state through it.
+        </Callout>
+      </section>
+
+      {/* React Compiler Impact */}
       <section id="react-compiler" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">
           React Compiler Impact
@@ -276,10 +373,10 @@ function Dashboard({ userEmail }) {
           </div>
         </div>
 
-        {/* Decision Framework */}
+        {/* How Compiler modifies the decision framework */}
         <div className="mb-8">
           <h3 className="text-xl font-bold mb-4 text-content">
-            React 19 State Architecture Decision Tree
+            How This Changes the Decision Framework
           </h3>
 
           <div className="p-6 rounded-lg border bg-box-info-bg border-box-info-border">
@@ -367,118 +464,7 @@ function Dashboard({ userEmail }) {
         </Callout>
       </section>
 
-      {/* Section 5: The Decision Framework */}
-      <section id="decision-framework" className="mb-16">
-        <h2 className="text-2xl font-bold mb-4 text-content">
-          The Decision Framework
-        </h2>
-        <div className="prose max-w-none text-content">
-          <p className="leading-relaxed">
-            State architecture isn&apos;t about choosing Redux vs Context vs
-            Zustand. Those are implementation details. The real question is:{" "}
-            <strong>what makes state &quot;belong&quot; somewhere?</strong>
-          </p>
-          <p className="leading-relaxed">
-            I answer this with three questions:
-          </p>
-        </div>
-
-        <div className="mt-6 space-y-4">
-          <div className="border-l-4 border-primary pl-4 py-2">
-            <h3 className="font-bold text-lg mb-1 text-content">
-              1. Who coordinates this data?
-            </h3>
-            <p className="text-content-muted">
-              How many components need to read or write this state? If it&apos;s
-              one component, keep it local. If it&apos;s siblings, lift to
-              parent. If it&apos;s across the tree, consider URL or global
-              state.
-            </p>
-          </div>
-
-          <div className="border-l-4 border-[hsl(142_76%_36%)] pl-4 py-2">
-            <h3 className="font-bold text-lg mb-1 text-content">
-              2. What&apos;s the source of truth?
-            </h3>
-            <p className="text-content-muted">
-              Does this state derive from the backend? The URL? User input?
-              Server state should use React Query. URL state should use
-              searchParams. Only ephemeral UI state belongs in local React
-              state.
-            </p>
-            <p className="text-content-muted mt-2 text-sm">
-              For UI state with complex transitions, or multi-step flows where
-              the path depends on previous steps,{" "}
-              <Link href="/deep-dives/state-machines" className="text-primary hover:underline">
-                state machines
-              </Link>{" "}
-              make impossible states unrepresentable.
-            </p>
-          </div>
-
-          <div className="border-l-4 border-[hsl(38_92%_50%)] pl-4 py-2">
-            <h3 className="font-bold text-lg mb-1 text-content">
-              3. What&apos;s the cost of getting it wrong?
-            </h3>
-            <p className="text-content-muted">
-              Wrong patterns create technical debt. Too local = prop drilling
-              hell. Too global = performance death. The right pattern makes the
-              next feature easy.
-            </p>
-          </div>
-        </div>
-
-        <Callout variant="info" className="mt-8" title="My Mental Model">
-          When I look at a piece of state, I ask: &quot;If this was in a
-          database, what would the schema be?&quot; That usually reveals the
-          natural boundaries. Form input? Single record. Filter state? Query
-          parameters. Shopping cart? Could be either client or server,
-          depending on whether you want it persisted across devices.
-        </Callout>
-      </section>
-
-      {/* Section 6: Decision Matrix */}
-      <section id="decision-matrix" className="mb-16">
-        <h2 className="text-2xl font-bold mb-4 text-content">
-          Decision Matrix
-        </h2>
-        <DecisionMatrix />
-
-        <Callout variant="warning" className="mt-6" title="Key insight">
-          Most apps need a <em>combination</em> of these patterns. The art is knowing which state belongs where. A
-          common mistake is picking one tool (usually Context or Redux) and
-          forcing all state through it.
-        </Callout>
-      </section>
-
-      {/* Deep Dive link */}
-      <section id="in-practice" className="mb-16">
-        <h2 className="text-2xl font-bold mb-4 text-content">
-          See It In Practice
-        </h2>
-        <p className="mb-4 text-content-muted">
-          The framework above tells you how to decide. The deep dive below shows
-          what those decisions look like across five levels of feature
-          complexity, two production scenarios, and a collection of patterns
-          senior engineers still get wrong.
-        </p>
-        <Link
-          href="/deep-dives/state-architecture-in-practice"
-          className="flex items-center justify-between p-4 border border-content-border rounded-lg transition-all hover:opacity-90"
-        >
-          <div>
-            <div className="font-medium text-content">
-              State Architecture in Practice
-            </div>
-            <div className="text-sm text-content-muted">
-              Progressive complexity, production patterns, and hot takes
-            </div>
-          </div>
-          <ChevronRight size={20} className="text-content-muted shrink-0" />
-        </Link>
-      </section>
-
-      {/* Section: Production Patterns */}
+      {/* Production Patterns */}
       <section id="production-patterns" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">
           Production Patterns
@@ -554,45 +540,7 @@ function Dashboard({ userEmail }) {
         </div>
       </section>
 
-      {/* Section: Hot Takes */}
-      <section id="hot-takes" className="mb-16">
-        <h2 className="text-2xl font-bold mb-4 text-content">
-          Common Mistakes &amp; Hot Takes
-        </h2>
-
-        <div className="space-y-4">
-          {[
-            {
-              mistake: "URL state is the most underused pattern in React",
-              take: "Most filter/search/pagination state should be in the URL, not in useState. URL state is free persistence, free sharing, free back-button support, and free analytics. I've seen teams build elaborate cache-sync logic to restore search results on back-navigation that was solved in ten minutes by moving state to useSearchParams. If the state affects what the user sees and they'd want to share it or return to it, it belongs in the URL.",
-            },
-            {
-              mistake: "Reaching for Zustand before feeling the pain",
-              take: "If you're adding Redux or Zustand before you've felt the pain of prop drilling, you're adding ceremony in advance of the problem. Start local. Lift when it actually hurts. The threshold should be: 'I've been asked to pass this same value through three layers of components that don't use it.' That's when you reach for global state, not when you start a project.",
-            },
-            {
-              mistake: "Context for high-frequency state",
-              take: "Context is the right tool for low-frequency, wide-access state: theme, locale, auth, feature flags. It's the wrong tool for data that updates on keystrokes, scroll position, or animations. If it updates faster than once per second and multiple components subscribe to it, you want Zustand with selectors, not Context. The difference is fine-grained subscriptions: Zustand re-renders only the components that read the changed slice.",
-            },
-            {
-              mistake: "Treating server state and client state as the same category",
-              take: "I've seen teams put API responses in Zustand, then manually write cache invalidation logic after mutations, then debug stale data issues for weeks. React Query exists because server state has fundamentally different semantics from client state: it can go stale, it needs revalidation, it should be deduplicated across components. Zustand doesn't model any of that. If it comes from an API, it belongs in React Query. If it's ephemeral UI state, it belongs in useState or Zustand.",
-            },
-          ].map(({ mistake, take }) => (
-            <div
-              key={mistake}
-              className="p-4 rounded-lg border border-content-border"
-            >
-              <div className="font-bold text-sm mb-2 text-content">
-                ❌ {mistake}
-              </div>
-              <p className="text-sm text-content-muted">{take}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* Section: A Real Rollout */}
+      {/* A Real Rollout */}
       <section id="real-rollout" className="mb-16">
         <h2 className="text-2xl font-bold mb-2 text-content">
           A Real Rollout
@@ -681,7 +629,72 @@ function Dashboard({ userEmail }) {
         </div>
       </section>
 
-      {/* Section 7: Related Frameworks */}
+      {/* Common Mistakes & Hot Takes */}
+      <section id="hot-takes" className="mb-16">
+        <h2 className="text-2xl font-bold mb-4 text-content">
+          Common Mistakes &amp; Hot Takes
+        </h2>
+
+        <div className="space-y-4">
+          {[
+            {
+              mistake: "URL state is the most underused pattern in React",
+              take: "Most filter/search/pagination state should be in the URL, not in useState. URL state is free persistence, free sharing, free back-button support, and free analytics. I've seen teams build elaborate cache-sync logic to restore search results on back-navigation that was solved in ten minutes by moving state to useSearchParams. If the state affects what the user sees and they'd want to share it or return to it, it belongs in the URL.",
+            },
+            {
+              mistake: "Reaching for Zustand before feeling the pain",
+              take: "If you're adding Redux or Zustand before you've felt the pain of prop drilling, you're adding ceremony in advance of the problem. Start local. Lift when it actually hurts. The threshold should be: 'I've been asked to pass this same value through three layers of components that don't use it.' That's when you reach for global state, not when you start a project.",
+            },
+            {
+              mistake: "Context for high-frequency state",
+              take: "Context is the right tool for low-frequency, wide-access state: theme, locale, auth, feature flags. It's the wrong tool for data that updates on keystrokes, scroll position, or animations. If it updates faster than once per second and multiple components subscribe to it, you want Zustand with selectors, not Context. The difference is fine-grained subscriptions: Zustand re-renders only the components that read the changed slice.",
+            },
+            {
+              mistake: "Treating server state and client state as the same category",
+              take: "I've seen teams put API responses in Zustand, then manually write cache invalidation logic after mutations, then debug stale data issues for weeks. React Query exists because server state has fundamentally different semantics from client state: it can go stale, it needs revalidation, it should be deduplicated across components. Zustand doesn't model any of that. If it comes from an API, it belongs in React Query. If it's ephemeral UI state, it belongs in useState or Zustand.",
+            },
+          ].map(({ mistake, take }) => (
+            <div
+              key={mistake}
+              className="p-4 rounded-lg border border-content-border"
+            >
+              <div className="font-bold text-sm mb-2 text-content">
+                ❌ {mistake}
+              </div>
+              <p className="text-sm text-content-muted">{take}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Deep Dive link */}
+      <section id="in-practice" className="mb-16">
+        <h2 className="text-2xl font-bold mb-4 text-content">
+          See It In Practice
+        </h2>
+        <p className="mb-4 text-content-muted">
+          The framework above tells you how to decide. The deep dive below shows
+          what those decisions look like across five levels of feature
+          complexity, two production scenarios, and a collection of patterns
+          senior engineers still get wrong.
+        </p>
+        <Link
+          href="/deep-dives/state-architecture-in-practice"
+          className="flex items-center justify-between p-4 border border-content-border rounded-lg transition-all hover:opacity-90"
+        >
+          <div>
+            <div className="font-medium text-content">
+              State Architecture in Practice
+            </div>
+            <div className="text-sm text-content-muted">
+              Progressive complexity, production patterns, and hot takes
+            </div>
+          </div>
+          <ChevronRight size={20} className="text-content-muted shrink-0" />
+        </Link>
+      </section>
+
+      {/* Related Frameworks */}
       <section id="related-frameworks" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">
           Related Frameworks

@@ -667,31 +667,109 @@ function Dashboard({ userEmail }) {
         </div>
       </section>
 
-      {/* Deep Dive link */}
-      <section id="in-practice" className="mb-16">
+      {/* Decision Signals */}
+      <section id="decision-signals" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">
-          See It In Practice
+          Decision Signals
         </h2>
-        <p className="mb-4 text-content-muted">
-          The framework above tells you how to decide. The deep dive below shows
-          what those decisions look like across five levels of feature
-          complexity, two production scenarios, and a collection of patterns
-          senior engineers still get wrong.
+        <p className="mb-8 text-content-muted">
+          Each pattern transition is triggered by a specific kind of friction.
+          These are the concrete signals that tell you it&apos;s time to move
+          to the next level - not earlier.
         </p>
-        <Link
-          href="/deep-dives/state-architecture-in-practice"
-          className="flex items-center justify-between p-4 border border-content-border rounded-lg transition-all hover:opacity-90"
-        >
-          <div>
-            <div className="font-medium text-content">
-              State Architecture in Practice
+
+        <div className="space-y-6">
+          {[
+            {
+              from: "Local",
+              to: "Lifted",
+              signals: [
+                "Two sibling components need to read the same value",
+                "A parent needs to react to something that happens in a child",
+                "You find yourself duplicating useState in two places and keeping them in sync",
+              ],
+              notYet:
+                "One level of prop passing is fine. Lifting is cheap - don't reach for global state to avoid it.",
+            },
+            {
+              from: "Lifted",
+              to: "URL",
+              signals: [
+                "The user would be frustrated if a browser refresh cleared the state",
+                "You want to share a specific view with another person via a link",
+                "Analytics should capture the actual filter/search combination users are using",
+                "The back button should restore the previous filter, not go to the previous page",
+              ],
+              notYet:
+                "State that's purely transient (a dropdown open/closed) doesn't belong in the URL.",
+            },
+            {
+              from: "URL",
+              to: "Server",
+              signals: [
+                "The dataset is too large to filter/sort client-side (>1k items, or growing)",
+                "Multiple URL params combine in ways that need the server to compute the result",
+                "The same data is fetched in multiple places and should be cached",
+              ],
+              notYet:
+                "URL state with client-side filtering is faster to implement and perfectly adequate for small datasets.",
+            },
+            {
+              from: "Server",
+              to: "Global",
+              signals: [
+                "A user action in one feature needs to immediately update what another unrelated feature displays",
+                "State is genuinely cross-cutting: the same value affects 5+ components across different subtrees",
+                "You need to write to state from outside the React tree (WebSocket handler, service worker)",
+              ],
+              notYet:
+                "Server state (React Query) and URL state handle most cross-component coordination without global client state.",
+            },
+          ].map((item) => (
+            <div
+              key={item.from}
+              className="border rounded-lg overflow-hidden border-content-border"
+            >
+              <div
+                className="px-4 py-2 text-sm font-bold bg-card-toolbar text-content"
+              >
+                {item.from} → {item.to}
+              </div>
+              <div className="p-4 space-y-3">
+                <div>
+                  <div
+                    className="text-xs font-bold uppercase tracking-wider mb-2 text-primary"
+                  >
+                    Move up when you see
+                  </div>
+                  <ul className="space-y-1 text-sm text-content">
+                    {item.signals.map((s) => (
+                      <li key={s} className="flex gap-2">
+                        <span className="text-primary">→</span>
+                        {s}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div
+                  className="pt-3 border-t text-sm border-content-border text-content-muted"
+                >
+                  <span className="font-medium">Don&apos;t move yet if:</span>{" "}
+                  {item.notYet}
+                </div>
+              </div>
             </div>
-            <div className="text-sm text-content-muted">
-              Progressive complexity, production patterns, and hot takes
-            </div>
-          </div>
-          <ChevronRight size={20} className="text-content-muted shrink-0" />
-        </Link>
+          ))}
+        </div>
+
+        <p className="mt-8 text-sm text-content-muted">
+          <Link
+            href="/deep-dives/state-architecture-in-practice"
+            className="text-primary hover:underline"
+          >
+            See these patterns built progressively, from local state to global →
+          </Link>
+        </p>
       </section>
 
       {/* Related Frameworks */}

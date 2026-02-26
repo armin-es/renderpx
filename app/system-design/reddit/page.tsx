@@ -246,7 +246,7 @@ const virtualizer = useVirtualizer({
 
 export default function RedditSystemDesignPage() {
   return (
-    <div className="min-h-full max-w-4xl mx-auto px-6 py-10 bg-content-bg">
+    <div className="min-h-full max-w-4xl mx-auto px-4 py-10 sm:px-6 bg-content-bg">
       <div className="mb-4">
         <span className="text-xs font-medium uppercase tracking-widest text-content-muted">
           System Design

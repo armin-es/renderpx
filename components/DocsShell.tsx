@@ -501,7 +501,7 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
         >
           renderpx
         </Link>
-        <div className="flex items-center gap-4 text-sm">
+        <div className="hidden lg:flex items-center gap-4 text-sm">
           <Link href="/frameworks" className="text-header-text-muted hover:text-header-text">
             Frameworks
           </Link>
@@ -554,7 +554,7 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
             className="fixed inset-0 z-40 bg-black/50 lg:hidden"
             onClick={() => setMobileMenuOpen(false)}
           />
-          <div className="fixed top-14 left-0 bottom-0 z-40 w-72 bg-sidebar-bg border-r border-sidebar-border overflow-y-auto py-6 px-3 lg:hidden">
+          <div className="fixed top-14 left-0 bottom-0 z-40 w-72 bg-sidebar-bg border-r border-sidebar-border overflow-y-auto py-6 px-3 pb-safe lg:hidden">
             <SidebarNav />
           </div>
         </>

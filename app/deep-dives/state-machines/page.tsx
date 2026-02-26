@@ -5,7 +5,7 @@ import { Callout, InlineCode } from "@/components/ui";
 
 export default function StateMachinesPage() {
   return (
-    <div className="min-h-full max-w-4xl mx-auto px-6 py-10 bg-content-bg">
+    <div className="min-h-full max-w-4xl mx-auto px-4 py-10 sm:px-6 bg-content-bg">
       {/* Breadcrumb */}
       <div className="flex items-center gap-2 mb-8 text-xs">
         <Link href="/frameworks/state-architecture" className="text-primary hover:underline">

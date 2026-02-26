@@ -5,7 +5,7 @@ import { CodeBlock } from "@/components/CodeBlock";
 export default async function StateManagementInternalsPage() {
   return (
     <div
-      className="min-h-full max-w-4xl mx-auto px-6 py-10 bg-content-bg"
+      className="min-h-full max-w-4xl mx-auto px-4 py-10 sm:px-6 bg-content-bg"
     >
       {/* Title */}
       <div className="mb-12">

@@ -64,7 +64,7 @@ import { Toaster } from 'sonner'
 
 export default function ToastsPatternPage() {
   return (
-    <div className="min-h-full max-w-4xl mx-auto px-6 py-10 bg-content-bg">
+    <div className="min-h-full max-w-4xl mx-auto px-4 py-10 sm:px-6 bg-content-bg">
       <div className="mb-12">
         <h1 className="text-4xl font-bold mb-4 text-content">
           Toasts

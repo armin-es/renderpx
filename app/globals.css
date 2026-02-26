@@ -104,6 +104,11 @@
   }
 }
 
+/* iOS safe area utility - pads past the home indicator on notched devices */
+.pb-safe {
+  padding-bottom: max(1.5rem, env(safe-area-inset-bottom));
+}
+
 @layer base {
   * {
     border-color: hsl(var(--content-border));

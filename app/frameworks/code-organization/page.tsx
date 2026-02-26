@@ -144,7 +144,7 @@ const DECISION_MATRIX = [
 export default function CodeOrganizationPage() {
   return (
     <div
-      className="min-h-full max-w-4xl mx-auto px-6 py-10"
+      className="min-h-full max-w-4xl mx-auto px-4 py-10 sm:px-6"
       style={{ backgroundColor: "hsl(var(--content-bg))" }}
     >
       {/* Title */}

@@ -87,7 +87,7 @@ const HOOKS_LIMITATION_CODE = `// Error boundaries must be class components — 
 
 export default function ErrorBoundariesPatternPage() {
   return (
-    <div className="min-h-full max-w-4xl mx-auto px-6 py-10 bg-content-bg">
+    <div className="min-h-full max-w-4xl mx-auto px-4 py-10 sm:px-6 bg-content-bg">
       <div className="mb-12">
         <h1 className="text-4xl font-bold mb-4 text-content">
           Error Boundaries

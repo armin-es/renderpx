@@ -9,7 +9,7 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <div className="min-h-full bg-content-bg">
-      <div className="max-w-2xl mx-auto px-6 py-10">
+      <div className="max-w-2xl mx-auto px-4 py-10 sm:px-6">
         <header className="pt-8 pb-10 border-b border-content-border">
           <h1 className="text-3xl font-bold tracking-tight text-content mb-2">Armin Eslami</h1>
           <p className="text-content-muted mb-6">Senior Frontend Engineer · Los Angeles, CA</p>

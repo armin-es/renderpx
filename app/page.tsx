@@ -31,7 +31,7 @@ const sections = [
 export default function Home() {
   return (
     <div className="min-h-full bg-content-bg">
-      <div className="max-w-4xl mx-auto px-6 py-10">
+      <div className="max-w-4xl mx-auto px-4 py-10 sm:px-6">
         <header className="pt-8 pb-12">
           <div className="flex items-center gap-4 flex-wrap mb-6">
             <span className="font-medium text-content">Armin Eslami</span>

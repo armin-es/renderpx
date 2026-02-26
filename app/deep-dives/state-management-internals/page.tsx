@@ -142,7 +142,7 @@ export default async function StateManagementInternalsPage() {
                 subscribe(callback)
               </code>
             </h3>
-            <p className="text-content-muted">
+            <p className="text-content">
               React calls this once when the component mounts. You register the
               callback with your store. When the store changes, call the
               callback — this tells React &quot;something might have changed,
@@ -164,7 +164,7 @@ export default async function StateManagementInternalsPage() {
                 getSnapshot()
               </code>
             </h3>
-            <p className="text-content-muted">
+            <p className="text-content">
               React calls this to get the current value. It compares the result
               with the previous snapshot using{" "}
               <code
@@ -190,7 +190,7 @@ export default async function StateManagementInternalsPage() {
                 getServerSnapshot()
               </code>
             </h3>
-            <p className="text-content-muted">
+            <p className="text-content">
               Optional. Returns the value to use during server-side rendering,
               where subscriptions don&apos;t exist.
             </p>
@@ -198,7 +198,84 @@ export default async function StateManagementInternalsPage() {
         </div>
       </section>
 
-      {/* Section 3: How Zustand Uses It */}
+      {/* Section 3: Inside the Vanilla Store */}
+      <section id="the-vanilla-store" className="mb-16">
+        <h2 className="text-2xl font-bold mb-4 text-content">
+          Inside the Vanilla Store
+        </h2>
+        <div className="prose max-w-none">
+          <p className="text-lg leading-relaxed text-content">
+            Before looking at the React binding, it helps to see what
+            Zustand&apos;s store actually is without React. The vanilla store
+            is a plain JavaScript object with three things: state, a way to
+            update it, and a{" "}
+            <code className="text-sm px-1.5 py-0.5 rounded bg-inline-code-bg">
+              Set
+            </code>{" "}
+            of listener callbacks.
+          </p>
+        </div>
+
+        <div className="mt-6">
+          <CodeBlock
+            code={`// Simplified from Zustand's vanilla store (vanilla.mjs)
+const createStore = (initializer) => {
+  let state = initializer()
+  const listeners = new Set()
+
+  const getState = () => state
+
+  const setState = (partial) => {
+    const nextState = typeof partial === "function" ? partial(state) : partial
+    if (!Object.is(nextState, state)) {
+      const prevState = state
+      state = Object.assign({}, state, nextState)
+      listeners.forEach(listener => listener(state, prevState))
+    }
+  }
+
+  const subscribe = (listener) => {
+    listeners.add(listener)
+    return () => listeners.delete(listener) // returns unsubscribe
+  }
+
+  return { getState, setState, subscribe }
+}`}
+            lang="tsx"
+            label="Zustand's vanilla store (simplified)"
+          />
+        </div>
+
+        <div className="mt-6 prose max-w-none">
+          <p className="leading-relaxed text-content">
+            The subscription is literally just adding a function to a{" "}
+            <code className="text-sm px-1.5 py-0.5 rounded bg-inline-code-bg">
+              Set
+            </code>
+            . When{" "}
+            <code className="text-sm px-1.5 py-0.5 rounded bg-inline-code-bg">
+              setState
+            </code>{" "}
+            is called, it iterates every listener and calls it. The return value
+            of{" "}
+            <code className="text-sm px-1.5 py-0.5 rounded bg-inline-code-bg">
+              subscribe
+            </code>{" "}
+            is the cleanup: add the function to the{" "}
+            <code className="text-sm px-1.5 py-0.5 rounded bg-inline-code-bg">
+              Set
+            </code>
+            , return a way to remove it.
+          </p>
+          <p className="leading-relaxed text-content mt-3">
+            This is all plain JavaScript with no React dependency. The React
+            binding in the next section is what wires these three primitives
+            into React&apos;s rendering cycle.
+          </p>
+        </div>
+      </section>
+
+      {/* Section 4: How Zustand Uses It */}
       <section id="how-zustand-uses-it" className="mb-16">
         <h2
           className="text-2xl font-bold mb-4 text-content"
@@ -296,7 +373,7 @@ function useStore(api, selector = identity) {
                   {item.title}
                 </h4>
                 <p
-                  className="text-sm text-content-muted"
+                  className="text-sm text-content"
                 >
                   {item.detail}
                 </p>
@@ -306,7 +383,7 @@ function useStore(api, selector = identity) {
         </div>
       </section>
 
-      {/* Section 4: Context vs External Store */}
+      {/* Section 5: Context vs External Store */}
       <section id="context-vs-external-store" className="mb-16">
         <h2
           className="text-2xl font-bold mb-4 text-content"
@@ -331,7 +408,7 @@ function useStore(api, selector = identity) {
               React Context
             </h3>
             <div
-              className="text-sm space-y-2 text-content-muted"
+              className="text-sm space-y-2 text-content"
             >
               <p>
                 State lives <strong>inside React</strong> (useState/useReducer
@@ -357,7 +434,7 @@ function useStore(api, selector = identity) {
               Zustand / Redux (External Store)
             </h3>
             <div
-              className="text-sm space-y-2 text-content-muted"
+              className="text-sm space-y-2 text-content"
             >
               <p>
                 State lives <strong>outside React</strong> (plain JavaScript
@@ -377,7 +454,7 @@ function useStore(api, selector = identity) {
         </div>
       </section>
 
-      {/* Section 5: Before useSyncExternalStore */}
+      {/* Section 6: Before useSyncExternalStore */}
       <section id="before-usesyncexternalstore" className="mb-16">
         <h2
           className="text-2xl font-bold mb-4 text-content"
@@ -453,7 +530,7 @@ function useStore(selector) {
               Problem 1: Tearing in Concurrent Mode
             </h3>
             <p
-              className="text-sm text-content-muted"
+              className="text-sm text-content"
             >
               React 18 introduced concurrent rendering, where React can pause and resume
               renders. With the old pattern, two components reading from the same store
@@ -472,7 +549,7 @@ function useStore(selector) {
               Problem 2: Timing and Race Conditions
             </h3>
             <p
-              className="text-sm text-content-muted"
+              className="text-sm text-content"
             >
               The subscription happens in{" "}
               <code
@@ -495,7 +572,7 @@ function useStore(selector) {
               Problem 3: No SSR Safety
             </h3>
             <p
-              className="text-sm text-content-muted"
+              className="text-sm text-content"
             >
               Server-side rendering doesn&apos;t run effects, so subscriptions never
               happen. There was no clean way to provide a server-specific snapshot of the
@@ -516,7 +593,7 @@ function useStore(selector) {
             was specifically designed to solve these problems. It guarantees:
           </p>
           <ul
-            className="list-disc list-inside space-y-1 ml-4 mt-3 text-content-muted"
+            className="list-disc list-inside space-y-1 ml-4 mt-3 text-content"
           >
             <li>
               <strong>No tearing:</strong> All components see a consistent snapshot
@@ -539,7 +616,7 @@ function useStore(selector) {
         </div>
       </section>
 
-      {/* Section 6: Selector Patterns */}
+      {/* Section 7: Selector Patterns */}
       <section id="selector-patterns" className="mb-16">
         <h2
           className="text-2xl font-bold mb-4 text-content"
@@ -589,7 +666,7 @@ const email = useFormStore(state => state.email)`}
             The Comparison Rule
           </h3>
           <p
-            className="mb-4 text-content-muted"
+            className="mb-4 text-content"
           >
             After every store update,{" "}
             <code
@@ -632,7 +709,7 @@ Object.is([1, 2], [1, 2])     // false → re-render every time`}
             The Classic Gotcha: Inline Object Selectors
           </h3>
           <p
-            className="mb-4 text-content-muted"
+            className="mb-4 text-content"
           >
             Returning a new object from a selector is the most common Zustand
             performance mistake. Even if the data inside is identical, a new
@@ -680,7 +757,7 @@ const { email, name } = useFormStore(
             Works
           </h3>
           <p
-            className="mb-4 text-content-muted"
+            className="mb-4 text-content"
           >
             <code
               className="text-sm px-1 py-0.5 rounded bg-inline-code-bg"
@@ -759,7 +836,7 @@ const { email, name } = useFormStore(
                   >
                     {row.selector}
                   </code>
-                  <p className="text-content-muted">{row.note}</p>
+                  <p className="text-content">{row.note}</p>
                 </div>
               </div>
             ))}

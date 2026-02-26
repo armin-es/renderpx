@@ -29,7 +29,7 @@ export default async function StateManagementInternalsPage() {
         <h1
           className="text-4xl font-bold mb-4 text-content"
         >
-          How State Management Libraries Work
+          State Management Internals
         </h1>
         <p
           className="text-xl text-content-muted"

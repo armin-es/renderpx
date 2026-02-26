@@ -8,6 +8,8 @@ import { SolutionDemo } from "@/components/demos/SolutionDemo";
 import { ZustandDemo } from "@/components/demos/ZustandDemo";
 import { ProblemContextDemo, SolutionContextDemo } from "@/components/demos/SplitContextDemo";
 import { Callout, InlineCode } from "@/components/ui";
+import { ExampleViewer } from "@/components/ExampleViewer";
+import { stateArchitectureExampleContent } from "@/lib/stateArchitectureExamples";
 
 const PROBLEM_CODE = `// Sticky action bar at top with Save button. Form scrolls below.
 // Save button needs formData for:
@@ -50,6 +52,39 @@ function FormStateWrapper({ children }) {
     </FormContext.Provider>
   )
 }`;
+
+const PROGRESSIVE_EXAMPLES = [
+  {
+    id: "01-local-state",
+    title: "Example 1: Local State",
+    subtitle: "100 products, single page",
+    complexity: "Simple",
+  },
+  {
+    id: "02-lifted-state",
+    title: "Example 2: Lifted State",
+    subtitle: "+ cross-component coordination",
+    complexity: "Medium",
+  },
+  {
+    id: "03-url-state",
+    title: "Example 3: URL State",
+    subtitle: "+ sharing & bookmarking",
+    complexity: "Medium",
+  },
+  {
+    id: "04-server-state",
+    title: "Example 4: Server State",
+    subtitle: "+ 10k products, pagination",
+    complexity: "Advanced",
+  },
+  {
+    id: "05-global-state",
+    title: "Example 5: Global State",
+    subtitle: "+ cross-feature coordination",
+    complexity: "Advanced",
+  },
+];
 
 export default async function StateArchitecturePage() {
   return (
@@ -764,12 +799,33 @@ function Dashboard({ userEmail }) {
 
         <p className="mt-8 text-sm text-content-muted">
           <Link
-            href="/deep-dives/state-architecture-in-practice"
+            href="#progressive-examples"
             className="text-primary hover:underline"
           >
             See these patterns built progressively, from local state to global →
           </Link>
         </p>
+      </section>
+
+      {/* Progressive Examples */}
+      <section id="progressive-examples" className="mb-16">
+        <h2 className="text-2xl font-bold mb-4 text-content">
+          Progressive Examples
+        </h2>
+        <p className="mb-6 text-content-muted">
+          The same idea (put state as close as possible to where it&apos;s
+          used) applies when a feature grows. Below we take one feature, a{" "}
+          <strong>product filter</strong>, and build it five ways: from state
+          that lives in a single component to state that crosses the whole app.
+          Each step adds coordination needs and shows when to reach for the next
+          pattern (lifted state, URL, server, global).
+        </p>
+
+        <ExampleViewer
+          examples={PROGRESSIVE_EXAMPLES}
+          content={stateArchitectureExampleContent}
+          showPreview
+        />
       </section>
 
       {/* Related Frameworks */}

@@ -18,7 +18,6 @@ const FRAMEWORKS = [
 
 const DEEP_DIVES = [
   { id: 'state-management-internals', label: 'State Management Internals' },
-  { id: 'state-architecture-in-practice', label: 'State Architecture in Practice' },
   { id: 'state-machines', label: 'State Machines' },
   { id: 'graphql-caching', label: 'GraphQL Caching' },
   { id: 'useeffect-async-cleanup', label: 'useEffect & Async Cleanup' },

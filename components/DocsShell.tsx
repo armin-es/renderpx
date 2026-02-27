@@ -57,7 +57,7 @@ const STATE_ARCH_SECTIONS = [
   { id: 'when-narrowing-fails', label: 'When Narrowing Fails' },
   { id: 'decision-framework', label: 'Decision Framework' },
   { id: 'decision-signals', label: 'Decision Signals' },
-  { id: 'progressive-examples', label: 'Progressive Examples' },
+  // { id: 'progressive-examples', label: 'Progressive Examples' },
 ]
 
 const COMPONENT_COMP_SECTIONS = [

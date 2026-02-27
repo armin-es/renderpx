@@ -7,7 +7,7 @@ export function FrameworkNav() {
     { id: 'the-problem', label: 'The Problem' },
     { id: 'decision-framework', label: 'Decision Framework' },
     { id: 'decision-matrix', label: 'Decision Matrix' },
-    { id: 'progressive-examples', label: 'Progressive Examples' },
+    // { id: 'progressive-examples', label: 'Progressive Examples' },
     { id: 'production-patterns', label: 'Production Patterns' },
     { id: 'hot-takes', label: 'Hot Takes' },
     { id: 'related-frameworks', label: 'Related Frameworks' },

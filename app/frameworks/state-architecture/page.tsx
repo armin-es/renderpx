@@ -53,7 +53,7 @@ function FormStateWrapper({ children }) {
   )
 }`;
 
-const PROGRESSIVE_EXAMPLES = [
+/* const PROGRESSIVE_EXAMPLES = [
   {
     id: "01-local-state",
     title: "Local State",
@@ -78,7 +78,7 @@ const PROGRESSIVE_EXAMPLES = [
     subtitle: "+ 10k products, cross-device sync",
     complexity: "Advanced",
   },
-];
+]; */
 
 export default async function StateArchitecturePage() {
   return (
@@ -384,18 +384,18 @@ const useFormStore = create((set) => ({
           ))}
         </div>
 
-        <p className="mt-8 text-sm text-content-muted">
+        {/* <p className="mt-8 text-sm text-content-muted">
           <Link
             href="#progressive-examples"
             className="text-primary hover:underline"
           >
             See these patterns built progressively, from local to server persistent →
           </Link>
-        </p>
+        </p> */}
       </section>
 
       {/* Progressive Examples */}
-      <section id="progressive-examples" className="mb-16">
+      {/* <section id="progressive-examples" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">
           Progressive Examples
         </h2>
@@ -413,7 +413,7 @@ const useFormStore = create((set) => ({
           content={stateArchitectureExampleContent}
           showPreview
         />
-      </section>
+      </section> */}
 
       <RelatedContent
         items={frameworkRelations['state-architecture'].patterns}

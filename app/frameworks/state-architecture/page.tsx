@@ -56,25 +56,25 @@ function FormStateWrapper({ children }) {
 const PROGRESSIVE_EXAMPLES = [
   {
     id: "01-local-state",
-    title: "Example 1: Local State",
+    title: "Local State",
     subtitle: "100 products, single page",
     complexity: "Simple",
   },
   {
     id: "02-lifted-state",
-    title: "Example 2: Lifted State",
+    title: "Lifted State",
     subtitle: "+ cross-component coordination",
     complexity: "Medium",
   },
   {
     id: "03-browser-persistent",
-    title: "Example 3: Browser Persistent",
+    title: "Browser Persistent",
     subtitle: "+ sharing & bookmarking (URL/localStorage)",
     complexity: "Medium",
   },
   {
     id: "04-server-persistent",
-    title: "Example 4: Server Persistent",
+    title: "Server Persistent",
     subtitle: "+ 10k products, cross-device sync",
     complexity: "Advanced",
   },

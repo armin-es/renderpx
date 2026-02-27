@@ -402,10 +402,10 @@ const useFormStore = create((set) => ({
         <p className="mb-6 text-content-muted">
           The same idea (put state as close as possible to where it&apos;s
           used) applies when a feature grows. Below we take one feature, a{" "}
-          <strong>product filter</strong>, and build it five ways: from state
-          that lives in a single component to state that crosses the whole app.
+          <strong>product filter</strong>, and build it four ways: from state
+          that lives in a single component to state persisted on the server.
           Each step adds coordination needs and shows when to reach for the next
-          pattern (lifted state, URL, server, global).
+          pattern (lifted, browser persistent, server persistent).
         </p>
 
         <ExampleViewer

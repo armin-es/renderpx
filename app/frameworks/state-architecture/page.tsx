@@ -296,13 +296,13 @@ const useFormStore = create((set) => ({
           </div>
         </div>
 
-        <Callout variant="info" className="mt-8" title="My Mental Model">
-          When deciding where state belongs, ask: &quot;If this was in a
-          database, where would it live?&quot; This reveals the natural boundaries.
-          Form input while typing = local component state (temporary, no persistence).
-          Filters and sorting = global or URL state (affects what data you fetch).
-          Shopping cart = either local (session only) or global (persisted across devices).
-          If you can answer the database question, the app placement becomes obvious.
+        <Callout variant="info" className="mt-8" title="Decision Questions">
+          Ask three things about each piece of state: (1) How long does it live?
+          Just this render, this session, or forever? (2) Who needs it? One
+          component or many? (3) Does it need to persist? Across page refreshes
+          or devices? Form input = lives briefly, one component = local state.
+          Filters = live until changed, affect data fetching = URL or global.
+          Cart = depends on whether you want to remember it across sessions.
         </Callout>
       </section>
 

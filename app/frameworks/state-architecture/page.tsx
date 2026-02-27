@@ -67,21 +67,15 @@ const PROGRESSIVE_EXAMPLES = [
     complexity: "Medium",
   },
   {
-    id: "03-url-state",
-    title: "Example 3: URL State",
-    subtitle: "+ sharing & bookmarking",
+    id: "03-browser-persistent",
+    title: "Example 3: Browser Persistent",
+    subtitle: "+ sharing & bookmarking (URL/localStorage)",
     complexity: "Medium",
   },
   {
-    id: "04-server-state",
-    title: "Example 4: Server State",
-    subtitle: "+ 10k products, pagination",
-    complexity: "Advanced",
-  },
-  {
-    id: "05-global-state",
-    title: "Example 5: Global State",
-    subtitle: "+ cross-feature coordination",
+    id: "04-server-persistent",
+    title: "Example 4: Server Persistent",
+    subtitle: "+ 10k products, cross-device sync",
     complexity: "Advanced",
   },
 ];
@@ -94,7 +88,7 @@ export default async function StateArchitecturePage() {
           State Architecture
         </h1>
         <p className="text-xl text-content-muted">
-          One principle governs every state decision: <strong>put state close to where it is used</strong>. Patterns (local state, lifted state, URL state, server state, global state) emerge naturally once you feel the friction that breaks the previous pattern. Don't memorize the patterns. Learn to recognize the friction.
+          One principle governs every state decision: <strong>put state close to where it is used</strong>. Patterns (local, lifted, browser persistent, server persistent) emerge naturally once you feel the friction that breaks the previous pattern. Don't memorize the patterns. Learn to recognize the friction.
         </p>
       </div>
 
@@ -395,7 +389,7 @@ const useFormStore = create((set) => ({
             href="#progressive-examples"
             className="text-primary hover:underline"
           >
-            See these patterns built progressively, from local state to global →
+            See these patterns built progressively, from local to server persistent →
           </Link>
         </p>
       </section>

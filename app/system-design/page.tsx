@@ -7,6 +7,11 @@ const caseStudies = [
     title: 'Reddit',
     description: 'Feed architecture, nested comment threads, optimistic voting, real-time strategy, and performance for a high-traffic social platform.',
   },
+  {
+    slug: 'notion',
+    title: 'Notion editor',
+    description: 'Block-based document editor with slash commands, drag-and-drop reordering, real-time collaboration via Yjs, and debounced autosave.',
+  },
 ]
 
 export default function SystemDesignPage() {

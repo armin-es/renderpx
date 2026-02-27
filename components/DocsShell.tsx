@@ -25,6 +25,7 @@ const DEEP_DIVES = [
 
 const SYSTEM_DESIGNS = [
   { id: 'reddit', label: 'Reddit' },
+  { id: 'notion', label: 'Notion editor' },
 ]
 
 const PATTERNS = [
@@ -49,6 +50,7 @@ const PATTERNS = [
   { id: 'hocs-vs-composition', label: 'HOCs vs Composition' },
   { id: 'code-splitting-lazy-loading', label: 'Code Splitting & Lazy Loading' },
   { id: 'memoization', label: 'Memoization' },
+  { id: 'drag-and-drop', label: 'Drag-and-Drop' },
 ]
 
 const STATE_ARCH_SECTIONS = [
@@ -201,6 +203,21 @@ const REDDIT_SECTIONS = [
   { id: 'tradeoffs', label: "What I'd Do Differently" },
 ]
 
+const NOTION_SECTIONS = [
+  { id: 'the-challenge', label: 'The Challenge' },
+  { id: 'data-model', label: 'Data Model' },
+  { id: 'architecture-map', label: 'Architecture Map' },
+  { id: 'block-rendering', label: 'Block Rendering' },
+  { id: 'editor-core', label: 'The Editor Core' },
+  { id: 'slash-commands', label: 'Slash Commands' },
+  { id: 'drag-and-drop', label: 'Drag-and-Drop' },
+  { id: 'real-time-sync', label: 'Real-Time Collaboration' },
+  { id: 'state-architecture', label: 'State Architecture' },
+  { id: 'performance', label: 'Performance' },
+  { id: 'building-blocks', label: 'Building Blocks' },
+  { id: 'tradeoffs', label: "What I'd Do Differently" },
+]
+
 const sectionLabelClass =
   'px-3 mb-3 text-[10px] font-bold uppercase tracking-widest text-sidebar-text border-b border-sidebar-border pb-2'
 
@@ -275,7 +292,8 @@ function SidebarNav() {
   const isStateArchPractice = pathname === '/deep-dives/state-architecture-in-practice'
 
   const isReddit = pathname === '/system-design/reddit'
-  const isSystemDesign = isReddit || pathname === '/system-design'
+  const isNotion = pathname === '/system-design/notion'
+  const isSystemDesign = isReddit || isNotion || pathname === '/system-design'
 
   const isFramework = pathname === '/frameworks' || isStateArch || isComponentComp || isDataFetching || isRenderingStrategy || isDesignSystems || isCodeOrg || isPerformanceArch
   const isDeepDive = pathname === '/deep-dives' || isStateMachines || isUseEffectCleanup || isGraphqlCaching || isStateMgmtInternals || isStateArchPractice
@@ -389,6 +407,7 @@ function RightSidebar() {
   const isStateMgmtInternalsRight = pathname === '/deep-dives/state-management-internals'
   const isStateArchPracticeRight = pathname === '/deep-dives/state-architecture-in-practice'
   const isRedditRight = pathname === '/system-design/reddit'
+  const isNotionRight = pathname === '/system-design/notion'
   const sections = isPatternDetailRight
     ? PATTERN_DETAIL_SECTIONS
     : isStateArch
@@ -417,6 +436,8 @@ function RightSidebar() {
     ? STATE_ARCH_PRACTICE_SECTIONS
     : isRedditRight
     ? REDDIT_SECTIONS
+    : isNotionRight
+    ? NOTION_SECTIONS
     : null
 
   useEffect(() => {

@@ -216,6 +216,13 @@ export const patternRelations: Record<string, RelatedContent> = {
     ],
     deepDives: [],
   },
+  'drag-and-drop': {
+    frameworks: [
+      { href: '/frameworks/state-architecture', title: 'State Architecture', description: 'Where optimistic reorder state and rollback logic live.' },
+      { href: '/frameworks/performance-architecture', title: 'Performance Architecture', description: 'Combining drag-and-drop with virtualized lists.' },
+    ],
+    deepDives: [],
+  },
 };
 
 // Deep Dives - map back to frameworks and patterns

@@ -297,11 +297,12 @@ const useFormStore = create((set) => ({
         </div>
 
         <Callout variant="info" className="mt-8" title="My Mental Model">
-          When I look at a piece of state, I ask: &quot;If this was in a
-          database, what would the schema be?&quot; That usually reveals the
-          natural boundaries. Form input? Single record. Filter state? Query
-          parameters. Shopping cart? Could be either client or server,
-          depending on whether you want it persisted across devices.
+          When deciding where state belongs, ask: &quot;If this was in a
+          database, where would it live?&quot; This reveals the natural boundaries.
+          Form input while typing = local component state (temporary, no persistence).
+          Filters and sorting = global or URL state (affects what data you fetch).
+          Shopping cart = either local (session only) or global (persisted across devices).
+          If you can answer the database question, the app placement becomes obvious.
         </Callout>
       </section>
 

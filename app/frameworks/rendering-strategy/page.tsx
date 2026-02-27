@@ -2,6 +2,8 @@ import Link from "next/link";
 import { CodeWithPreview } from "@/components/CodeWithPreview";
 import { CodeBlock } from "@/components/CodeBlock";
 import { ExampleViewer } from "@/components/ExampleViewer";
+import { RelatedContent } from "@/components/RelatedContent";
+import { frameworkRelations } from "@/lib/related-content";
 import {
   CsrWaterfallDemo,
   RenderingModesComparisonDemo,
@@ -1000,6 +1002,15 @@ export default async function ProductPage({ params }) {
           </div>
         </div>
       </section>
+
+      <RelatedContent
+        items={frameworkRelations['rendering-strategy'].patterns}
+        type="patterns"
+      />
+      <RelatedContent
+        items={frameworkRelations['rendering-strategy'].deepDives}
+        type="deepDives"
+      />
     </div>
   );
 }

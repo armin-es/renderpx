@@ -3,6 +3,8 @@ import { CodeBlock } from '@/components/CodeBlock'
 import { CodeWithPreview } from '@/components/CodeWithPreview'
 import { Callout, InlineCode } from '@/components/ui'
 import { OptimisticLikeDemo } from '@/components/demos/OptimisticLikeDemo'
+import { RelatedContent } from '@/components/RelatedContent'
+import { patternRelations } from '@/lib/related-content'
 
 const NAIVE_CODE = `// User clicks "Like" — we wait for the server, then update
 function LikeButton({ postId }: { postId: string }) {
@@ -189,6 +191,15 @@ export default function OptimisticUpdatesPatternPage() {
           All patterns
         </Link>
       </p>
+
+      <RelatedContent
+        items={patternRelations['optimistic-updates']?.frameworks}
+        type="frameworks"
+      />
+      <RelatedContent
+        items={patternRelations['optimistic-updates']?.deepDives}
+        type="deepDives"
+      />
     </div>
   )
 }

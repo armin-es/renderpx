@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { CodeBlock } from '@/components/CodeBlock'
 import { Callout, InlineCode } from '@/components/ui'
+import { RelatedContent } from '@/components/RelatedContent'
+import { patternRelations } from '@/lib/related-content'
 
 const NAIVE_CODE = `// Boolean loading — empty or content, no in-between
 function UserProfile({ userId }: { userId: string }) {
@@ -162,6 +164,15 @@ export default function LoadingStatesPatternPage() {
           All patterns
         </Link>
       </p>
+
+      <RelatedContent
+        items={patternRelations['loading-states'].frameworks}
+        type="frameworks"
+      />
+      <RelatedContent
+        items={patternRelations['loading-states'].deepDives}
+        type="deepDives"
+      />
     </div>
   )
 }

@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ArrowLeft, ChevronRight } from "lucide-react";
 import { CodeBlock } from "@/components/CodeBlock";
+import { RelatedContent } from "@/components/RelatedContent";
+import { deepDiveRelations } from "@/lib/related-content";
 
 export default async function StateManagementInternalsPage() {
   return (
@@ -856,6 +858,15 @@ const { email, name } = useFormStore(
           State Architecture
         </Link>
       </div>
+
+      <RelatedContent
+        items={deepDiveRelations['state-management-internals'].frameworks}
+        type="frameworks"
+      />
+      <RelatedContent
+        items={deepDiveRelations['state-management-internals'].patterns}
+        type="patterns"
+      />
     </div>
   );
 }

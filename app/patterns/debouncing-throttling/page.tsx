@@ -3,6 +3,8 @@ import { CodeBlock } from '@/components/CodeBlock'
 import { CodeWithPreview } from '@/components/CodeWithPreview'
 import { Callout, InlineCode } from '@/components/ui'
 import { DebounceSearchDemo } from '@/components/demos/DebounceSearchDemo'
+import { RelatedContent } from '@/components/RelatedContent'
+import { patternRelations } from '@/lib/related-content'
 
 const NAIVE_CODE = `// Search on every keystroke — N requests for N characters
 function SearchBox() {
@@ -216,6 +218,15 @@ export default function DebouncingThrottlingPatternPage() {
           All patterns
         </Link>
       </p>
+
+      <RelatedContent
+        items={patternRelations['debouncing-throttling'].frameworks}
+        type="frameworks"
+      />
+      <RelatedContent
+        items={patternRelations['debouncing-throttling'].deepDives}
+        type="deepDives"
+      />
     </div>
   )
 }

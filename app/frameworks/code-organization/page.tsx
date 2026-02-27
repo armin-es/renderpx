@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { CodeBlock } from "@/components/CodeBlock";
 import { ExampleViewer } from "@/components/ExampleViewer";
+import { RelatedContent } from "@/components/RelatedContent";
 import { FeatureAddDemo } from "@/components/demos/CodeOrganizationDemos";
+import { frameworkRelations } from "@/lib/related-content";
 import {
   codeOrgExamples,
   codeOrgExampleContent,
@@ -1011,6 +1013,15 @@ export { NotificationBell } from '../features/notifications/NotificationBell'`}
           </div>
         </div>
       </section>
+
+      <RelatedContent
+        items={frameworkRelations['code-organization'].patterns}
+        type="patterns"
+      />
+      <RelatedContent
+        items={frameworkRelations['code-organization'].deepDives}
+        type="deepDives"
+      />
     </div>
   );
 }

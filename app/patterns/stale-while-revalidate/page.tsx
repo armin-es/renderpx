@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { CodeBlock } from '@/components/CodeBlock'
 import { Callout, InlineCode } from '@/components/ui'
+import { RelatedContent } from '@/components/RelatedContent'
+import { patternRelations } from '@/lib/related-content'
 
 const NAIVE_CODE = `// Every time: wait for network, then show data
 function Profile({ userId }: { userId: string }) {
@@ -154,6 +156,15 @@ export default function StaleWhileRevalidatePatternPage() {
           All patterns
         </Link>
       </p>
+
+      <RelatedContent
+        items={patternRelations['stale-while-revalidate'].frameworks}
+        type="frameworks"
+      />
+      <RelatedContent
+        items={patternRelations['stale-while-revalidate'].deepDives}
+        type="deepDives"
+      />
     </div>
   )
 }

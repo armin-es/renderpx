@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { CodeBlock } from "@/components/CodeBlock";
 import { Callout, InlineCode } from "@/components/ui";
+import { RelatedContent } from "@/components/RelatedContent";
+import { deepDiveRelations } from "@/lib/related-content";
 
 export default function StateMachinesPage() {
   return (
@@ -654,6 +656,15 @@ function LoginForm() {
           </Link>
         </div>
       </section>
+
+      <RelatedContent
+        items={deepDiveRelations['state-machines'].frameworks}
+        type="frameworks"
+      />
+      <RelatedContent
+        items={deepDiveRelations['state-machines'].patterns}
+        type="patterns"
+      />
     </div>
   );
 }

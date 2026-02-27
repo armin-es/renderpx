@@ -2,6 +2,8 @@ import Link from "next/link";
 import { CodeWithPreview } from "@/components/CodeWithPreview";
 import { CodeBlock } from "@/components/CodeBlock";
 import { ExampleViewer } from "@/components/ExampleViewer";
+import { RelatedContent } from "@/components/RelatedContent";
+import { frameworkRelations } from "@/lib/related-content";
 import {
   TokenDriftDemo,
   TokenCascadeDemo,
@@ -1415,6 +1417,15 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
           ))}
         </div>
       </section>
+
+      <RelatedContent
+        items={frameworkRelations['design-systems'].patterns}
+        type="patterns"
+      />
+      <RelatedContent
+        items={frameworkRelations['design-systems'].deepDives}
+        type="deepDives"
+      />
     </div>
   );
 }

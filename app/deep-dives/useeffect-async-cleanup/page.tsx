@@ -2,6 +2,8 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import { CodeBlock } from "@/components/CodeBlock";
 import { Callout, InlineCode } from "@/components/ui";
+import { RelatedContent } from "@/components/RelatedContent";
+import { deepDiveRelations } from "@/lib/related-content";
 
 export default function UseEffectAsyncCleanupPage() {
   return (
@@ -403,6 +405,15 @@ export default function UseEffectAsyncCleanupPage() {
           </Link>
         </div>
       </section>
+
+      <RelatedContent
+        items={deepDiveRelations['useeffect-async-cleanup'].frameworks}
+        type="frameworks"
+      />
+      <RelatedContent
+        items={deepDiveRelations['useeffect-async-cleanup'].patterns}
+        type="patterns"
+      />
     </div>
   );
 }

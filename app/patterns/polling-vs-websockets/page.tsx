@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { CodeBlock } from '@/components/CodeBlock'
 import { Callout, InlineCode } from '@/components/ui'
+import { RelatedContent } from '@/components/RelatedContent'
+import { patternRelations } from '@/lib/related-content'
 
 const POLLING_CODE = `// Poll: refetch on an interval
 const { data } = useQuery({
@@ -146,6 +148,15 @@ export default function PollingVsWebsocketsPatternPage() {
           All patterns
         </Link>
       </p>
+
+      <RelatedContent
+        items={patternRelations['polling-vs-websockets'].frameworks}
+        type="frameworks"
+      />
+      <RelatedContent
+        items={patternRelations['polling-vs-websockets'].deepDives}
+        type="deepDives"
+      />
     </div>
   )
 }

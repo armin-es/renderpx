@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CodeWithPreview } from "@/components/CodeWithPreview";
 import { CodeBlock } from "@/components/CodeBlock";
+import { RelatedContent } from "@/components/RelatedContent";
 import { ProblemDemo } from "@/components/demos/ProblemDemo";
 import { SolutionDemo } from "@/components/demos/SolutionDemo";
 import { ZustandDemo } from "@/components/demos/ZustandDemo";
@@ -8,6 +9,7 @@ import { ProblemContextDemo, SolutionContextDemo } from "@/components/demos/Spli
 import { Callout, InlineCode } from "@/components/ui";
 import { ExampleViewer } from "@/components/ExampleViewer";
 import { stateArchitectureExampleContent } from "@/lib/stateArchitectureExamples";
+import { frameworkRelations } from "@/lib/related-content";
 
 const PROBLEM_CODE = `// Sticky action bar at top with Save button. Form scrolls below.
 // Save button needs formData for:
@@ -429,6 +431,14 @@ const useFormStore = create((set) => ({
         />
       </section>
 
+      <RelatedContent
+        items={frameworkRelations['state-architecture'].patterns}
+        type="patterns"
+      />
+      <RelatedContent
+        items={frameworkRelations['state-architecture'].deepDives}
+        type="deepDives"
+      />
     </div>
   );
 }

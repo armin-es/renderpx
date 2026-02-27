@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { CodeBlock } from "@/components/CodeBlock";
 import { ExampleViewer } from "@/components/ExampleViewer";
+import { RelatedContent } from "@/components/RelatedContent";
 import { MemoDemo, BundleSplitDemo } from "@/components/demos/PerformanceDemos";
 import {
   performanceExamples,
@@ -8,6 +9,7 @@ import {
   PERFORMANCE_VISUAL_LABELS,
 } from "@/lib/performanceExamples";
 import { Callout, InlineCode } from "@/components/ui";
+import { frameworkRelations } from "@/lib/related-content";
 
 const BASELINE_MEASUREMENT_CODE = `// next.config.js — add bundle analyzer
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
@@ -820,6 +822,15 @@ export default function PerformanceArchitecturePage() {
           ))}
         </div>
       </section>
+
+      <RelatedContent
+        items={frameworkRelations['performance-architecture'].patterns}
+        type="patterns"
+      />
+      <RelatedContent
+        items={frameworkRelations['performance-architecture'].deepDives}
+        type="deepDives"
+      />
     </div>
   );
 }

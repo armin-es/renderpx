@@ -2,12 +2,14 @@ import Link from "next/link";
 import { CodeWithPreview } from "@/components/CodeWithPreview";
 import { CodeBlock } from "@/components/CodeBlock";
 import { ExampleViewer } from "@/components/ExampleViewer";
+import { RelatedContent } from "@/components/RelatedContent";
 import {
   UseEffectProblemDemo,
   UseEffectSolutionDemo,
   ReactQueryStyleDemo,
 } from "@/components/demos/DataFetchingDemos";
 import { dataFetchingExampleContent } from "@/lib/dataFetchingExamples";
+import { frameworkRelations } from "@/lib/related-content";
 
 const PROBLEM_CODE = `function UserProfile({ userId }) {
   const [user, setUser] = useState(null)
@@ -1209,6 +1211,15 @@ function UserList() {
           </div>
         </div>
       </section>
+
+      <RelatedContent
+        items={frameworkRelations['data-fetching'].patterns}
+        type="patterns"
+      />
+      <RelatedContent
+        items={frameworkRelations['data-fetching'].deepDives}
+        type="deepDives"
+      />
     </div>
   );
 }

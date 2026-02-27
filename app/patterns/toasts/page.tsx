@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { CodeBlock } from '@/components/CodeBlock'
 import { Callout, InlineCode } from '@/components/ui'
+import { RelatedContent } from '@/components/RelatedContent'
+import { patternRelations } from '@/lib/related-content'
 
 const NAIVE_CODE = `// Inline state per screen — toasts only where you call setToast
 function SaveButton() {
@@ -141,6 +143,15 @@ export default function ToastsPatternPage() {
           All patterns
         </Link>
       </p>
+
+      <RelatedContent
+        items={patternRelations['toasts'].frameworks}
+        type="frameworks"
+      />
+      <RelatedContent
+        items={patternRelations['toasts'].deepDives}
+        type="deepDives"
+      />
     </div>
   )
 }

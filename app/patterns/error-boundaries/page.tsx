@@ -3,6 +3,8 @@ import { CodeBlock } from '@/components/CodeBlock'
 import { CodeWithPreview } from '@/components/CodeWithPreview'
 import { Callout, InlineCode } from '@/components/ui'
 import { ErrorBoundaryDemo } from '@/components/demos/ErrorBoundaryDemo'
+import { RelatedContent } from '@/components/RelatedContent'
+import { patternRelations } from '@/lib/related-content'
 
 const NAIVE_CODE = `// No boundary — one throw takes down the whole app
 function App() {
@@ -183,6 +185,15 @@ export default function ErrorBoundariesPatternPage() {
           All patterns
         </Link>
       </p>
+
+      <RelatedContent
+        items={patternRelations['error-boundaries'].frameworks}
+        type="frameworks"
+      />
+      <RelatedContent
+        items={patternRelations['error-boundaries'].deepDives}
+        type="deepDives"
+      />
     </div>
   )
 }

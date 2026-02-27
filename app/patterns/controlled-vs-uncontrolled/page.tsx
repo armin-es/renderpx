@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { CodeBlock } from '@/components/CodeBlock'
 import { Callout, InlineCode } from '@/components/ui'
+import { RelatedContent } from '@/components/RelatedContent'
+import { patternRelations } from '@/lib/related-content'
 
 const NAIVE_CODE = `// Only controlled: parent owns value and onChange for every input
 function Parent() {
@@ -132,6 +134,15 @@ export default function ControlledVsUncontrolledPatternPage() {
           All patterns
         </Link>
       </p>
+
+      <RelatedContent
+        items={patternRelations['controlled-vs-uncontrolled'].frameworks}
+        type="frameworks"
+      />
+      <RelatedContent
+        items={patternRelations['controlled-vs-uncontrolled'].deepDives}
+        type="deepDives"
+      />
     </div>
   )
 }

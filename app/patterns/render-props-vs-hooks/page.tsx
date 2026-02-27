@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { CodeBlock } from '@/components/CodeBlock'
 import { Callout, InlineCode } from '@/components/ui'
+import { RelatedContent } from '@/components/RelatedContent'
+import { patternRelations } from '@/lib/related-content'
 
 const NAIVE_CODE = `// Duplicate logic in every component that needs mouse position
 function Tooltip() {
@@ -140,6 +142,15 @@ export default function RenderPropsVsHooksPatternPage() {
           All patterns
         </Link>
       </p>
+
+      <RelatedContent
+        items={patternRelations['render-props-vs-hooks'].frameworks}
+        type="frameworks"
+      />
+      <RelatedContent
+        items={patternRelations['render-props-vs-hooks'].deepDives}
+        type="deepDives"
+      />
     </div>
   )
 }

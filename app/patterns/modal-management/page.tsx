@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { CodeBlock } from '@/components/CodeBlock'
 import { Callout, InlineCode } from '@/components/ui'
+import { RelatedContent } from '@/components/RelatedContent'
+import { patternRelations } from '@/lib/related-content'
 
 const NAIVE_CODE = `// Modal open state local to each screen — no shared pattern
 function UserList() {
@@ -156,6 +158,15 @@ export default function ModalManagementPatternPage() {
           All patterns
         </Link>
       </p>
+
+      <RelatedContent
+        items={patternRelations['modal-management'].frameworks}
+        type="frameworks"
+      />
+      <RelatedContent
+        items={patternRelations['modal-management'].deepDives}
+        type="deepDives"
+      />
     </div>
   )
 }

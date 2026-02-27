@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { CodeBlock } from '@/components/CodeBlock'
 import { Callout, InlineCode } from '@/components/ui'
+import { RelatedContent } from '@/components/RelatedContent'
+import { patternRelations } from '@/lib/related-content'
 
 const NAIVE_CODE = `// Render every item — 10,000 list items = 10,000 DOM nodes
 function BigList({ items }: { items: Item[] }) {
@@ -172,6 +174,15 @@ export default function VirtualizedListsPatternPage() {
           All patterns
         </Link>
       </p>
+
+      <RelatedContent
+        items={patternRelations['virtualized-lists'].frameworks}
+        type="frameworks"
+      />
+      <RelatedContent
+        items={patternRelations['virtualized-lists'].deepDives}
+        type="deepDives"
+      />
     </div>
   )
 }

@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { CodeBlock } from '@/components/CodeBlock'
 import { Callout, InlineCode } from '@/components/ui'
+import { RelatedContent } from '@/components/RelatedContent'
+import { patternRelations } from '@/lib/related-content'
 
 const NAIVE_CODE = `// One giant form — 20 fields, single submit
 function CheckoutForm() {
@@ -179,6 +181,15 @@ export default function MultiStepFormsPatternPage() {
           All patterns
         </Link>
       </p>
+
+      <RelatedContent
+        items={patternRelations['multi-step-forms'].frameworks}
+        type="frameworks"
+      />
+      <RelatedContent
+        items={patternRelations['multi-step-forms'].deepDives}
+        type="deepDives"
+      />
     </div>
   )
 }

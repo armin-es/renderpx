@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { CodeBlock } from '@/components/CodeBlock'
 import { Callout, InlineCode } from '@/components/ui'
+import { RelatedContent } from '@/components/RelatedContent'
+import { patternRelations } from '@/lib/related-content'
 
 const NAIVE_CODE = `// After mutation, hope the next navigation refetches
 function EditProfileForm({ userId }: { userId: string }) {
@@ -149,6 +151,15 @@ export default function CacheInvalidationPatternPage() {
           All patterns
         </Link>
       </p>
+
+      <RelatedContent
+        items={patternRelations['cache-invalidation'].frameworks}
+        type="frameworks"
+      />
+      <RelatedContent
+        items={patternRelations['cache-invalidation'].deepDives}
+        type="deepDives"
+      />
     </div>
   )
 }

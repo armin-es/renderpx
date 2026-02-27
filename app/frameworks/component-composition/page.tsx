@@ -2,9 +2,11 @@ import Link from "next/link";
 import { CodeWithPreview } from "@/components/CodeWithPreview";
 import { CodeBlock } from "@/components/CodeBlock";
 import { ExampleViewer } from "@/components/ExampleViewer";
+import { RelatedContent } from "@/components/RelatedContent";
 import { PropsTabsDemo } from "@/components/demos/TabsDemos";
 import { CompoundTabsDemo } from "@/components/demos/TabsDemos";
 import { componentCompositionExampleContent } from "@/lib/componentCompositionExamples";
+import { frameworkRelations } from "@/lib/related-content";
 
 const PROPS_TABS_CODE = `// Tabs component owns all rendering — consumer passes data
 function Tabs({ tabs, defaultTab }) {
@@ -1327,6 +1329,15 @@ export default async function ComponentCompositionPage() {
           </div>
         </div>
       </section>
+
+      <RelatedContent
+        items={frameworkRelations['component-composition'].patterns}
+        type="patterns"
+      />
+      <RelatedContent
+        items={frameworkRelations['component-composition'].deepDives}
+        type="deepDives"
+      />
     </div>
   );
 }

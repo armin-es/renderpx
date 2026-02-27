@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { CodeBlock } from '@/components/CodeBlock'
 import { Callout, InlineCode } from '@/components/ui'
+import { RelatedContent } from '@/components/RelatedContent'
+import { patternRelations } from '@/lib/related-content'
 
 const NAIVE_CODE = `// Wrap every component that needs auth in a HOC
 function withAuth<P extends object>(Component: React.ComponentType<P>) {
@@ -128,6 +130,15 @@ export default function HocsVsCompositionPatternPage() {
           All patterns
         </Link>
       </p>
+
+      <RelatedContent
+        items={patternRelations['hocs-vs-composition'].frameworks}
+        type="frameworks"
+      />
+      <RelatedContent
+        items={patternRelations['hocs-vs-composition'].deepDives}
+        type="deepDives"
+      />
     </div>
   )
 }

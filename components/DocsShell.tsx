@@ -55,14 +55,9 @@ const STATE_ARCH_SECTIONS = [
   { id: 'the-problem', label: 'The Problem' },
   { id: 'the-solution', label: 'The Solution' },
   { id: 'when-narrowing-fails', label: 'When Narrowing Fails' },
-  { id: 'react-compiler', label: 'React Compiler Impact' },
   { id: 'decision-framework', label: 'Decision Framework' },
-  { id: 'decision-matrix', label: 'Decision Matrix' },
-  { id: 'in-practice', label: 'See It In Practice' },
-  { id: 'production-patterns', label: 'Production Patterns' },
-  { id: 'hot-takes', label: 'Hot Takes' },
-  { id: 'real-rollout', label: 'A Real Rollout' },
-  { id: 'related-frameworks', label: 'Related Frameworks' },
+  { id: 'decision-signals', label: 'Decision Signals' },
+  { id: 'progressive-examples', label: 'Progressive Examples' },
 ]
 
 const COMPONENT_COMP_SECTIONS = [

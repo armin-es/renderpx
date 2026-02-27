@@ -616,6 +616,123 @@ function useStore(selector) {
             </li>
           </ul>
         </div>
+
+        <div className="mt-8">
+          <h3
+            className="text-lg font-bold mb-4 text-content"
+          >
+            How It Works: A Simple Example
+          </h3>
+          <p
+            className="text-sm text-content mb-4"
+          >
+            Here's a simple store and how to use{" "}
+            <code
+              className="text-xs px-1 py-0.5 rounded bg-inline-code-bg"
+            >
+              useSyncExternalStore
+            </code>
+            . Even if the store updates mid-render between ComponentA and ComponentB, both components see the same value because React captured a snapshot at the start of the render.
+          </p>
+          <CodeBlock
+            code={`// Simple counter store
+const store = {
+  state: 0,
+  listeners: new Set(),
+
+  getState() {
+    return this.state;
+  },
+
+  setState(newState) {
+    this.state = newState;
+    // Notify all subscribers
+    this.listeners.forEach(listener => listener());
+  },
+
+  subscribe(listener) {
+    this.listeners.add(listener);
+    return () => this.listeners.delete(listener);
+  }
+};
+
+// Custom hook using useSyncExternalStore
+function useStore() {
+  return useSyncExternalStore(
+    store.subscribe,    // Subscribe to changes
+    store.getState      // Get snapshot
+  );
+}
+
+// Two components from the same store
+function ComponentA() {
+  const value = useStore();
+  return <div>Component A: {value}</div>;
+}
+
+function ComponentB() {
+  const value = useStore();
+  return <div>Component B: {value}</div>;
+}
+
+// They always see the same value within a render
+function App() {
+  return (
+    <div>
+      <ComponentA />
+      <ComponentB />
+      <button onClick={() => store.setState(store.getState() + 1)}>
+        Increment
+      </button>
+    </div>
+  );
+}`}
+            lang="tsx"
+            label="useSyncExternalStore in Action"
+          />
+          <div
+            className="mt-6 p-4 rounded-lg border border-content-border bg-card-bg"
+          >
+            <h4
+              className="font-bold mb-3 text-content text-sm"
+            >
+              How It Prevents Tearing
+            </h4>
+            <p
+              className="text-sm text-content mb-3"
+            >
+              The magic is that React captures a snapshot at the start of the render, and all components use that same snapshot:
+            </p>
+            <div
+              className="bg-inline-code-bg rounded p-3 text-xs font-mono text-content space-y-2"
+            >
+              <div>1. Start render</div>
+              <div>2. React calls getState() ONCE - snapshot = 5</div>
+              <div>3. ComponentA reads snapshot - sees 5</div>
+              <div>[PAUSE - store updates to 10]</div>
+              <div>4. ComponentB reads snapshot - still sees 5</div>
+              <div>5. Render complete</div>
+              <div>6. React detects store changed - schedules new render</div>
+            </div>
+            <p
+              className="text-sm text-content mt-3"
+            >
+              With the old pattern, each component called{" "}
+              <code
+                className="text-xs px-1 py-0.5 rounded bg-inline-code-bg"
+              >
+                store.getState()
+              </code>
+              {" "}directly at different times, so they could see different values mid-render. With{" "}
+              <code
+                className="text-xs px-1 py-0.5 rounded bg-inline-code-bg"
+              >
+                useSyncExternalStore
+              </code>
+              , React controls when the snapshot is taken, ensuring all components in one render cycle see the same value.
+            </p>
+          </div>
+        </div>
       </section>
 
       {/* Section 7: Selector Patterns */}

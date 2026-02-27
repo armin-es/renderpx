@@ -290,8 +290,8 @@ const useFormStore = create((set) => ({
             </h3>
             <p className="text-content-muted">
               Wrong patterns create technical debt. Too local = prop drilling
-              hell. Too global = performance death. The right pattern makes the
-              next feature easy.
+              hell. Too global without selectors = performance issues. The right
+              pattern makes the next feature easy.
             </p>
           </div>
         </div>

@@ -332,37 +332,26 @@ const useFormStore = create((set) => ({
             },
             {
               from: "Lifted",
-              to: "URL",
+              to: "Browser Persistent",
               signals: [
                 "The user would be frustrated if a browser refresh cleared the state",
                 "You want to share a specific view with another person via a link",
                 "Analytics should capture the actual filter/search combination users are using",
-                "The back button should restore the previous filter, not go to the previous page",
               ],
               notYet:
-                "State that's purely transient (a dropdown open/closed) doesn't belong in the URL.",
+                "State that's purely transient (a dropdown open/closed) doesn't need persistence. Choose URL for shareability, localStorage for silent persistence.",
             },
             {
-              from: "URL",
-              to: "Server",
+              from: "Browser Persistent",
+              to: "Server Persistent",
               signals: [
                 "The dataset is too large to filter/sort client-side (>1k items, or growing)",
-                "Multiple URL params combine in ways that need the server to compute the result",
-                "The same data is fetched in multiple places and should be cached",
+                "Multiple filters combine in ways that need the server to compute the result",
+                "The same data is fetched in multiple places and should be cached server-side",
+                "Data must sync across devices or survive app uninstall",
               ],
               notYet:
-                "URL state with client-side filtering is faster to implement and perfectly adequate for small datasets.",
-            },
-            {
-              from: "Server",
-              to: "Global",
-              signals: [
-                "A user action in one feature needs to immediately update what another unrelated feature displays",
-                "State is genuinely cross-cutting: the same value affects 5+ components across different subtrees",
-                "You need to write to state from outside the React tree (WebSocket handler, service worker)",
-              ],
-              notYet:
-                "Server state (React Query) and URL state handle most cross-component coordination without global client state.",
+                "Browser persistence (URL, localStorage) is faster to implement and adequate for user-specific filters or preferences that don't need cross-device sync.",
             },
           ].map((item) => (
             <div

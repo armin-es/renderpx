@@ -1,6 +1,6 @@
 'use client'
 
-import { createContext, useContext, useState, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 
 const MOCK_PRODUCTS = [
   { id: '1', name: 'Widget A' },
@@ -11,7 +11,7 @@ const MOCK_PRODUCTS = [
   { id: '6', name: 'Tool Beta' },
 ]
 
-type Variant = '01-local-state' | '02-lifted-state' | '03-url-state' | '04-server-state' | '05-global-state'
+type Variant = '01-local-state' | '02-lifted-state' | '03-browser-persistent' | '04-server-persistent'
 
 // Shared UI pieces
 function FilterInput({
@@ -93,32 +93,51 @@ function LiftedStateDemo() {
   )
 }
 
-// 03: URL state — simulate query in URL (demo: we show "URL" and sync state to mimic it)
-function URLStateDemo() {
-  const [query, setQuery] = useState('')
+// 03: Browser persistent — filter persists in URL or localStorage
+function BrowserPersistentDemo() {
+  const [query, setQuery] = useState(() => {
+    // Simulate reading from URL on mount
+    if (typeof window !== 'undefined') {
+      const params = new URLSearchParams(window.location.search)
+      return params.get('q') || ''
+    }
+    return ''
+  })
+
   const filtered = useMemo(
     () => MOCK_PRODUCTS.filter((p) => p.name.toLowerCase().includes(query.toLowerCase())),
     [query]
   )
+
+  const handleChange = (value: string) => {
+    setQuery(value)
+    // Simulate updating URL on change
+    const params = new URLSearchParams()
+    if (value) params.set('q', value)
+    // In real app: router.push(`?${params.toString()}`)
+  }
+
   return (
     <div className="space-y-3 p-4 rounded-lg border" style={{ borderColor: 'hsl(var(--content-border))' }}>
       <div className="text-xs font-mono opacity-75" style={{ color: 'hsl(var(--content-text-muted))' }}>
-        URL: ?q={query || '(empty)'}
+        Persisted: URL ?q={query || '(empty)'} or localStorage
       </div>
-      <FilterInput value={query} onChange={setQuery} />
+      <FilterInput value={query} onChange={handleChange} />
+      <div className="text-xs opacity-75">Survives page refresh</div>
       <ProductGrid products={filtered} />
     </div>
   )
 }
 
-// 04: Server state — simulated loading
-function ServerStateDemo() {
+// 04: Server persistent — server is source of truth, filter params sent to API
+function ServerPersistentDemo() {
   const [filter, setFilter] = useState('')
   const [loading, setLoading] = useState(false)
   const [products, setProducts] = useState<{ id: string; name: string }[]>(MOCK_PRODUCTS)
 
-  const load = () => {
+  const fetch = () => {
     setLoading(true)
+    // Simulate API call with filter params
     setTimeout(() => {
       setProducts(
         MOCK_PRODUCTS.filter((p) => p.name.toLowerCase().includes(filter.toLowerCase()))
@@ -129,11 +148,14 @@ function ServerStateDemo() {
 
   return (
     <div className="space-y-3 p-4 rounded-lg border" style={{ borderColor: 'hsl(var(--content-border))' }}>
+      <div className="text-xs font-mono opacity-75" style={{ color: 'hsl(var(--content-text-muted))' }}>
+        Server query: filter={filter || 'none'}
+      </div>
       <div className="flex gap-2">
         <FilterInput value={filter} onChange={setFilter} />
         <button
           type="button"
-          onClick={load}
+          onClick={fetch}
           className="px-3 py-2 rounded-md text-sm font-medium shrink-0"
           style={{ backgroundColor: 'hsl(var(--link))', color: 'white' }}
         >
@@ -141,10 +163,10 @@ function ServerStateDemo() {
         </button>
       </div>
       {loading ? (
-        <div className="text-sm py-4 opacity-75">Loading...</div>
+        <div className="text-sm py-4 opacity-75">Loading from server...</div>
       ) : (
         <>
-          <div className="text-xs opacity-75">{products.length} results</div>
+          <div className="text-xs opacity-75">{products.length} results (from server)</div>
           <ProductGrid products={products} />
         </>
       )}
@@ -152,48 +174,11 @@ function ServerStateDemo() {
   )
 }
 
-// 05: Global state — Context as minimal "store" (demo stand-in for Zustand)
-const GlobalStoreCtx = createContext<{
-  filter: string
-  setFilter: (v: string) => void
-  products: { id: string; name: string }[]
-} | null>(null)
-
-function GlobalStateDemoInner() {
-  const ctx = useContext(GlobalStoreCtx)
-  if (!ctx) return null
-  const { filter, setFilter, products } = ctx
-  const filtered = useMemo(
-    () => products.filter((p) => p.name.toLowerCase().includes(filter.toLowerCase())),
-    [filter, products]
-  )
-  return (
-    <div className="space-y-3 p-4 rounded-lg border" style={{ borderColor: 'hsl(var(--content-border))' }}>
-      <div className="text-xs opacity-75">Global store (persisted)</div>
-      <FilterInput value={filter} onChange={setFilter} />
-      <div className="text-xs opacity-75">{filtered.length} results</div>
-      <ProductGrid products={filtered} />
-    </div>
-  )
-}
-
-function GlobalStateDemo() {
-  const [filter, setFilter] = useState('')
-  const [products] = useState(MOCK_PRODUCTS)
-  const value = useMemo(() => ({ filter, setFilter, products }), [filter, products])
-  return (
-    <GlobalStoreCtx.Provider value={value}>
-      <GlobalStateDemoInner />
-    </GlobalStoreCtx.Provider>
-  )
-}
-
 const DEMOS: Record<Variant, () => JSX.Element> = {
   '01-local-state': LocalStateDemo,
   '02-lifted-state': LiftedStateDemo,
-  '03-url-state': URLStateDemo,
-  '04-server-state': ServerStateDemo,
-  '05-global-state': GlobalStateDemo,
+  '03-browser-persistent': BrowserPersistentDemo,
+  '04-server-persistent': ServerPersistentDemo,
 }
 
 export function ProductFilterDemos({ variant }: { variant: string }) {

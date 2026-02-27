@@ -289,8 +289,8 @@ const useFormStore = create((set) => ({
               3. What&apos;s the cost of getting it wrong?
             </h3>
             <p className="text-content-muted">
-              Wrong patterns create technical debt. Too local = prop drilling
-              hell. Too global without selectors = performance issues. The right
+              Wrong patterns create technical debt. Wrong placement = prop drilling
+              or duplication. Selectors solve global state performance. The right
               pattern makes the next feature easy.
             </p>
           </div>

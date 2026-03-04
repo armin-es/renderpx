@@ -28,6 +28,15 @@ const buttonVariants = cva(
 export interface ButtonProps
   extends ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof buttonVariants> {
+  /** Visual style of the button. @default 'primary' */
+  variant?: 'primary' | 'secondary' | 'ghost' | 'outline'
+  /** Controls padding and font size. @default 'md' */
+  size?: 'sm' | 'md' | 'lg'
+  /**
+   * When true, renders children directly using Radix Slot,
+   * merging button styles onto the child element without an extra DOM node.
+   * @default false
+   */
   asChild?: boolean
 }
 

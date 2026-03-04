@@ -1,5 +1,6 @@
 import { type HTMLAttributes } from 'react'
 
+/** Props for InlineCode. Forwards all native `<code>` attributes. */
 export interface InlineCodeProps extends HTMLAttributes<HTMLElement> {}
 
 function InlineCode({ className = '', ...props }: InlineCodeProps) {

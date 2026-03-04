@@ -28,6 +28,9 @@ const calloutTitleColors = {
 export interface CalloutProps
   extends HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof calloutVariants> {
+  /** Color theme applied to the border, background, and title. @default 'info' */
+  variant?: 'info' | 'success' | 'warning' | 'note'
+  /** Optional heading rendered above the body content in the variant's accent color. */
   title?: string
 }
 

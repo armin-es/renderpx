@@ -54,7 +54,7 @@ export const AsChild: Story = {
   args: { asChild: true },
   render: (args) => (
     <Button {...args}>
-      <a href="#">Link styled as button</a>
+      <a href="/components">Link styled as button</a>
     </Button>
   ),
 }

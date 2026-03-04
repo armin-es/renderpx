@@ -83,10 +83,11 @@ function FormInputs() {
         </span>
       </div>
       <div>
-        <label className="block text-xs mb-1" style={{ color: 'hsl(var(--content-text-muted))' }}>
+        <label htmlFor="zustand-email" className="block text-xs mb-1" style={{ color: 'hsl(var(--content-text-muted))' }}>
           Email
         </label>
         <input
+          id="zustand-email"
           type="email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
@@ -100,10 +101,11 @@ function FormInputs() {
         />
       </div>
       <div>
-        <label className="block text-xs mb-1" style={{ color: 'hsl(var(--content-text-muted))' }}>
+        <label htmlFor="zustand-phone" className="block text-xs mb-1" style={{ color: 'hsl(var(--content-text-muted))' }}>
           Phone
         </label>
         <input
+          id="zustand-phone"
           type="tel"
           value={phone}
           onChange={(e) => setPhone(e.target.value)}

@@ -567,7 +567,11 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
         <>
           <div
             className="fixed inset-0 z-40 bg-black/50 lg:hidden"
+            role="button"
+            tabIndex={0}
+            aria-label="Close menu"
             onClick={() => setMobileMenuOpen(false)}
+            onKeyDown={(e) => e.key === 'Enter' || e.key === ' ' ? setMobileMenuOpen(false) : undefined}
           />
           <div className="fixed top-14 left-0 bottom-0 z-40 w-72 bg-sidebar-bg border-r border-sidebar-border overflow-y-auto py-6 px-3 pb-safe lg:hidden">
             <SidebarNav />

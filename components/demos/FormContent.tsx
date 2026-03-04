@@ -25,10 +25,11 @@ export function FormContent() {
         </span>
       </div>
       <div>
-        <label className="block text-xs mb-1" style={{ color: 'hsl(var(--content-text-muted))' }}>
+        <label htmlFor="form-email" className="block text-xs mb-1" style={{ color: 'hsl(var(--content-text-muted))' }}>
           Email
         </label>
         <input
+          id="form-email"
           type="email"
           value={ctx.formData.email}
           onChange={(e) =>
@@ -44,10 +45,11 @@ export function FormContent() {
         />
       </div>
       <div>
-        <label className="block text-xs mb-1" style={{ color: 'hsl(var(--content-text-muted))' }}>
+        <label htmlFor="form-phone" className="block text-xs mb-1" style={{ color: 'hsl(var(--content-text-muted))' }}>
           Phone
         </label>
         <input
+          id="form-phone"
           type="tel"
           value={ctx.formData.phone}
           onChange={(e) =>

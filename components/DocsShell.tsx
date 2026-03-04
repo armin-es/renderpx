@@ -218,6 +218,13 @@ const NOTION_SECTIONS = [
   { id: 'tradeoffs', label: "What I'd Do Differently" },
 ]
 
+const COMPONENTS_SECTIONS = [
+  { id: 'button', label: 'Button' },
+  { id: 'badge', label: 'Badge' },
+  { id: 'callout', label: 'Callout' },
+  { id: 'inline-code', label: 'InlineCode' },
+]
+
 const sectionLabelClass =
   'px-3 mb-3 text-[10px] font-bold uppercase tracking-widest text-sidebar-text border-b border-sidebar-border pb-2'
 
@@ -297,6 +304,7 @@ function SidebarNav() {
 
   const isFramework = pathname === '/frameworks' || isStateArch || isComponentComp || isDataFetching || isRenderingStrategy || isDesignSystems || isCodeOrg || isPerformanceArch
   const isDeepDive = pathname === '/deep-dives' || isStateMachines || isUseEffectCleanup || isGraphqlCaching || isStateMgmtInternals || isStateArchPractice
+  const isComponents = pathname === '/components'
 
   return (
     <nav className="flex flex-col gap-6 text-sm">
@@ -378,6 +386,15 @@ function SidebarNav() {
 
       <div>
         <Link
+          href="/components"
+          className={`block px-3 mb-3 text-[10px] font-bold uppercase tracking-widest border-b border-sidebar-border pb-2 transition-opacity hover:opacity-70 ${isComponents ? 'text-primary' : 'text-sidebar-text'}`}
+        >
+          Components
+        </Link>
+      </div>
+
+      <div>
+        <Link
           href="/about"
           className="block px-3 mb-3 text-[10px] font-bold uppercase tracking-widest border-b border-sidebar-border pb-2 transition-opacity hover:opacity-70 text-sidebar-text"
         >
@@ -408,6 +425,7 @@ function RightSidebar() {
   const isStateArchPracticeRight = pathname === '/deep-dives/state-architecture-in-practice'
   const isRedditRight = pathname === '/system-design/reddit'
   const isNotionRight = pathname === '/system-design/notion'
+  const isComponentsRight = pathname === '/components'
   const sections = isPatternDetailRight
     ? PATTERN_DETAIL_SECTIONS
     : isStateArch
@@ -438,6 +456,8 @@ function RightSidebar() {
     ? REDDIT_SECTIONS
     : isNotionRight
     ? NOTION_SECTIONS
+    : isComponentsRight
+    ? COMPONENTS_SECTIONS
     : null
 
   useEffect(() => {
@@ -528,6 +548,9 @@ export function DocsShell({ children }: { children: React.ReactNode }) {
           </Link>
           <Link href="/system-design" className="text-header-text-muted hover:text-header-text">
             System Design
+          </Link>
+          <Link href="/components" className="text-header-text-muted hover:text-header-text">
+            Components
           </Link>
           <Link href="/about" className="text-header-text-muted hover:text-header-text">
             About

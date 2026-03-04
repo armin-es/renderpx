@@ -1314,6 +1314,13 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
           <InlineCode>text-content</InlineCode> resolves to <InlineCode>hsl(var(--content-text))</InlineCode>. This means the CSS variables in{" "}
           <InlineCode>globals.css</InlineCode> stay unchanged, dark mode keeps working, and every component drops its inline styles.
         </Callout>
+
+        <div className="mt-8 flex items-center gap-2 text-sm">
+          <span className="text-content-muted">All four components with prop tables and copy-paste snippets:</span>
+          <Link href="/components" className="text-primary hover:opacity-80 font-medium transition-opacity">
+            Component reference →
+          </Link>
+        </div>
       </section>
 
       {/* Section 9: Hot Takes */}

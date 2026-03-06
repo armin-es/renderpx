@@ -5,7 +5,7 @@ import { Callout } from "@/components/ui/callout";
 import { InlineCode } from "@/components/ui/inline-code";
 import { CodeBlock } from "@/components/CodeBlock";
 
-const BUTTON_CODE = `import { Button } from '@/components/ui'
+const BUTTON_CODE = `import { Button } from '@render-px/ui'
 
 // Variants
 <Button variant="primary">Primary</Button>
@@ -23,7 +23,7 @@ const BUTTON_CODE = `import { Button } from '@/components/ui'
   <a href="/page">Link styled as button</a>
 </Button>`;
 
-const BADGE_CODE = `import { Badge } from '@/components/ui'
+const BADGE_CODE = `import { Badge } from '@render-px/ui'
 
 <Badge variant="default">New</Badge>
 <Badge variant="success">Active</Badge>
@@ -35,7 +35,7 @@ const BADGE_CODE = `import { Badge } from '@/components/ui'
 <Badge size="md">Medium</Badge>
 <Badge size="lg">Large</Badge>`;
 
-const CALLOUT_CODE = `import { Callout } from '@/components/ui'
+const CALLOUT_CODE = `import { Callout } from '@render-px/ui'
 
 <Callout variant="info" title="Info">
   Use this for general information or tips.
@@ -56,7 +56,7 @@ const CALLOUT_CODE = `import { Callout } from '@/components/ui'
 // Without a title
 <Callout variant="info">Body-only callout.</Callout>`;
 
-const INLINE_CODE_CODE = `import { InlineCode } from '@/components/ui'
+const INLINE_CODE_CODE = `import { InlineCode } from '@render-px/ui'
 
 // Inline in prose
 <p>
@@ -64,7 +64,7 @@ const INLINE_CODE_CODE = `import { InlineCode } from '@/components/ui'
 </p>
 
 // Standalone
-<InlineCode>npm install @renderpx/ui</InlineCode>`;
+<InlineCode>npm install @render-px/ui</InlineCode>`;
 
 type PropRow = {
   name: string;
@@ -397,7 +397,7 @@ export default function ComponentsPage() {
             </p>
             <p className="text-sm text-content">
               Install the package:{" "}
-              <InlineCode>npm install @renderpx/ui</InlineCode>
+              <InlineCode>npm install @render-px/ui</InlineCode>
             </p>
           </div>
 

@@ -9,6 +9,8 @@ import {
   RenderingModesComparisonDemo,
 } from "@/components/demos/RenderingStrategyDemos";
 import { renderingStrategyExampleContent } from "@/lib/renderingStrategyExamples";
+import { Callout } from "@/components/ui/callout";
+import { InlineCode } from "@/components/ui/inline-code";
 
 const CSR_PROBLEM_CODE = `// Every product page is invisible to Google
 'use client'
@@ -299,6 +301,29 @@ export default async function RenderingStrategyPage() {
               (ISR). CSR sends nothing and generates it in the browser.
             </p>
           </div>
+        </div>
+
+        <div className="mt-4">
+          <Callout variant="note" title="How CDN caching works">
+            A CDN is a network of servers placed close to users around the world.
+            When a user requests a page, the request goes to the nearest CDN edge
+            node instead of your origin server. If the edge has a cached copy
+            (cache hit), it serves it immediately - often in under 5ms. If not
+            (cache miss), it fetches the page from your origin, caches it, then
+            serves it. Subsequent users at the same edge get the cached version.
+            <br />
+            <br />
+            Your origin server controls what gets cached via the{" "}
+            <InlineCode>Cache-Control</InlineCode> header. The key directive for
+            CDNs is <InlineCode>s-maxage</InlineCode>, which sets how long the
+            CDN holds the cached response before re-fetching from origin.{" "}
+            <InlineCode>max-age</InlineCode> controls browser caching.{" "}
+            <InlineCode>public</InlineCode> tells the CDN it is allowed to cache
+            the response at all - you cannot set this when responses contain
+            user-specific data. SSG and ISR pages can be{" "}
+            <InlineCode>public</InlineCode> because every user gets the same
+            HTML. SSR pages usually cannot.
+          </Callout>
         </div>
       </section>
 

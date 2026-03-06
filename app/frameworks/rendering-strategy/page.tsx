@@ -545,6 +545,27 @@ export default async function RenderingStrategyPage() {
             </tbody>
           </table>
         </div>
+
+        <div className="mt-6">
+          <Callout variant="note" title="SSR vs RSC - what is the difference?">
+            Both SSR and RSC render HTML on the server, but they operate at
+            different granularities. SSR is page-level: the entire route renders
+            in one pass, and the browser waits for the slowest data fetch before
+            receiving any HTML. RSC is component-level: each Server Component
+            fetches its own data independently, and React streams HTML to the
+            browser as components resolve - so fast parts appear immediately
+            while slow parts load in.
+            <br />
+            <br />
+            The other key difference is JavaScript. With SSR, the full component
+            tree is hydrated in the browser. With RSC, Server Components send
+            zero JavaScript - only Client Components (marked{" "}
+            <InlineCode>&quot;use client&quot;</InlineCode>) are hydrated. This
+            is why RSC can show <InlineCode>{"< 5ms"}</InlineCode> TTFB in the
+            table above: the static shell streams before any slow fetches
+            complete, and the bundle the browser has to parse is smaller.
+          </Callout>
+        </div>
       </section>
 
       {/* Section 5: Progressive Complexity */}

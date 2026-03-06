@@ -493,7 +493,7 @@ export default async function RenderingStrategyPage() {
             <h3 className="font-bold mb-2 text-content">
               The e-commerce site that moved from SSR to ISR and cut server costs 80%
             </h3>
-            <p className="text-sm mb-3 text-content-muted">
+            <p className="text-sm mb-3 text-content">
               A mid-sized retailer with ~5,000 products was SSR-ing every product
               page because &quot;we need fresh prices.&quot; Prices changed once or
               twice per day via a batch sync job.
@@ -533,7 +533,7 @@ export default async function RenderingStrategyPage() {
             <h3 className="font-bold mb-2 text-content">
               The dashboard that taught me about the CSR/RSC boundary
             </h3>
-            <p className="text-sm mb-3 text-content-muted">
+            <p className="text-sm mb-3 text-content">
               A user dashboard migrated from a Vite SPA (pure CSR) to Next.js App
               Router. The instinct was to add{" "}
               <code className="text-xs px-1 py-0.5 rounded bg-inline-code-bg">
@@ -569,14 +569,14 @@ export default async function RenderingStrategyPage() {
             <h3 className="font-bold mb-2 text-content">
               Migrating a CSR app to Next.js without a rewrite
             </h3>
-            <p className="text-sm mb-3 text-content-muted">
+            <p className="text-sm mb-3 text-content">
               The instinct when adding Next.js is to move everything at once. The
               right instinct is to start with the pages that hurt most: the ones
               Google can&apos;t index, or the ones with the worst LCP on mobile.
               Next.js supports both CSR components and SSR/SSG pages in the same
               app; you&apos;re adding a rendering layer, not rewriting components.
             </p>
-            <p className="text-sm mb-4 text-content-muted">
+            <p className="text-sm mb-4 text-content">
               Migrate route by route. For each route, answer two questions: does
               this content need to be indexed? Does it change per user? Those
               answers determine the rendering strategy. The key call per route: if

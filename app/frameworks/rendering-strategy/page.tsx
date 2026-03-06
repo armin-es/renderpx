@@ -189,54 +189,33 @@ const DECISION_MATRIX = [
 
 export default async function RenderingStrategyPage() {
   return (
-    <div
-      className="min-h-full max-w-4xl mx-auto px-4 py-10 sm:px-6"
-      style={{ backgroundColor: "hsl(var(--content-bg))" }}
-    >
+    <div className="min-h-full max-w-4xl mx-auto px-4 py-10 sm:px-6 bg-content-bg">
       {/* Title */}
       <div className="mb-12">
-        <h1
-          className="text-4xl font-bold mb-4"
-          style={{ color: "hsl(var(--content-text))" }}
-        >
+        <h1 className="text-4xl font-bold mb-4 text-content">
           Rendering Strategy
         </h1>
-        <p
-          className="text-xl"
-          style={{ color: "hsl(var(--content-text-muted))" }}
-        >
+        <p className="text-xl text-content-muted">
           When does your page render, and where?
         </p>
       </div>
 
       {/* Section 1: The Problem */}
       <section id="the-problem" className="mb-16">
-        <h2
-          className="text-2xl font-bold mb-4"
-          style={{ color: "hsl(var(--content-text))" }}
-        >
+        <h2 className="text-2xl font-bold mb-4 text-content">
           The Problem
         </h2>
         <div className="space-y-4">
-          <p
-            className="text-lg leading-relaxed"
-            style={{ color: "hsl(var(--content-text))" }}
-          >
+          <p className="text-lg leading-relaxed text-content">
             The default React mental model is{" "}
             <strong>client-side rendering</strong>: the server sends an empty
             HTML shell, JavaScript loads, fetches data, and the page appears.
             For a while, this felt fine. Then product teams started asking why
             their pages weren&apos;t showing up on Google.
           </p>
-          <p
-            className="leading-relaxed"
-            style={{ color: "hsl(var(--content-text))" }}
-          >
+          <p className="leading-relaxed text-content">
             The problem is twofold. First, search engine crawlers see an empty{" "}
-            <code
-              className="text-sm px-1.5 py-0.5 rounded"
-              style={{ backgroundColor: "hsl(var(--inline-code-bg))" }}
-            >
+            <code className="text-sm px-1.5 py-0.5 rounded bg-inline-code-bg">
               {"<div id=\"root\"></div>"}
             </code>
             , not your content. Second, the loading waterfall punishes users on
@@ -244,10 +223,7 @@ export default async function RenderingStrategyPage() {
             resolves → page finally renders. Four sequential steps before
             anything useful appears.
           </p>
-          <p
-            className="leading-relaxed"
-            style={{ color: "hsl(var(--content-text))" }}
-          >
+          <p className="leading-relaxed text-content">
             Simulate it below. The timeline shows why CSR feels slow; each step
             only starts after the previous one finishes.
           </p>
@@ -267,16 +243,10 @@ export default async function RenderingStrategyPage() {
 
       {/* Section 2: The Rendering Modes */}
       <section id="rendering-modes" className="mb-16">
-        <h2
-          className="text-2xl font-bold mb-4"
-          style={{ color: "hsl(var(--content-text))" }}
-        >
+        <h2 className="text-2xl font-bold mb-4 text-content">
           The Five Rendering Modes
         </h2>
-        <p
-          className="mb-6"
-          style={{ color: "hsl(var(--content-text))" }}
-        >
+        <p className="mb-6 text-content">
           The answer isn&apos;t to replace CSR; it&apos;s to understand what
           each mode trades off, and match it to the page&apos;s actual needs.
           Select a mode below to see what HTML arrives in the browser and what
@@ -286,14 +256,8 @@ export default async function RenderingStrategyPage() {
         <RenderingModesComparisonDemo />
 
         <div className="mt-6 space-y-4">
-          <div
-            className="p-4 rounded-lg border"
-            style={{
-              backgroundColor: "hsl(var(--box-info-bg))",
-              borderColor: "hsl(var(--box-info-border))",
-            }}
-          >
-            <p style={{ color: "hsl(var(--content-text))" }}>
+          <div className="p-4 rounded-lg border bg-box-info-bg border-box-info-border">
+            <p className="text-content">
               <strong>The key insight:</strong> SSR, SSG, and ISR all send
               fully-populated HTML to the browser. The difference is{" "}
               <em>when</em> that HTML was generated: on every request (SSR), at
@@ -329,16 +293,10 @@ export default async function RenderingStrategyPage() {
 
       {/* Section 3: The Framework */}
       <section id="the-framework" className="mb-16">
-        <h2
-          className="text-2xl font-bold mb-4"
-          style={{ color: "hsl(var(--content-text))" }}
-        >
+        <h2 className="text-2xl font-bold mb-4 text-content">
           The Framework: Two Questions
         </h2>
-        <p
-          className="text-lg leading-relaxed mb-6"
-          style={{ color: "hsl(var(--content-text))" }}
-        >
+        <p className="text-lg leading-relaxed mb-6 text-content">
           Every rendering decision comes down to two questions about your data:
         </p>
 
@@ -352,8 +310,7 @@ export default async function RenderingStrategyPage() {
                 { label: "Every request", hint: "SSR — always fresh" },
                 { label: "On user action", hint: "CSR — fetch in browser" },
               ],
-              color: "hsl(var(--box-info-bg))",
-              border: "hsl(var(--box-info-border))",
+              cardClass: "bg-box-info-bg border-box-info-border",
             },
             {
               question: "Is this data the same for all users?",
@@ -365,26 +322,21 @@ export default async function RenderingStrategyPage() {
                   hint: "RSC — per-component control",
                 },
               ],
-              color: "hsl(var(--box-success-bg))",
-              border: "hsl(var(--box-success-border))",
+              cardClass: "bg-box-success-bg border-box-success-border",
             },
           ].map((block) => (
             <div
               key={block.question}
-              className="p-4 rounded-lg border"
-              style={{ backgroundColor: block.color, borderColor: block.border }}
+              className={`p-4 rounded-lg border ${block.cardClass}`}
             >
-              <div
-                className="font-bold text-sm mb-3"
-                style={{ color: "hsl(var(--content-text))" }}
-              >
+              <div className="font-bold text-sm mb-3 text-content">
                 {block.question}
               </div>
               <ul className="space-y-2">
                 {block.options.map(({ label, hint }) => (
-                  <li key={label} className="text-sm" style={{ color: "hsl(var(--content-text))" }}>
+                  <li key={label} className="text-sm text-content">
                     <span className="font-medium">{label}</span>
-                    <span style={{ color: "hsl(var(--content-text-muted))" }}>
+                    <span className="text-content-muted">
                       {" "}→ {hint}
                     </span>
                   </li>
@@ -396,16 +348,10 @@ export default async function RenderingStrategyPage() {
 
         <div className="space-y-6">
           <div>
-            <h3
-              className="text-lg font-bold mb-3"
-              style={{ color: "hsl(var(--content-text))" }}
-            >
+            <h3 className="text-lg font-bold mb-3 text-content">
               The practical starting point: ISR
             </h3>
-            <p
-              className="mb-4"
-              style={{ color: "hsl(var(--content-text))" }}
-            >
+            <p className="mb-4 text-content">
               For most public-facing pages where data changes, ISR is the right
               default. It gives you static file performance (CDN, sub-5ms TTFB)
               with automatic freshness; no rebuild pipeline needed.
@@ -414,16 +360,10 @@ export default async function RenderingStrategyPage() {
           </div>
 
           <div>
-            <h3
-              className="text-lg font-bold mb-3"
-              style={{ color: "hsl(var(--content-text))" }}
-            >
+            <h3 className="text-lg font-bold mb-3 text-content">
               When pages get complex: RSC + Streaming
             </h3>
-            <p
-              className="mb-4"
-              style={{ color: "hsl(var(--content-text))" }}
-            >
+            <p className="mb-4 text-content">
               A product page isn&apos;t one piece of data. The product details
               change rarely; ISR is fine. The live review count changes
               constantly; it needs a fresh fetch. The &quot;Add to Cart&quot;
@@ -431,21 +371,12 @@ export default async function RenderingStrategyPage() {
               let you make these decisions per component, not per page.
             </p>
             <CodeBlock code={RSC_STREAMING_CODE} lang="tsx" />
-            <div
-              className="mt-4 p-4 rounded-lg border"
-              style={{
-                backgroundColor: "hsl(var(--box-yellow-bg))",
-                borderColor: "hsl(var(--box-yellow-border))",
-              }}
-            >
-              <p style={{ color: "hsl(var(--content-text))" }}>
+            <div className="mt-4 p-4 rounded-lg border bg-box-yellow-bg border-box-yellow-border">
+              <p className="text-content">
                 <strong>What &quot;streaming&quot; means in practice:</strong>{" "}
                 the server sends the product HTML immediately (from cache) and
                 streams the{" "}
-                <code
-                  className="text-xs px-1 py-0.5 rounded"
-                  style={{ backgroundColor: "hsl(var(--inline-code-bg))" }}
-                >
+                <code className="text-xs px-1 py-0.5 rounded bg-inline-code-bg">
                   {"<ReviewsFeed>"}
                 </code>{" "}
                 chunk separately as it resolves. The user sees a complete product
@@ -459,35 +390,22 @@ export default async function RenderingStrategyPage() {
 
       {/* Section 4: Decision Matrix */}
       <section id="decision-matrix" className="mb-16">
-        <h2
-          className="text-2xl font-bold mb-4"
-          style={{ color: "hsl(var(--content-text))" }}
-        >
+        <h2 className="text-2xl font-bold mb-4 text-content">
           Decision Matrix
         </h2>
-        <p
-          className="mb-6"
-          style={{ color: "hsl(var(--content-text-muted))" }}
-        >
+        <p className="mb-6 text-content-muted">
           A reference for matching rendering strategy to page characteristics. Most
           production apps use two or three of these strategies across different pages.
         </p>
 
         <div className="overflow-x-auto">
-          <table
-            className="w-full border-collapse text-sm"
-            style={{ borderColor: "hsl(var(--content-border))" }}
-          >
+          <table className="w-full border-collapse text-sm border-content-border">
             <thead>
-              <tr
-                className="border-b-2"
-                style={{ borderColor: "hsl(var(--content-border))" }}
-              >
+              <tr className="border-b-2 border-content-border">
                 {["Strategy", "TTFB", "SEO", "Freshness", "Use When"].map((h) => (
                   <th
                     key={h}
-                    className="text-left p-3 font-bold"
-                    style={{ color: "hsl(var(--content-text))" }}
+                    className="text-left p-3 font-bold text-content"
                   >
                     {h}
                   </th>
@@ -498,45 +416,23 @@ export default async function RenderingStrategyPage() {
               {DECISION_MATRIX.map((row, i) => (
                 <tr
                   key={row.strategy}
-                  style={
-                    i % 2 === 0
-                      ? { backgroundColor: "hsl(var(--table-row-alt))" }
-                      : undefined
-                  }
+                  className={i % 2 === 0 ? "bg-table-row-alt" : ""}
                 >
-                  <td
-                    className="p-3 font-medium align-top"
-                    style={{ color: "hsl(var(--content-text))" }}
-                  >
+                  <td className="p-3 font-medium align-top text-content">
                     {row.strategy}
                   </td>
-                  <td
-                    className="p-3 align-top"
-                    style={{ color: "hsl(var(--content-text-muted))" }}
-                  >
+                  <td className="p-3 align-top text-content-muted">
                     {row.ttfb}
                   </td>
-                  <td
-                    className="p-3 align-top"
-                    style={{ color: "hsl(var(--content-text-muted))" }}
-                  >
+                  <td className="p-3 align-top text-content-muted">
                     {row.seo}
                   </td>
-                  <td
-                    className="p-3 align-top"
-                    style={{ color: "hsl(var(--content-text-muted))" }}
-                  >
+                  <td className="p-3 align-top text-content-muted">
                     {row.freshness}
                   </td>
-                  <td
-                    className="p-3 align-top"
-                    style={{ color: "hsl(var(--content-text-muted))" }}
-                  >
+                  <td className="p-3 align-top text-content-muted">
                     <div className="mb-1">{row.useWhen}</div>
-                    <div
-                      className="text-xs italic"
-                      style={{ color: "hsl(var(--content-text-muted) / 0.9)" }}
-                    >
+                    <div className="text-xs italic text-content-muted">
                       Avoid: {row.avoid}
                     </div>
                   </td>
@@ -570,16 +466,10 @@ export default async function RenderingStrategyPage() {
 
       {/* Section 5: Progressive Complexity */}
       <section id="progressive-complexity" className="mb-16">
-        <h2
-          className="text-2xl font-bold mb-4"
-          style={{ color: "hsl(var(--content-text))" }}
-        >
+        <h2 className="text-2xl font-bold mb-4 text-content">
           Progressive Complexity
         </h2>
-        <p
-          className="mb-6"
-          style={{ color: "hsl(var(--content-text-muted))" }}
-        >
+        <p className="mb-6 text-content-muted">
           The same feature (a product detail page) built with each rendering
           strategy. Each example shows exactly what changes, what it gains, and
           what constraint drives you to the next step.
@@ -594,33 +484,21 @@ export default async function RenderingStrategyPage() {
 
       {/* Section 6: Production Patterns */}
       <section id="production-patterns" className="mb-16">
-        <h2
-          className="text-2xl font-bold mb-4"
-          style={{ color: "hsl(var(--content-text))" }}
-        >
+        <h2 className="text-2xl font-bold mb-4 text-content">
           Production Patterns
         </h2>
 
         <div className="space-y-6">
-          <div
-            className="p-5 rounded-lg border"
-            style={{ borderColor: "hsl(var(--content-border))" }}
-          >
-            <h3
-              className="font-bold mb-2"
-              style={{ color: "hsl(var(--content-text))" }}
-            >
+          <div className="p-5 rounded-lg border border-content-border">
+            <h3 className="font-bold mb-2 text-content">
               The e-commerce site that moved from SSR to ISR and cut server costs 80%
             </h3>
-            <p
-              className="text-sm mb-3"
-              style={{ color: "hsl(var(--content-text-muted))" }}
-            >
+            <p className="text-sm mb-3 text-content-muted">
               A mid-sized retailer with ~5,000 products was SSR-ing every product
               page because &quot;we need fresh prices.&quot; Prices changed once or
               twice per day via a batch sync job.
             </p>
-            <div className="text-sm space-y-1" style={{ color: "hsl(var(--content-text))" }}>
+            <div className="text-sm space-y-1 text-content">
               <div>
                 <strong>Problem:</strong> At peak traffic, the DB was hit 40,000
                 times/hour for product data that was identical between requests.
@@ -628,10 +506,7 @@ export default async function RenderingStrategyPage() {
               </div>
               <div>
                 <strong>Fix:</strong> Switched to ISR with{" "}
-                <code
-                  className="text-xs px-1 py-0.5 rounded"
-                  style={{ backgroundColor: "hsl(var(--inline-code-bg))" }}
-                >
+                <code className="text-xs px-1 py-0.5 rounded bg-inline-code-bg">
                   revalidate: 300
                 </code>{" "}
                 (5 minutes). The CDN now absorbs ~95% of traffic. DB queries
@@ -640,51 +515,33 @@ export default async function RenderingStrategyPage() {
               <div>
                 <strong>The one edge case:</strong> Flash sales. We added an
                 on-demand revalidation call (
-                <code
-                  className="text-xs px-1 py-0.5 rounded"
-                  style={{ backgroundColor: "hsl(var(--inline-code-bg))" }}
-                >
+                <code className="text-xs px-1 py-0.5 rounded bg-inline-code-bg">
                   revalidatePath
                 </code>
                 ) triggered when a sale starts. The CDN invalidates those pages
                 immediately; no waiting for the TTL.
               </div>
             </div>
-            <div
-              className="mt-3 text-xs italic"
-              style={{ color: "hsl(var(--content-text-muted))" }}
-            >
+            <div className="mt-3 text-xs italic text-content-muted">
               What I&apos;d do earlier: implement on-demand revalidation from day
               one. The TTL-only approach works 99% of the time, but flash sales
               and urgent content corrections need a way to bypass it.
             </div>
           </div>
 
-          <div
-            className="p-5 rounded-lg border"
-            style={{ borderColor: "hsl(var(--content-border))" }}
-          >
-            <h3
-              className="font-bold mb-2"
-              style={{ color: "hsl(var(--content-text))" }}
-            >
+          <div className="p-5 rounded-lg border border-content-border">
+            <h3 className="font-bold mb-2 text-content">
               The dashboard that taught me about the CSR/RSC boundary
             </h3>
-            <p
-              className="text-sm mb-3"
-              style={{ color: "hsl(var(--content-text-muted))" }}
-            >
+            <p className="text-sm mb-3 text-content-muted">
               A user dashboard migrated from a Vite SPA (pure CSR) to Next.js App
               Router. The instinct was to add{" "}
-              <code
-                className="text-xs px-1 py-0.5 rounded"
-                style={{ backgroundColor: "hsl(var(--inline-code-bg))" }}
-              >
+              <code className="text-xs px-1 py-0.5 rounded bg-inline-code-bg">
                 &apos;use client&apos;
               </code>{" "}
               to every component that used state or effects.
             </p>
-            <div className="text-sm space-y-1" style={{ color: "hsl(var(--content-text))" }}>
+            <div className="text-sm space-y-1 text-content">
               <div>
                 <strong>What happened:</strong> The entire page tree was a Client
                 Component. No RSC benefit; same JS bundle size as before, same
@@ -708,30 +565,18 @@ export default async function RenderingStrategyPage() {
           </div>
 
           {/* Pattern 3 */}
-          <div
-            className="p-5 rounded-lg border"
-            style={{ borderColor: "hsl(var(--content-border))" }}
-          >
-            <h3
-              className="font-bold mb-2"
-              style={{ color: "hsl(var(--content-text))" }}
-            >
+          <div className="p-5 rounded-lg border border-content-border">
+            <h3 className="font-bold mb-2 text-content">
               Migrating a CSR app to Next.js without a rewrite
             </h3>
-            <p
-              className="text-sm mb-3"
-              style={{ color: "hsl(var(--content-text-muted))" }}
-            >
+            <p className="text-sm mb-3 text-content-muted">
               The instinct when adding Next.js is to move everything at once. The
               right instinct is to start with the pages that hurt most: the ones
               Google can&apos;t index, or the ones with the worst LCP on mobile.
               Next.js supports both CSR components and SSR/SSG pages in the same
               app; you&apos;re adding a rendering layer, not rewriting components.
             </p>
-            <p
-              className="text-sm mb-4"
-              style={{ color: "hsl(var(--content-text-muted))" }}
-            >
+            <p className="text-sm mb-4 text-content-muted">
               Migrate route by route. For each route, answer two questions: does
               this content need to be indexed? Does it change per user? Those
               answers determine the rendering strategy. The key call per route: if
@@ -766,35 +611,20 @@ export default async function ProductPage({ params }) {
 
       {/* Section: A Real Rollout */}
       <section id="real-rollout" className="mb-16">
-        <h2
-          className="text-2xl font-bold mb-2"
-          style={{ color: "hsl(var(--content-text))" }}
-        >
+        <h2 className="text-2xl font-bold mb-2 text-content">
           A Real Rollout
         </h2>
-        <p
-          className="text-sm mb-8"
-          style={{ color: "hsl(var(--content-text-muted))" }}
-        >
+        <p className="text-sm mb-8 text-content-muted">
           What it actually looks like to split rendering strategy across a
           codebase, with a marketing team, an engineering team, and a product
           that can&apos;t stop shipping.
         </p>
         <div className="space-y-8">
-          <div
-            className="border-l-2 pl-5"
-            style={{ borderColor: "hsl(var(--content-border))" }}
-          >
-            <p
-              className="text-xs font-bold uppercase tracking-wider mb-2"
-              style={{ color: "hsl(var(--link))" }}
-            >
+          <div className="border-l-2 pl-5 border-content-border">
+            <p className="text-xs font-bold uppercase tracking-wider mb-2 text-primary">
               Context
             </p>
-            <p
-              className="text-sm leading-relaxed"
-              style={{ color: "hsl(var(--content-text))" }}
-            >
+            <p className="text-sm leading-relaxed text-content">
               Marketing site and logged-in app in the same Next.js codebase. The
               marketing pages needed SEO and sub-second first contentful paint;
               the logged-in app was data-heavy and highly interactive. Both were
@@ -803,20 +633,11 @@ export default async function ProductPage({ params }) {
             </p>
           </div>
 
-          <div
-            className="border-l-2 pl-5"
-            style={{ borderColor: "hsl(var(--content-border))" }}
-          >
-            <p
-              className="text-xs font-bold uppercase tracking-wider mb-2"
-              style={{ color: "hsl(var(--link))" }}
-            >
+          <div className="border-l-2 pl-5 border-content-border">
+            <p className="text-xs font-bold uppercase tracking-wider mb-2 text-primary">
               The problem
             </p>
-            <p
-              className="text-sm leading-relaxed"
-              style={{ color: "hsl(var(--content-text))" }}
-            >
+            <p className="text-sm leading-relaxed text-content">
               Marketing pages were rendering client-side, part of the same SPA
               entrypoint. Google wasn&apos;t indexing landing page content
               correctly; Core Web Vitals flagged poor LCP across the board.
@@ -828,46 +649,25 @@ export default async function ProductPage({ params }) {
             </p>
           </div>
 
-          <div
-            className="border-l-2 pl-5"
-            style={{ borderColor: "hsl(var(--content-border))" }}
-          >
-            <p
-              className="text-xs font-bold uppercase tracking-wider mb-2"
-              style={{ color: "hsl(var(--link))" }}
-            >
+          <div className="border-l-2 pl-5 border-content-border">
+            <p className="text-xs font-bold uppercase tracking-wider mb-2 text-primary">
               The call
             </p>
-            <p
-              className="text-sm leading-relaxed"
-              style={{ color: "hsl(var(--content-text))" }}
-            >
+            <p className="text-sm leading-relaxed text-content">
               Split rendering strategy by route group. Marketing pages (
-              <code
-                className="text-xs px-1 py-0.5 rounded"
-                style={{ backgroundColor: "hsl(var(--inline-code-bg))" }}
-              >
+              <code className="text-xs px-1 py-0.5 rounded bg-inline-code-bg">
                 /pricing
               </code>
               ,{" "}
-              <code
-                className="text-xs px-1 py-0.5 rounded"
-                style={{ backgroundColor: "hsl(var(--inline-code-bg))" }}
-              >
+              <code className="text-xs px-1 py-0.5 rounded bg-inline-code-bg">
                 /features
               </code>
               ,{" "}
-              <code
-                className="text-xs px-1 py-0.5 rounded"
-                style={{ backgroundColor: "hsl(var(--inline-code-bg))" }}
-              >
+              <code className="text-xs px-1 py-0.5 rounded bg-inline-code-bg">
                 /blog
               </code>
               ) → SSG with ISR, revalidating on CMS publish. Auth-gated app (
-              <code
-                className="text-xs px-1 py-0.5 rounded"
-                style={{ backgroundColor: "hsl(var(--inline-code-bg))" }}
-              >
+              <code className="text-xs px-1 py-0.5 rounded bg-inline-code-bg">
                 /app/*
               </code>
               ) → CSR with React Query, serving from a CDN-cached shell. The
@@ -877,20 +677,11 @@ export default async function ProductPage({ params }) {
             </p>
           </div>
 
-          <div
-            className="border-l-2 pl-5"
-            style={{ borderColor: "hsl(var(--content-border))" }}
-          >
-            <p
-              className="text-xs font-bold uppercase tracking-wider mb-2"
-              style={{ color: "hsl(var(--link))" }}
-            >
+          <div className="border-l-2 pl-5 border-content-border">
+            <p className="text-xs font-bold uppercase tracking-wider mb-2 text-primary">
               How I ran it
             </p>
-            <p
-              className="text-sm leading-relaxed"
-              style={{ color: "hsl(var(--content-text))" }}
-            >
+            <p className="text-sm leading-relaxed text-content">
               The hardest conversation was with the marketing team. &ldquo;Static
               generation&rdquo; sounds like old-school websites to people used to
               live CMSes. The reframe that worked: &ldquo;the page rebuilds on
@@ -898,10 +689,7 @@ export default async function ProductPage({ params }) {
               every visitor instead of re-rendering on every request.&rdquo;
               Engineers needed reassurance that ISR wouldn&apos;t serve stale
               pricing; we added a CMS webhook that triggered{" "}
-              <code
-                className="text-xs px-1 py-0.5 rounded"
-                style={{ backgroundColor: "hsl(var(--inline-code-bg))" }}
-              >
+              <code className="text-xs px-1 py-0.5 rounded bg-inline-code-bg">
                 revalidatePath
               </code>{" "}
               on publish, so pricing pages were always rebuilt immediately after a
@@ -909,27 +697,15 @@ export default async function ProductPage({ params }) {
             </p>
           </div>
 
-          <div
-            className="border-l-2 pl-5"
-            style={{ borderColor: "hsl(var(--content-border))" }}
-          >
-            <p
-              className="text-xs font-bold uppercase tracking-wider mb-2"
-              style={{ color: "hsl(var(--link))" }}
-            >
+          <div className="border-l-2 pl-5 border-content-border">
+            <p className="text-xs font-bold uppercase tracking-wider mb-2 text-primary">
               The outcome
             </p>
-            <p
-              className="text-sm leading-relaxed"
-              style={{ color: "hsl(var(--content-text))" }}
-            >
+            <p className="text-sm leading-relaxed text-content">
               LCP on marketing pages improved significantly within weeks of
               deployment. Organic search indexing improved; Google could now read
               page content on first crawl. The{" "}
-              <code
-                className="text-xs px-1 py-0.5 rounded"
-                style={{ backgroundColor: "hsl(var(--inline-code-bg))" }}
-              >
+              <code className="text-xs px-1 py-0.5 rounded bg-inline-code-bg">
                 /app
               </code>{" "}
               section stayed fully interactive with no regression. Server costs
@@ -944,10 +720,7 @@ export default async function ProductPage({ params }) {
 
       {/* Section 7: Hot Takes */}
       <section id="hot-takes" className="mb-16">
-        <h2
-          className="text-2xl font-bold mb-4"
-          style={{ color: "hsl(var(--content-text))" }}
-        >
+        <h2 className="text-2xl font-bold mb-4 text-content">
           Common Mistakes &amp; Hot Takes
         </h2>
 
@@ -972,18 +745,12 @@ export default async function ProductPage({ params }) {
           ].map(({ mistake, take }) => (
             <div
               key={mistake}
-              className="p-4 rounded-lg border"
-              style={{ borderColor: "hsl(var(--content-border))" }}
+              className="p-4 rounded-lg border border-content-border"
             >
-              <div
-                className="font-bold text-sm mb-2"
-                style={{ color: "hsl(var(--content-text))" }}
-              >
+              <div className="font-bold text-sm mb-2 text-content">
                 ❌ {mistake}
               </div>
-              <p className="text-sm" style={{ color: "hsl(var(--content-text-muted))" }}>
-                {take}
-              </p>
+              <p className="text-sm text-content-muted">{take}</p>
             </div>
           ))}
         </div>
@@ -991,31 +758,21 @@ export default async function ProductPage({ params }) {
 
       {/* Section 8: Related Frameworks */}
       <section id="related-frameworks" className="mb-16">
-        <h2
-          className="text-2xl font-bold mb-4"
-          style={{ color: "hsl(var(--content-text))" }}
-        >
+        <h2 className="text-2xl font-bold mb-4 text-content">
           Related Frameworks
         </h2>
 
         <div className="space-y-3">
-          <div
-            className="p-4 rounded-lg border"
-            style={{ borderColor: "hsl(var(--content-border))" }}
-          >
+          <div className="p-4 rounded-lg border border-content-border">
             <div className="font-medium mb-1">
               <Link
                 href="/frameworks/data-fetching"
-                style={{ color: "hsl(var(--link))" }}
-                className="hover:underline"
+                className="text-primary hover:underline"
               >
                 Data Fetching &amp; Sync →
               </Link>
             </div>
-            <p
-              className="text-sm"
-              style={{ color: "hsl(var(--content-text-muted))" }}
-            >
+            <p className="text-sm text-content-muted">
               Rendering strategy decides <em>where</em> data is fetched: server
               or client. Data Fetching &amp; Sync covers <em>how</em>: race
               conditions, caching, deduplication, and the React Query vs. RSC
@@ -1023,23 +780,16 @@ export default async function ProductPage({ params }) {
             </p>
           </div>
 
-          <div
-            className="p-4 rounded-lg border"
-            style={{ borderColor: "hsl(var(--content-border))" }}
-          >
+          <div className="p-4 rounded-lg border border-content-border">
             <div className="font-medium mb-1">
               <Link
                 href="/frameworks/state-architecture"
-                style={{ color: "hsl(var(--link))" }}
-                className="hover:underline"
+                className="text-primary hover:underline"
               >
                 State Architecture →
               </Link>
             </div>
-            <p
-              className="text-sm"
-              style={{ color: "hsl(var(--content-text-muted))" }}
-            >
+            <p className="text-sm text-content-muted">
               RSC changes where data lives; it pushes server state out of
               client-side stores entirely. Understanding the boundary between
               server state and client state is essential when adopting RSC at

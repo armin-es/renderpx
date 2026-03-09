@@ -32,7 +32,8 @@ export function FileBrowserMockup() {
         </span>
       </div>
 
-      <div className="flex" style={{ height: '200px' }}>
+      <div className="overflow-x-auto">
+      <div className="flex" style={{ height: '200px', minWidth: '520px' }}>
 
         {/* SidebarTree */}
         <div className="w-44 border-r border-content-border flex flex-col shrink-0">
@@ -115,6 +116,7 @@ export function FileBrowserMockup() {
           </div>
         </div>
 
+      </div>
       </div>
     </div>
   )

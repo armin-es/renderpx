@@ -37,7 +37,8 @@ export function NotionMockup() {
         </span>
       </div>
 
-      <div className="flex" style={{ height: '216px' }}>
+      <div className="overflow-x-auto">
+      <div className="flex" style={{ height: '216px', minWidth: '480px' }}>
 
         {/* PageNavigator sidebar */}
         <div className="w-40 border-r border-content-border flex flex-col shrink-0">
@@ -118,6 +119,7 @@ export function NotionMockup() {
           </div>
         </div>
 
+      </div>
       </div>
     </div>
   )

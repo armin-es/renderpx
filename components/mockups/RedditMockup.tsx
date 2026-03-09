@@ -26,7 +26,8 @@ export function RedditMockup() {
         </span>
       </div>
 
-      <div className="flex" style={{ height: '216px' }}>
+      <div className="overflow-x-auto">
+      <div className="flex" style={{ height: '216px', minWidth: '480px' }}>
 
         {/* FeedList */}
         <div className="flex-1 min-w-0 border-r border-content-border flex flex-col">
@@ -97,6 +98,7 @@ export function RedditMockup() {
           </div>
         </div>
 
+      </div>
       </div>
     </div>
   )

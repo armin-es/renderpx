@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { CodeBlock } from '@/components/CodeBlock'
 import { Callout, InlineCode } from '@/components/ui'
+import { Diagram } from '@/components/Diagram'
 
 const DATA_MODEL_CODE = `// The shape of data determines component and state decisions
 interface User {
@@ -266,10 +267,10 @@ export default function RedditSystemDesignPage() {
           Reddit's frontend looks deceptively simple: it's a list of posts and a tree of comments. The actual complexity is in four places:
         </p>
         <ul className="list-disc pl-6 space-y-2 text-content mb-4">
-          <li><strong>The feed is paginated and ranked.</strong> Hot/new/top sorts produce different orderings; the user expects infinite scroll without the feed jumping or re-ordering under them.</li>
+          <li><strong>The feed is paginated and ranked.</strong> Hot/new/top sorts produce different orderings; the user expects <Link href="/patterns/infinite-scroll" className="text-primary hover:underline">infinite scroll</Link> without the feed jumping or re-ordering under them.</li>
           <li><strong>Comment threads are recursive trees.</strong> A single post can have thousands of comments nested 10+ levels deep. Naive recursion kills render performance at scale.</li>
-          <li><strong>Voting must feel instant.</strong> Every vote is an optimistic mutation against a server that may reject it. The same post appears in multiple query cache entries (feed + post detail), so you have to update both without introducing inconsistency.</li>
-          <li><strong>Real-time feel without WebSockets.</strong> Reddit historically used polling (not WebSockets) for vote counts and new comments. The question is what interval is acceptable, and what actually warrants a persistent connection.</li>
+          <li><strong>Voting must feel instant.</strong> Every vote is an <Link href="/patterns/optimistic-updates" className="text-primary hover:underline">optimistic mutation</Link> against a server that may reject it. The same post appears in multiple query cache entries (feed + post detail), so you have to update both without introducing inconsistency.</li>
+          <li><strong>Real-time feel without WebSockets.</strong> Reddit historically used <Link href="/patterns/polling-vs-websockets" className="text-primary hover:underline">polling (not WebSockets)</Link> for vote counts and new comments. The question is what interval is acceptable, and what actually warrants a persistent connection.</li>
         </ul>
         <p className="text-content">
           The decisions below are the ones that actually matter. I'll skip the boilerplate.
@@ -296,6 +297,29 @@ export default function RedditSystemDesignPage() {
         <p className="text-content mb-6">
           Each surface in Reddit maps to a specific pattern or framework decision. This is the full picture before diving into each:
         </p>
+        <Diagram className="mb-8" chart={`
+flowchart LR
+  subgraph Client["Client"]
+    Feed["FeedList\\n(infinite scroll)"]
+    Post["PostDetail"]
+    Vote["VoteButton\\n(optimistic)"]
+    CommentTree["CommentTree\\n(recursive)"]
+  end
+  subgraph Cache["React Query Cache"]
+    FC["feed cache\\n['feed', sub, sort]"]
+    PC["post cache\\n['post', id]"]
+    CC["comments cache\\n['comments', postId]"]
+  end
+  API["Reddit API"]
+  SSR["SSR\\n(Next.js)"]
+
+  Feed --> FC
+  Post --> PC
+  Vote --> FC & PC
+  CommentTree --> CC
+  FC & PC & CC --> API
+  SSR --> FC & PC
+        `} />
         <div className="overflow-x-auto">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -367,7 +391,7 @@ export default function RedditSystemDesignPage() {
         </p>
         <CodeBlock code={FEED_CODE} lang="tsx" />
         <Callout variant="info" title="When to virtualize" className="mt-6">
-          For a standard subreddit browsing session, a user rarely sees more than 30-40 posts before navigating to a post detail. Virtualization is worth adding when you have evidence users are scrolling deep - or if post cards are heavy (images, video previews). Add it after you've profiled, not before.
+          For a standard subreddit browsing session, a user rarely sees more than 30-40 posts before navigating to a post detail. <Link href="/patterns/virtualized-lists" className="text-primary hover:underline">Virtualization</Link> is worth adding when you have evidence users are scrolling deep - or if post cards are heavy (images, video previews). Add it after you&apos;ve profiled, not before.
         </Callout>
         <p className="text-content mt-4">
           <InlineCode>staleTime: 60_000</InlineCode> prevents the feed from re-sorting itself when the user navigates back. Without it, the first query after 0ms of staleness re-fetches, and "hot" posts in different positions make the list jump. One minute of staleness is a deliberate UX choice.
@@ -382,7 +406,7 @@ export default function RedditSystemDesignPage() {
         </p>
         <CodeBlock code={COMMENT_TREE_CODE} lang="tsx" />
         <p className="text-content mt-6 mb-4">
-          The recursive approach works up to ~200 visible comment nodes before you start seeing layout jank on lower-end devices. For threads that regularly exceed that (AMAs, viral posts) you need to flatten the tree and virtualize.
+          The recursive approach works up to ~200 visible comment nodes before you start seeing layout jank on lower-end devices. For threads that regularly exceed that (AMAs, viral posts) you need to flatten the tree and <Link href="/patterns/virtualized-lists" className="text-primary hover:underline">virtualize</Link>.
         </p>
         <CodeBlock code={FLAT_TREE_CODE} lang="ts" label="Flatten tree for virtualization" />
         <Callout variant="warning" title="The depth limit problem" className="mt-6">
@@ -400,8 +424,27 @@ export default function RedditSystemDesignPage() {
           The solution is to pass the <InlineCode>queryKey</InlineCode> to the vote hook so the caller decides which cache entry to update. In practice, the feed card passes the feed key; the post detail passes the detail key. Both fire the same mutation function; the cache update logic handles both shapes.
         </p>
         <CodeBlock code={VOTE_CODE} lang="tsx" />
+        <Diagram className="my-6" chart={`
+sequenceDiagram
+  actor User
+  participant UI as React Query Cache
+  participant API as Reddit API
+
+  User->>UI: Click upvote
+  UI->>UI: Snapshot feed + post cache entries
+  UI->>UI: Apply optimistic update to both
+  UI->>API: POST /vote (async, background)
+  alt Success
+    API-->>UI: 200 OK
+    UI->>UI: invalidateQueries (refetch for truth)
+  else Failure (rate limit / auth)
+    API-->>UI: 4xx
+    UI->>UI: Rollback both cache entries from snapshot
+    UI->>User: Toast "Couldn't vote — try again"
+  end
+        `} />
         <Callout variant="info" title="Why not normalize?" className="mt-6">
-          A normalized cache (Apollo-style) would automatically update every reference to the same post across all queries. That's appealing. But React Query's flat cache is simpler and the dual-shape <InlineCode>applyVote</InlineCode> function handles it cleanly. I'd add normalization only if I had many more surfaces that share the same post entity - and even then I'd use TanStack Query's <InlineCode>queryClient.setQueriesData</InlineCode> with a predicate before reaching for a third-party normalized cache.
+          A <Link href="/patterns/normalized-state" className="text-primary hover:underline">normalized cache</Link> (Apollo-style) would automatically update every reference to the same post across all queries. That's appealing. But React Query's flat cache is simpler and the dual-shape <InlineCode>applyVote</InlineCode> function handles it cleanly. I'd add normalization only if I had many more surfaces that share the same post entity - and even then I'd use TanStack Query's <InlineCode>queryClient.setQueriesData</InlineCode> with a predicate before reaching for a third-party normalized cache.
         </Callout>
       </section>
 
@@ -448,7 +491,7 @@ export default function RedditSystemDesignPage() {
           For LCP: SSR the first page of the feed and the post detail. The above-the-fold content needs to be in the HTML - both for SEO (Google indexes the first page of each subreddit) and for perceived performance (no loading spinner on the first paint). Next.js App Router with React Query's server prefetching handles this cleanly.
         </p>
         <p className="text-content mb-4">
-          For scroll: the rich text editor is the single biggest bundle hit (~200kb gzipped for a full Quill or TipTap install). Lazy-load it behind a dynamic import that only triggers when the user opens the compose modal. The rest of scroll performance comes from virtualization and stable keys.
+          For scroll: the rich text editor is the single biggest bundle hit (~200kb gzipped for a full Quill or TipTap install). <Link href="/patterns/code-splitting-lazy-loading" className="text-primary hover:underline">Lazy-load it behind a dynamic import</Link> that only triggers when the user opens the compose modal. The rest of scroll performance comes from <Link href="/patterns/virtualized-lists" className="text-primary hover:underline">virtualization</Link> and stable keys.
         </p>
         <CodeBlock code={PERF_CODE} lang="tsx" />
         <Callout variant="info" title="Prefetch on hover" className="mt-6">

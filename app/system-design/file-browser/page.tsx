@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { CodeBlock } from '@/components/CodeBlock'
 import { Callout, InlineCode } from '@/components/ui'
+import { Diagram } from '@/components/Diagram'
 
 const DATA_MODEL_CODE = `// The most important decision: flat map, not nested tree.
 // The instinct is to store folders as nested objects with a children array.
@@ -312,7 +313,7 @@ export default function FileBrowserSystemDesignPage() {
           A file browser looks straightforward until you hit the constraints of a real product. Folders contain thousands of items - you cannot render them all. The file tree can be dozens of levels deep - you cannot fetch it all upfront. Users expect file moves and renames to feel instant - you cannot wait for the server. Previewing 60+ file formats in a browser is a bundle-size disaster if you approach it naively. And the whole thing must be fully keyboard-navigable per WCAG 2.1 AA.
         </p>
         <p className="text-content mb-4">
-          The scope here is a production-grade file browser: a sidebar tree with lazy-loading, a virtualized main panel, a file preview system with dynamic renderer loading, optimistic updates for all mutations, and full keyboard accessibility. This is the architecture I&apos;d propose in a system design interview for any enterprise content management product.
+          The scope here is a production-grade file browser: a sidebar tree with lazy-loading, a <Link href="/patterns/virtualized-lists" className="text-primary hover:underline">virtualized</Link> main panel, a file preview system with <Link href="/patterns/code-splitting-lazy-loading" className="text-primary hover:underline">dynamic renderer loading</Link>, <Link href="/patterns/optimistic-updates" className="text-primary hover:underline">optimistic updates</Link> for all mutations, and full keyboard accessibility. This is the architecture I&apos;d propose in a system design interview for any enterprise content management product.
         </p>
       </section>
 
@@ -322,7 +323,7 @@ export default function FileBrowserSystemDesignPage() {
           The instinct is to model the file system as a nested JavaScript object - each folder has a <InlineCode>children</InlineCode> array containing its child folders and files. It feels natural. It breaks immediately when you try to update a deeply nested node: you have to clone every ancestor to maintain immutability, and the traversal to find the node is O(depth).
         </p>
         <p className="text-content mb-4">
-          Use a <strong>flat map</strong> instead. Every node - file or folder - lives at the top level of a <InlineCode>Map&lt;string, FileNode&gt;</InlineCode> keyed by ID. Folders store an array of child IDs, not child objects. Any node is an O(1) lookup. Any update is a single <InlineCode>map.set(id, updated)</InlineCode>. This is also the shape the Box Content API returns: a flat list of items under a folder ID, not a nested tree payload.
+          Use a <Link href="/patterns/normalized-state" className="text-primary hover:underline"><strong>flat map</strong></Link> instead. Every node - file or folder - lives at the top level of a <InlineCode>Map&lt;string, FileNode&gt;</InlineCode> keyed by ID. Folders store an array of child IDs, not child objects. Any node is an O(1) lookup. Any update is a single <InlineCode>map.set(id, updated)</InlineCode>. This is also the shape the Box Content API returns: a flat list of items under a folder ID, not a nested tree payload.
         </p>
         <CodeBlock code={DATA_MODEL_CODE} lang="ts" />
         <Callout variant="info" title="childrenLoaded tracks lazy-fetch state">
@@ -335,6 +336,27 @@ export default function FileBrowserSystemDesignPage() {
         <p className="text-content mb-6">
           Each surface in the file browser maps to a specific pattern or decision. This is the full picture before diving into each:
         </p>
+        <Diagram className="mb-8" chart={`
+flowchart LR
+  subgraph UI["UI Layer"]
+    ST["SidebarTree\\n(virtualized)"]
+    MP["MainPanel\\n(FixedSizeList)"]
+    PP["PreviewPanel\\n(lazy renderers)"]
+  end
+  subgraph State["State Layer"]
+    ZS["Zustand\\nnormalized Map"]
+    RQ["React Query\\nfolder cache"]
+  end
+  API["Box API"]
+  URL["URL\\n?folder=id"]
+
+  ST & MP --> ZS
+  PP --> RQ
+  ZS --> RQ
+  RQ --> API
+  URL --> RQ
+  URL --> ZS
+        `} />
         <div className="overflow-x-auto mb-6">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -425,6 +447,27 @@ export default function FileBrowserSystemDesignPage() {
           The <InlineCode>childrenLoaded</InlineCode> flag on each node is the key. On expand: check the flag, skip the fetch if true, fetch and populate if false. The store gets immutably updated with the new children; the expanded folder ID goes into the open-IDs Set.
         </p>
         <CodeBlock code={LAZY_LOAD_CODE} lang="ts" />
+        <Diagram className="my-6" chart={`
+sequenceDiagram
+  actor User
+  participant Tree as SidebarTree
+  participant Store as Zustand Store
+  participant RQ as React Query
+  participant API as Box API
+
+  User->>Tree: Click expand folder
+  Tree->>Store: childrenLoaded?
+  alt Already loaded
+    Store-->>Tree: childIds (instant, no network)
+  else Not loaded yet
+    Tree->>RQ: prefetchQuery(['folder', id])
+    RQ->>API: GET /folders/:id/items
+    API-->>RQ: FileNode[]
+    RQ->>Store: markChildrenLoaded(id, children)
+    Store-->>Tree: childIds
+  end
+  Tree->>Tree: Add id to openIds Set (local toggle)
+        `} />
         <Callout variant="info" title="Prefetch on hover">
           When the user hovers a closed folder, start the children fetch immediately. By the time they click the expand arrow, the data is already loading or in cache. One line: <InlineCode>queryClient.prefetchQuery(['folder', folderId])</InlineCode> on <InlineCode>onMouseEnter</InlineCode>.
         </Callout>
@@ -433,7 +476,7 @@ export default function FileBrowserSystemDesignPage() {
       <section id="virtualization" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">Virtualization</h2>
         <p className="text-content mb-4">
-          A folder with 50,000 items cannot render 50,000 DOM nodes. The browser will hang on mount and scroll will be unusable. Virtualization is the only solution: render only the rows currently in the viewport.
+          A folder with 50,000 items cannot render 50,000 DOM nodes. The browser will hang on mount and scroll will be unusable. <Link href="/patterns/virtualized-lists" className="text-primary hover:underline">Virtualization</Link> is the only solution: render only the rows currently in the viewport.
         </p>
         <p className="text-content mb-4">
           For the flat file list in the main panel, <InlineCode>FixedSizeList</InlineCode> from <InlineCode>react-window</InlineCode> is a two-line integration. The sidebar tree is harder: react-window operates on flat arrays, but trees are hierarchical. The trick is to flatten the visible tree into a flat array in display order, re-computing it whenever a folder opens or closes. Feed that array to <InlineCode>FixedSizeList</InlineCode>.
@@ -444,7 +487,7 @@ export default function FileBrowserSystemDesignPage() {
       <section id="file-preview" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">File Preview System</h2>
         <p className="text-content mb-4">
-          Supporting 60+ file formats without a massive initial bundle requires dynamic imports. The naive approach - importing every renderer at the top of the file - ships all renderer code to every user, even if they only ever open JPEGs. A PDF renderer (pdf.js) alone is ~300KB gzipped.
+          Supporting 60+ file formats without a massive initial bundle requires <Link href="/patterns/code-splitting-lazy-loading" className="text-primary hover:underline">dynamic imports</Link>. The naive approach - importing every renderer at the top of the file - ships all renderer code to every user, even if they only ever open JPEGs. A PDF renderer (pdf.js) alone is ~300KB gzipped.
         </p>
         <p className="text-content mb-4">
           Use a renderer registry: a <InlineCode>Map</InlineCode> from MIME type to a factory function that returns a dynamic import. Each renderer becomes a separate Webpack/Rollup chunk, downloaded only when that file type is first previewed. Pair this with hover-based prefetching so the renderer is already loading by the time the user clicks.
@@ -461,7 +504,7 @@ export default function FileBrowserSystemDesignPage() {
           File operations - move, rename, delete, create folder - should feel instant. Waiting 300ms for a server round-trip before reflecting a drag-and-drop move breaks the mental model of a direct-manipulation interface.
         </p>
         <p className="text-content mb-4">
-          The pattern is always the same: snapshot the current state, apply the change to local state immediately, fire the API call in the background, rollback to the snapshot if the API call fails. A toast surfaces the failure to the user. This is a three-step operation, not a two-step one - the snapshot is what makes rollback reliable.
+          The <Link href="/patterns/optimistic-updates" className="text-primary hover:underline">pattern</Link> is always the same: snapshot the current state, apply the change to local state immediately, fire the API call in the background, rollback to the snapshot if the API call fails. A <Link href="/patterns/toasts" className="text-primary hover:underline">toast</Link> surfaces the failure to the user. This is a three-step operation, not a two-step one - the snapshot is what makes rollback reliable.
         </p>
         <CodeBlock code={OPTIMISTIC_CODE} lang="ts" />
         <Callout variant="warning" title="Undo via command stack">
@@ -475,7 +518,7 @@ export default function FileBrowserSystemDesignPage() {
           Enterprise products must meet WCAG 2.1 AA. A file browser has two distinct ARIA patterns: the sidebar is a <InlineCode>tree</InlineCode> widget (hierarchical, single-selection, expand/collapse), and the main panel is a <InlineCode>grid</InlineCode> widget (2D navigation). These are different keyboard patterns - mixing them up will confuse screen reader users.
         </p>
         <p className="text-content mb-4">
-          The most overlooked requirement: drag-and-drop is mouse-only by default, which is a WCAG SC 2.1.1 failure. Always provide a keyboard equivalent. Cut/paste (Ctrl+X, navigate, Ctrl+V) or a &quot;Move to...&quot; dialog are both acceptable. The drag-and-drop UX is the enhancement on top, not the only path.
+          The most overlooked requirement: <Link href="/patterns/drag-and-drop" className="text-primary hover:underline">drag-and-drop</Link> is mouse-only by default, which is a WCAG SC 2.1.1 failure. Always provide a keyboard equivalent. Cut/paste (Ctrl+X, navigate, Ctrl+V) or a &quot;Move to...&quot; dialog are both acceptable. The drag-and-drop UX is the enhancement on top, not the only path.
         </p>
         <CodeBlock code={ACCESSIBILITY_CODE} lang="tsx" />
       </section>

@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { CodeBlock } from '@/components/CodeBlock'
 import { Callout, InlineCode } from '@/components/ui'
+import { Diagram } from '@/components/Diagram'
 
 const DATA_MODEL_CODE = `// The data model is the most important architectural decision.
 // Use a FLAT map of blocks (not a nested tree) keyed by ID.
@@ -359,7 +360,7 @@ export default function NotionSystemDesignPage() {
           A document editor like Notion is one of the hardest frontend problems because every obvious approach has a hidden trap. Raw <InlineCode>contenteditable</InlineCode> conflicts with React&apos;s virtual DOM. Nested tree state makes every block update a recursive clone. Cursor management across block boundaries requires ProseMirror-level knowledge. And then there&apos;s real-time collaboration, which invalidates most naive assumptions about state ownership.
         </p>
         <p className="text-content mb-4">
-          The scope here is a collaborative document editor with: a block-based content model, multiple block types (text, heading, list, code, image, embed), slash commands to insert blocks, drag-to-reorder, autosave, and optional live collaboration with presence indicators.
+          The scope here is a collaborative document editor with: a block-based content model, multiple block types (text, heading, list, code, image, embed), slash commands to insert blocks, <Link href="/patterns/drag-and-drop" className="text-primary hover:underline">drag-to-reorder</Link>, <Link href="/patterns/autosave-draft" className="text-primary hover:underline">autosave</Link>, and optional live collaboration with presence indicators.
         </p>
         <p className="text-content">
           Each section covers the key decision, the naive approach, and what you&apos;d actually build.
@@ -372,7 +373,7 @@ export default function NotionSystemDesignPage() {
           The most important decision is the shape of a block. The instinct is a nested tree: each block has a <InlineCode>children</InlineCode> array. That works until you need to update a deeply nested block - you have to clone every ancestor to maintain immutability.
         </p>
         <p className="text-content mb-4">
-          Use a <strong>flat map</strong> instead. Each block stores an array of child IDs, not child objects. The document has a <InlineCode>blocks: Record&lt;string, Block&gt;</InlineCode> map and a <InlineCode>rootBlockIds: string[]</InlineCode>. Any block can be looked up in O(1), updated without recursive cloning, and the structure maps naturally to how CRDT libraries like Yjs store data.
+          Use a <Link href="/patterns/normalized-state" className="text-primary hover:underline"><strong>flat map</strong></Link> instead. Each block stores an array of child IDs, not child objects. The document has a <InlineCode>blocks: Record&lt;string, Block&gt;</InlineCode> map and a <InlineCode>rootBlockIds: string[]</InlineCode>. Any block can be looked up in O(1), updated without recursive cloning, and the structure maps naturally to how CRDT libraries like Yjs store data.
         </p>
         <CodeBlock code={DATA_MODEL_CODE} lang="ts" />
         <Callout variant="info" title="Fractional indexing for order">
@@ -382,6 +383,33 @@ export default function NotionSystemDesignPage() {
 
       <section id="architecture-map" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">Architecture Map</h2>
+        <Diagram className="mb-8" chart={`
+flowchart LR
+  subgraph UI["UI Layer"]
+    BL["BlockList\\n(root block IDs)"]
+    BR["BlockRenderer\\n(switch on type)"]
+    SE["Slash Commands\\n+ Toolbar"]
+    DnD["Drag-and-Drop\\n(reorder)"]
+  end
+  subgraph State["State"]
+    ZS["Zustand\\nblocks: Map + rootBlockIds"]
+    RQ["React Query\\n(save / load)"]
+  end
+  subgraph Sync["Collaboration (optional)"]
+    YJ["Yjs CRDT"]
+    WS["WebSocket Provider"]
+  end
+  API["API / DB"]
+
+  BL --> BR
+  SE & DnD --> ZS
+  BR --> ZS
+  ZS --> RQ
+  ZS --> YJ
+  YJ --> WS
+  WS --> API
+  RQ --> API
+        `} />
         <div className="overflow-x-auto mb-6">
           <table className="w-full text-sm border-collapse">
             <thead>
@@ -506,6 +534,28 @@ export default function NotionSystemDesignPage() {
           The WebSocket provider syncs operations in real time; when a user is offline, changes queue locally and sync on reconnect. The awareness API tracks who is in the document and where their cursor is, which powers the collaborator avatars and cursor overlays.
         </p>
         <CodeBlock code={REAL_TIME_CODE} lang="tsx" />
+        <Diagram className="my-6" chart={`
+sequenceDiagram
+  participant A as User A
+  participant YA as Yjs (client A)
+  participant WS as WebSocket Server
+  participant YB as Yjs (client B)
+  participant B as User B
+
+  A->>YA: Type in block "Hello"
+  YA->>YA: Create CRDT operation
+  YA->>WS: Broadcast operation
+  WS->>YB: Forward operation
+  YB->>YB: Merge (conflict-free)
+  YB->>B: Update block text
+
+  Note over YA,YB: Concurrent edit — both users type simultaneously
+  B->>YB: Type " world"
+  YB->>WS: Broadcast operation
+  WS->>YA: Forward operation
+  YA->>YA: Merge deterministically
+  YA->>A: Result: "Hello world"
+        `} />
         <Callout variant="success" title="Ship without Yjs first">
           Yjs adds complexity: a new mental model for state, a separate WebSocket server, and a migration from your existing mutation-based writes. Build the single-user version first with React Query and optimistic updates. Add Yjs when users actually need live collaboration - the TipTap Yjs extension makes it a near drop-in if you planned block IDs as UUIDs from the start.
         </Callout>

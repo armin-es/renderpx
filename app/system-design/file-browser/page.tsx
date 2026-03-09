@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { CodeBlock } from '@/components/CodeBlock'
 import { Callout, InlineCode } from '@/components/ui'
 import { Diagram } from '@/components/Diagram'
+import { FileBrowserMockup } from '@/components/mockups/FileBrowserMockup'
 
 const DATA_MODEL_CODE = `// The most important decision: flat map, not nested tree.
 // The instinct is to store folders as nested objects with a children array.
@@ -304,6 +305,14 @@ export default function FileBrowserSystemDesignPage() {
         <h1 className="text-4xl font-bold mb-4 text-content">File browser UI</h1>
         <p className="text-xl text-content-muted">
           Data model for a hierarchical file system, lazy-loading tree, virtualized list, file preview with dynamic renderer loading, optimistic mutations, and accessibility for enterprise-scale content management.
+        </p>
+      </div>
+
+      <div className="mb-12">
+        <h2 className="text-lg font-semibold text-content mb-3">What we&apos;re building</h2>
+        <FileBrowserMockup />
+        <p className="text-content-muted text-sm mt-2">
+          Three panels: a lazy-loading <strong className="text-content">SidebarTree</strong>, a virtualized <strong className="text-content">MainPanel</strong> file grid, and a <strong className="text-content">PreviewPanel</strong> with dynamically-loaded renderers. Each maps to a distinct architectural decision.
         </p>
       </div>
 

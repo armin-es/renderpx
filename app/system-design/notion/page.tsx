@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { CodeBlock } from '@/components/CodeBlock'
 import { Callout, InlineCode } from '@/components/ui'
 import { Diagram } from '@/components/Diagram'
+import { NotionMockup } from '@/components/mockups/NotionMockup'
 
 const DATA_MODEL_CODE = `// The data model is the most important architectural decision.
 // Use a FLAT map of blocks (not a nested tree) keyed by ID.
@@ -351,6 +352,14 @@ export default function NotionSystemDesignPage() {
         <h1 className="text-4xl font-bold mb-4 text-content">Notion-style document editor</h1>
         <p className="text-xl text-content-muted">
           Block-based content model, contenteditable pitfalls, slash commands, drag-to-reorder, autosave, and optional real-time collaboration with Yjs CRDT.
+        </p>
+      </div>
+
+      <div className="mb-12">
+        <h2 className="text-lg font-semibold text-content mb-3">What we&apos;re building</h2>
+        <NotionMockup />
+        <p className="text-content-muted text-sm mt-2">
+          A <strong className="text-content">PageNavigator</strong> sidebar, a <strong className="text-content">BlockList</strong> that renders each block by type via <strong className="text-content">BlockRenderer</strong>, and a Zustand store holding a flat <code className="text-[11px] bg-code-bg px-1 rounded">Map&lt;id, Block&gt;</code> — not a nested tree.
         </p>
       </div>
 

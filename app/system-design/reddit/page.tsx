@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { CodeBlock } from '@/components/CodeBlock'
 import { Callout, InlineCode } from '@/components/ui'
 import { Diagram } from '@/components/Diagram'
+import { RedditMockup } from '@/components/mockups/RedditMockup'
 
 const DATA_MODEL_CODE = `// The shape of data determines component and state decisions
 interface User {
@@ -257,6 +258,14 @@ export default function RedditSystemDesignPage() {
         <h1 className="text-4xl font-bold mb-4 text-content">Reddit</h1>
         <p className="text-xl text-content-muted">
           Feed + nested comments + voting + real-time feel. How I'd architect the frontend: which patterns handle which surfaces, where state lives, and the tradeoffs I'd make.
+        </p>
+      </div>
+
+      <div className="mb-12">
+        <h2 className="text-lg font-semibold text-content mb-3">What we&apos;re building</h2>
+        <RedditMockup />
+        <p className="text-content-muted text-sm mt-2">
+          A cursor-paginated <strong className="text-content">FeedList</strong> with per-post <strong className="text-content">VoteButtons</strong> (optimistic updates), and a recursive <strong className="text-content">CommentTree</strong> with local collapse state. Both surfaces share one React Query cache.
         </p>
       </div>
 

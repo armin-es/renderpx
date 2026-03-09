@@ -26,6 +26,30 @@ function updateComment(thread: CommentThread, id: string, newText: string): Comm
 // Adding a node, moving a node, or checking if a node exists all require
 // walking the tree. And the entire tree re-renders on any update.`
 
+const IMMUTABLE_CASCADE_CODE = `// Immutable update in a nested tree — you must clone every ancestor
+// Tree: root → Documents → Projects → file.txt (renaming the file)
+
+const newRoot = {
+  ...root,                          // ← clone root (new reference)
+  children: root.children.map(node =>
+    node.id !== 'documents' ? node : {
+      ...node,                      // ← clone Documents
+      children: node.children.map(node =>
+        node.id !== 'projects' ? node : {
+          ...node,                  // ← clone Projects
+          children: node.children.map(node =>
+            node.id !== 'file' ? node : { ...node, name: 'renamed.txt' }
+            //                           ↑ clone the actual target
+          )
+        }
+      )
+    }
+  )
+}
+// Result: 4 new objects for 1 rename. A 10-level tree = 10 new objects.
+// And because root is a new reference, every component subscribed
+// to root re-renders — even the ones that display unrelated folders.`
+
 const FIRST_IMPROVEMENT_CODE = `// Flat map — every node lives at the top level, keyed by ID
 type Comment = {
   id: string
@@ -210,6 +234,10 @@ export default function NormalizedStatePatternPage() {
           Nested objects mirror the logical structure but make every mutation a recursive traversal.
         </p>
         <CodeBlock code={NAIVE_CODE} lang="ts" />
+        <p className="text-content mt-4 mb-4">
+          The second cost is the clone cascade. To update <InlineCode>node.name</InlineCode> immutably, every ancestor from the root down to that node must be copied — otherwise their references don't change and React sees no update:
+        </p>
+        <CodeBlock code={IMMUTABLE_CASCADE_CODE} lang="ts" />
       </section>
 
       <section id="first-improvement" className="mb-16">

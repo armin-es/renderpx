@@ -12,6 +12,11 @@ const caseStudies = [
     title: 'Notion editor',
     description: 'Block-based document editor with slash commands, drag-and-drop reordering, real-time collaboration via Yjs, and debounced autosave.',
   },
+  {
+    slug: 'file-browser',
+    title: 'File browser UI',
+    description: 'Flat-map data model, lazy-loading tree, virtualized list for 50k+ items, dynamic renderer loading for 60+ file formats, optimistic mutations, and WCAG 2.1 accessibility.',
+  },
 ]
 
 export default function SystemDesignPage() {

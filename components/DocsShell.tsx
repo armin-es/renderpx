@@ -26,6 +26,7 @@ const DEEP_DIVES = [
 const SYSTEM_DESIGNS = [
   { id: 'reddit', label: 'Reddit' },
   { id: 'notion', label: 'Notion editor' },
+  { id: 'file-browser', label: 'File browser UI' },
 ]
 
 const PATTERNS = [
@@ -203,6 +204,20 @@ const REDDIT_SECTIONS = [
   { id: 'tradeoffs', label: "What I'd Do Differently" },
 ]
 
+const FILE_BROWSER_SECTIONS = [
+  { id: 'the-challenge', label: 'The Challenge' },
+  { id: 'data-model', label: 'Data Model' },
+  { id: 'architecture-map', label: 'Architecture Map' },
+  { id: 'component-structure', label: 'Component Structure' },
+  { id: 'lazy-loading', label: 'Lazy-Loading the Tree' },
+  { id: 'virtualization', label: 'Virtualization' },
+  { id: 'file-preview', label: 'File Preview System' },
+  { id: 'optimistic-updates', label: 'Optimistic Mutations' },
+  { id: 'accessibility', label: 'Accessibility' },
+  { id: 'building-blocks', label: 'Building Blocks' },
+  { id: 'tradeoffs', label: "What I'd Do Differently" },
+]
+
 const NOTION_SECTIONS = [
   { id: 'the-challenge', label: 'The Challenge' },
   { id: 'data-model', label: 'Data Model' },
@@ -300,7 +315,8 @@ function SidebarNav() {
 
   const isReddit = pathname === '/system-design/reddit'
   const isNotion = pathname === '/system-design/notion'
-  const isSystemDesign = isReddit || isNotion || pathname === '/system-design'
+  const isFileBrowser = pathname === '/system-design/file-browser'
+  const isSystemDesign = isReddit || isNotion || isFileBrowser || pathname === '/system-design'
 
   const isFramework = pathname === '/frameworks' || isStateArch || isComponentComp || isDataFetching || isRenderingStrategy || isDesignSystems || isCodeOrg || isPerformanceArch
   const isDeepDive = pathname === '/deep-dives' || isStateMachines || isUseEffectCleanup || isGraphqlCaching || isStateMgmtInternals || isStateArchPractice
@@ -425,6 +441,7 @@ function RightSidebar() {
   const isStateArchPracticeRight = pathname === '/deep-dives/state-architecture-in-practice'
   const isRedditRight = pathname === '/system-design/reddit'
   const isNotionRight = pathname === '/system-design/notion'
+  const isFileBrowserRight = pathname === '/system-design/file-browser'
   const isComponentsRight = pathname === '/components'
   const sections = isPatternDetailRight
     ? PATTERN_DETAIL_SECTIONS
@@ -456,6 +473,8 @@ function RightSidebar() {
     ? REDDIT_SECTIONS
     : isNotionRight
     ? NOTION_SECTIONS
+    : isFileBrowserRight
+    ? FILE_BROWSER_SECTIONS
     : isComponentsRight
     ? COMPONENTS_SECTIONS
     : null

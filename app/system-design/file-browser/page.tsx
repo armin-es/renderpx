@@ -490,6 +490,7 @@ export default function FileBrowserSystemDesignPage() {
           <h3 className="text-sm font-semibold uppercase tracking-widest text-content-muted mb-3">Patterns used</h3>
           <div className="grid gap-2 sm:grid-cols-2">
             {[
+              { href: '/patterns/normalized-state', title: 'Normalized State', desc: 'Flat Map<string, FileNode> store — O(1) lookup, update, and move without recursive traversal.' },
               { href: '/patterns/optimistic-updates', title: 'Optimistic Updates', desc: 'Move, rename, and delete reflect immediately; rollback on API failure.' },
               { href: '/patterns/virtualized-lists', title: 'Virtualized Lists', desc: 'Render only visible rows for folders with 50,000+ items.' },
               { href: '/patterns/code-splitting-lazy-loading', title: 'Code Splitting & Lazy Loading', desc: 'Each file renderer (PDF, video, image) is a separate chunk loaded on demand.' },

@@ -25,6 +25,7 @@ const IMPLEMENTATION_PATTERNS = [
   { slug: 'hocs-vs-composition', name: 'HOCs vs Composition', when: 'Auth guards, wrappers, inject logic', category: 'Components' },
   { slug: 'code-splitting-lazy-loading', name: 'Code Splitting & Lazy Loading', when: 'Smaller bundles, load on demand', category: 'Performance' },
   { slug: 'memoization', name: 'Memoization (useMemo, React.memo)', when: 'Expensive derivations, skip re-renders', category: 'Performance' },
+  { slug: 'normalized-state', name: 'Normalized State', when: 'Trees, threads, relational data with O(1) updates', category: 'Data & State' },
 ]
 
 const patterns = [

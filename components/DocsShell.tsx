@@ -52,6 +52,7 @@ const PATTERNS = [
   { id: 'code-splitting-lazy-loading', label: 'Code Splitting & Lazy Loading' },
   { id: 'memoization', label: 'Memoization' },
   { id: 'drag-and-drop', label: 'Drag-and-Drop' },
+  { id: 'normalized-state', label: 'Normalized State' },
 ]
 
 const STATE_ARCH_SECTIONS = [

@@ -353,18 +353,20 @@ flowchart LR
     PP["PreviewPanel\\n(lazy renderers)"]
   end
   subgraph State["State Layer"]
-    ZS["Zustand\\nnormalized Map"]
-    RQ["React Query\\nfolder cache"]
+    RQ["React Query\\nper-folder cache"]
+    LS["Local state\\nopenIds · selectedIds"]
   end
-  API["Box API"]
+  API["Box API\\n/folders/:id/items"]
+  FC["Box API\\n/files/:id/content"]
   URL["URL\\n?folder=id"]
 
-  ST & MP --> ZS
-  PP --> RQ
-  ZS --> RQ
+  URL -->|source of truth| RQ
+  URL -->|source of truth| LS
   RQ --> API
-  URL --> RQ
-  URL --> ZS
+  ST --> RQ & LS
+  MP --> RQ
+  PP -.->|reads cached metadata| RQ
+  PP -->|content stream| FC
         `} />
         <div className="overflow-x-auto mb-6">
           <table className="w-full text-sm border-collapse">
@@ -450,7 +452,7 @@ flowchart LR
       <section id="lazy-loading" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">Lazy-Loading the Tree</h2>
         <p className="text-content mb-4">
-          Fetching the entire file system tree on load is never the right approach. The tree can be arbitrarily deep, and the user will only expand a small fraction of it. Fetch children only when the user expands a folder for the first time. After that, toggle is a local operation.
+          Fetching the entire file system tree on load is never the right approach. The tree can be arbitrarily deep, and the user will only expand a small fraction of it. Fetch children only when the user expands a folder for the first time. After that, toggle is a local operation. The file preview system applies the same principle to JS bundles — see <Link href="/patterns/code-splitting-lazy-loading" className="text-primary hover:underline">Code Splitting & Lazy Loading</Link>.
         </p>
         <p className="text-content mb-4">
           The <InlineCode>childrenLoaded</InlineCode> flag on each node is the key. On expand: check the flag, skip the fetch if true, fetch and populate if false. The store gets immutably updated with the new children; the expanded folder ID goes into the open-IDs Set.
@@ -460,20 +462,18 @@ flowchart LR
 sequenceDiagram
   actor User
   participant Tree as SidebarTree
-  participant Store as Zustand Store
-  participant RQ as React Query
+  participant Cache as React Query Cache
   participant API as Box API
 
   User->>Tree: Click expand folder
-  Tree->>Store: childrenLoaded?
-  alt Already loaded
-    Store-->>Tree: childIds (instant, no network)
-  else Not loaded yet
-    Tree->>RQ: prefetchQuery(['folder', id])
-    RQ->>API: GET /folders/:id/items
-    API-->>RQ: FileNode[]
-    RQ->>Store: markChildrenLoaded(id, children)
-    Store-->>Tree: childIds
+  Tree->>Cache: getQueryData(['folder', id])
+  alt Already cached
+    Cache-->>Tree: FileNode[] (instant, no network)
+  else Not cached yet
+    Tree->>Cache: prefetchQuery(['folder', id])
+    Cache->>API: GET /folders/:id/items
+    API-->>Cache: FileNode[]
+    Cache-->>Tree: FileNode[]
   end
   Tree->>Tree: Add id to openIds Set (local toggle)
         `} />
@@ -607,6 +607,13 @@ sequenceDiagram
             <h3 className="font-semibold text-content mb-2">Do not add virtualization until you have measured the problem</h3>
             <p className="text-content-muted">
               Virtualization complicates keyboard accessibility (focus management across unmounted items), breaks <InlineCode>Ctrl+F</InlineCode> in-page search for items not in the DOM, and makes item height estimation a source of scroll-jump bugs. Most folders have under 200 items - React handles 200 DOM nodes trivially. Measure on real devices with real data first. The performance win is real for power users with deep repositories, but do not pay the complexity cost until you have confirmed the user impact.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="font-semibold text-content mb-2">React Query&apos;s cache is already a store — do not duplicate it into Zustand</h3>
+            <p className="text-content-muted">
+              A common pattern is to fetch folder children with React Query and then write the result into a separate Zustand normalized map. This creates two sources of truth for the same data. React Query already caches each folder&apos;s children by query key — that cache is the store. The only state you need beyond it is <InlineCode>openIds</InlineCode> (which folders are expanded) and <InlineCode>selectedIds</InlineCode> (which files are highlighted). Both are local <InlineCode>useState</InlineCode>. Zustand is only justified when you have cross-folder mutation state that needs to persist across navigation — a move operation that touches files visible in multiple query cache entries simultaneously. If the app is primarily read-heavy browsing, skip Zustand entirely and drive everything from the URL and React Query.
             </p>
           </div>
 

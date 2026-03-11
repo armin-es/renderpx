@@ -452,7 +452,11 @@ flowchart LR
       <section id="lazy-loading" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">Lazy-Loading the Tree</h2>
         <p className="text-content mb-4">
-          Fetching the entire file system tree on load is never the right approach. The tree can be arbitrarily deep, and the user will only expand a small fraction of it. Fetch children only when the user expands a folder for the first time. After that, toggle is a local operation. The file preview system applies the same principle to JS bundles — see <Link href="/patterns/code-splitting-lazy-loading" className="text-primary hover:underline">Code Splitting & Lazy Loading</Link>.
+          Fetching the entire file system tree on load is never the right approach. The tree can be arbitrarily deep, and the user will only expand a small fraction of it. Fetch children only when the user expands a folder for the first time. After that, toggle is a local operation. The file preview system applies the same principle to JS bundles; see{' '}
+          <Link href="/patterns/code-splitting-lazy-loading" className="text-primary hover:underline">
+            Code Splitting &amp; Lazy Loading
+          </Link>
+          .
         </p>
         <p className="text-content mb-4">
           The <InlineCode>childrenLoaded</InlineCode> flag on each node is the key. On expand: check the flag, skip the fetch if true, fetch and populate if false. The store gets immutably updated with the new children; the expanded folder ID goes into the open-IDs Set.
@@ -542,7 +546,7 @@ sequenceDiagram
           <h3 className="text-sm font-semibold uppercase tracking-widest text-content-muted mb-3">Patterns used</h3>
           <div className="grid gap-2 sm:grid-cols-2">
             {[
-              { href: '/patterns/normalized-state', title: 'Normalized State', desc: 'Flat Map<string, FileNode> store — O(1) lookup, update, and move without recursive traversal.' },
+              { href: '/patterns/normalized-state', title: 'Normalized State', desc: 'Flat Map<string, FileNode> store with O(1) lookup, update, and move without recursive traversal.' },
               { href: '/patterns/optimistic-updates', title: 'Optimistic Updates', desc: 'Move, rename, and delete reflect immediately; rollback on API failure.' },
               { href: '/patterns/virtualized-lists', title: 'Virtualized Lists', desc: 'Render only visible rows for folders with 50,000+ items.' },
               { href: '/patterns/code-splitting-lazy-loading', title: 'Code Splitting & Lazy Loading', desc: 'Each file renderer (PDF, video, image) is a separate chunk loaded on demand.' },
@@ -611,9 +615,9 @@ sequenceDiagram
           </div>
 
           <div>
-            <h3 className="font-semibold text-content mb-2">React Query&apos;s cache is already a store — do not duplicate it into Zustand</h3>
+            <h3 className="font-semibold text-content mb-2">React Query&apos;s cache is already a store; don&apos;t duplicate it into Zustand</h3>
             <p className="text-content-muted">
-              A common pattern is to fetch folder children with React Query and then write the result into a separate Zustand normalized map. This creates two sources of truth for the same data. React Query already caches each folder&apos;s children by query key — that cache is the store. The only state you need beyond it is <InlineCode>openIds</InlineCode> (which folders are expanded) and <InlineCode>selectedIds</InlineCode> (which files are highlighted). Both are local <InlineCode>useState</InlineCode>. Zustand is only justified when you have cross-folder mutation state that needs to persist across navigation — a move operation that touches files visible in multiple query cache entries simultaneously. If the app is primarily read-heavy browsing, skip Zustand entirely and drive everything from the URL and React Query.
+              A common pattern is to fetch folder children with React Query and then write the result into a separate Zustand normalized map. This creates two sources of truth for the same data. React Query already caches each folder&apos;s children by query key - that cache is the store. The only state you need beyond it is <InlineCode>openIds</InlineCode> (which folders are expanded) and <InlineCode>selectedIds</InlineCode> (which files are highlighted). Both are local <InlineCode>useState</InlineCode>. Zustand is only justified when you have cross-folder mutation state that needs to persist across navigation - a move operation that touches files visible in multiple query cache entries simultaneously. If the app is primarily read-heavy browsing, skip Zustand entirely and drive everything from the URL and React Query.
             </p>
           </div>
 

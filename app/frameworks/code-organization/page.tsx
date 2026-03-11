@@ -54,7 +54,7 @@ features/products/
 // If yes → good structure.
 // If no  → your feature is leaking across the codebase.`;
 
-const BARREL_FILE_CODE = `// features/products/index.ts — the public contract
+const BARREL_FILE_CODE = `// features/products/index.ts - the public contract
 
 // ✅ Export what other parts of the app genuinely need
 export { ProductCard } from './ProductCard'
@@ -63,17 +63,17 @@ export { useProduct } from './useProduct'
 export type { Product, ProductFilters } from './types'
 
 // ❌ Don't export internal implementation details
-// productService.ts handles API calls — only ProductCard uses it
+// productService.ts handles API calls - only ProductCard uses it
 // No other feature should be calling product APIs directly
 
 // Consuming:
 import { ProductCard, useProduct } from '@/features/products'
-// ✅ Clean — respects the contract
+// ✅ Clean - respects the contract
 
 import { productService } from '@/features/products/productService'
-// ❌ Bypasses the contract — breaks when internals change`;
+// ❌ Bypasses the contract - breaks when internals change`;
 
-const ESLINT_BOUNDARY_CODE = `// .eslintrc.js — enforce module boundaries
+const ESLINT_BOUNDARY_CODE = `// .eslintrc.js - enforce module boundaries
 
 module.exports = {
   rules: {
@@ -119,7 +119,7 @@ const DECISION_MATRIX = [
     appScale: "50–500 files",
     featureCount: "8–30 features",
     useWhen:
-      "Most production apps — the right default for medium-to-large codebases",
+      "Most production apps - the right default for medium-to-large codebases",
     avoid: "Apps so small that the overhead isn't justified",
   },
   {
@@ -130,7 +130,7 @@ const DECISION_MATRIX = [
     useWhen:
       "Teams where cross-feature coupling is causing bugs; ESLint enforced",
     avoid:
-      "Small teams — the ceremony outweighs the benefit; enforce gradually",
+      "Small teams - the ceremony outweighs the benefit; enforce gradually",
   },
   {
     structure: "Route Colocation",
@@ -138,7 +138,7 @@ const DECISION_MATRIX = [
     appScale: "Any Next.js app",
     featureCount: "Any",
     useWhen:
-      "Next.js App Router — the framework's native organization pattern",
+      "Next.js App Router - the framework's native organization pattern",
     avoid: "Non-Next.js projects; apps with many routes sharing components",
   },
 ];
@@ -161,7 +161,7 @@ export default function CodeOrganizationPage() {
           className="text-xl"
           style={{ color: "hsl(var(--content-text-muted))" }}
         >
-          Where do files live — and when does it matter?
+          Where do files live - and when does it matter?
         </p>
       </div>
 
@@ -191,7 +191,7 @@ export default function CodeOrganizationPage() {
             <InlineCode>components/</InlineCode>,{" "}
             <InlineCode>hooks/</InlineCode>,{" "}
             <InlineCode>utils/</InlineCode>,{" "}
-            <InlineCode>services/</InlineCode>. It feels correct — components
+            <InlineCode>services/</InlineCode>. It feels correct - components
             go with components, hooks go with hooks. But it creates a problem
             that only becomes visible when the codebase grows: a single product
             feature is now scattered across five directories.
@@ -203,7 +203,7 @@ export default function CodeOrganizationPage() {
             The consequence shows up when you try to delete a feature. Instead
             of removing a folder, you&apos;re running <InlineCode>grep</InlineCode>{" "}
             across the codebase, hunting for files that might be safe to
-            delete—and hoping you got them all.
+            delete -and hoping you got them all.
           </p>
         </div>
 
@@ -253,7 +253,7 @@ export default function CodeOrganizationPage() {
             className="text-sm"
             style={{ color: "hsl(var(--content-text-muted))" }}
           >
-            — The Colocation Principle
+            - The Colocation Principle
           </p>
         </div>
 
@@ -263,7 +263,7 @@ export default function CodeOrganizationPage() {
               question: "Does this code belong to a specific feature?",
               options: [
                 {
-                  label: "Yes — one feature uses it",
+                  label: "Yes - one feature uses it",
                   hint: "Lives inside features/that-feature/",
                 },
                 {
@@ -283,15 +283,15 @@ export default function CodeOrganizationPage() {
               options: [
                 {
                   label: "Yes",
-                  hint: "✅ Good structure — feature is self-contained",
+                  hint: "✅ Good structure - feature is self-contained",
                 },
                 {
-                  label: "No — I'd need to grep",
+                  label: "No - I'd need to grep",
                   hint: "⚠️ Feature is leaking across the codebase",
                 },
                 {
                   label: "I'm not sure",
-                  hint: "🔍 Map it — you'll find implicit coupling",
+                  hint: "🔍 Map it - you'll find implicit coupling",
                 },
               ],
               color: "hsl(var(--box-success-bg))",
@@ -361,7 +361,7 @@ export default function CodeOrganizationPage() {
                   className="font-sans font-bold text-xs mb-2 uppercase tracking-wide"
                   style={{ color: "hsl(var(--content-text-muted))" }}
                 >
-                  ❌ Type-Based — tells you the tech stack
+                  ❌ Type-Based - tells you the tech stack
                 </div>
                 <div style={{ color: "hsl(var(--content-text))" }}>
                   <div>src/</div>
@@ -383,7 +383,7 @@ export default function CodeOrganizationPage() {
                   className="font-sans font-bold text-xs mb-2 uppercase tracking-wide"
                   style={{ color: "hsl(var(--content-text-muted))" }}
                 >
-                  ✅ Feature-Based — tells you what the app does
+                  ✅ Feature-Based - tells you what the app does
                 </div>
                 <div style={{ color: "hsl(var(--content-text))" }}>
                   <div>src/features/</div>
@@ -590,7 +590,7 @@ export default function CodeOrganizationPage() {
               <div>
                 <strong>What surprised us:</strong> The migration revealed
                 three components that no one was sure which feature owned.
-                They were genuinely shared — we promoted them to{" "}
+                They were genuinely shared - we promoted them to{" "}
                 <InlineCode>shared/components/</InlineCode>. The uncertainty
                 itself was a sign we hadn&apos;t thought clearly about feature
                 boundaries.
@@ -634,8 +634,8 @@ export default function CodeOrganizationPage() {
                 <InlineCode>components/ui/index.ts</InlineCode> re-exported 60+
                 components. A login page imported{" "}
                 <InlineCode>Button</InlineCode> from it. The bundler included
-                every component in the barrel — including a chart library
-                dependency — in the login bundle. Bundle size went from 120kb
+                every component in the barrel - including a chart library
+                dependency - in the login bundle. Bundle size went from 120kb
                 to 210kb overnight.
               </div>
               <div>
@@ -698,10 +698,10 @@ export default function CodeOrganizationPage() {
               When the migration is worth it: don&apos;t declare a refactor
               sprint. Create a <InlineCode>features/</InlineCode> directory and
               route all new development there immediately. Old code migrates
-              opportunistically — when you&apos;re touching a file anyway, move
+              opportunistically - when you&apos;re touching a file anyway, move
               it. Barrel files in the old structure can re-export from new
               locations during the transition. The migration is done when new
-              code stops landing in <InlineCode>components/</InlineCode> —
+              code stops landing in <InlineCode>components/</InlineCode> -
               not when every old file has been moved.
             </p>
             <CodeBlock
@@ -744,7 +744,7 @@ export { NotificationBell } from '../features/notifications/NotificationBell'`}
           className="text-sm mb-8"
           style={{ color: "hsl(var(--content-text-muted))" }}
         >
-          What it actually looks like to change how a team organizes code —
+          What it actually looks like to change how a team organizes code -
           with engineers who have muscle memory, a product that can&apos;t stop
           shipping, and a junior dev who broke production.
         </p>
@@ -786,7 +786,7 @@ export { NotificationBell } from '../features/notifications/NotificationBell'`}
               style={{ color: "hsl(var(--content-text))" }}
             >
               A junior engineer broke the notifications feature while adding an
-              unrelated auth change — the same files overlapped.{" "}
+              unrelated auth change - the same files overlapped.{" "}
               <InlineCode>hooks/useNotifications.ts</InlineCode> and{" "}
               <InlineCode>hooks/useAuth.ts</InlineCode> shared a dependency, and
               a change in one cascaded into the other in a way no one caught in
@@ -814,9 +814,9 @@ export { NotificationBell } from '../features/notifications/NotificationBell'`}
               Proposed feature-based folders for all new development, no
               migration sprint. Old structure stays; new features land in{" "}
               <InlineCode>features/&lt;name&gt;/</InlineCode>. Existing files
-              migrate opportunistically — when you touch a file anyway, move it.
+              migrate opportunistically - when you touch a file anyway, move it.
               The only rule enforced immediately: new files go in feature folders.
-              I also proposed adding the ESLint boundary rule from day one —
+              I also proposed adding the ESLint boundary rule from day one -
               that&apos;s the call I&apos;d have made even if the team pushed
               back, because without it the migration just creates two parallel
               messes instead of one.
@@ -841,7 +841,7 @@ export { NotificationBell } from '../features/notifications/NotificationBell'`}
               &ldquo;all hooks in one place.&rdquo; The diff that changed the
               conversation: adding a new notification type in the old structure
               (six files, four folders) vs. the new structure (two files, one
-              folder). The ESLint rule was the hardest sell — it felt like extra
+              folder). The ESLint rule was the hardest sell - it felt like extra
               ceremony. I scoped it narrowly: it only flagged imports from feature
               internals, not between features. After the first time it caught a
               cross-feature import that would have caused a circular dependency, the
@@ -868,7 +868,7 @@ export { NotificationBell } from '../features/notifications/NotificationBell'`}
               in <InlineCode>features/notifications/</InlineCode> and
               hasn&apos;t caused an adjacent-feature incident since. Junior
               engineers onboard faster because the scope of a feature is visible
-              immediately — one folder, all related code. We never finished
+              immediately - one folder, all related code. We never finished
               migrating every old file. We didn&apos;t need to: the problem was
               solved at the growth boundary, not the historical one.
             </p>
@@ -889,11 +889,11 @@ export { NotificationBell } from '../features/notifications/NotificationBell'`}
           {[
             {
               mistake: "Organizing by type because it 'feels' more structured",
-              take: "Type-based organization (components/, hooks/, utils/) isn't structure — it's alphabetical grouping with extra steps. It answers 'what is this?' when the question you actually need answered is 'what does this belong to?' Feature-based organization feels messier at first because you have to make a decision. That's the point. Making that decision once is better than making it implicitly every time you search for a file.",
+              take: "Type-based organization (components/, hooks/, utils/) isn't structure - it's alphabetical grouping with extra steps. It answers 'what is this?' when the question you actually need answered is 'what does this belong to?' Feature-based organization feels messier at first because you have to make a decision. That's the point. Making that decision once is better than making it implicitly every time you search for a file.",
             },
             {
               mistake: "Creating a shared/ folder and putting everything in it",
-              take: "I've seen codebases where 80% of the components are in shared/. At that point, shared/ is just components/ renamed. The rule is strict: shared/ is for code that is actually shared — used by three or more features. Two features sharing something is usually fine as a direct import. If you find yourself asking 'is this shared enough?', the answer is probably no.",
+              take: "I've seen codebases where 80% of the components are in shared/. At that point, shared/ is just components/ renamed. The rule is strict: shared/ is for code that is actually shared - used by three or more features. Two features sharing something is usually fine as a direct import. If you find yourself asking 'is this shared enough?', the answer is probably no.",
             },
             {
               mistake: "Barrel files everywhere as a reflex",
@@ -901,7 +901,7 @@ export { NotificationBell } from '../features/notifications/NotificationBell'`}
             },
             {
               mistake: "Treating code organization as a one-time decision",
-              take: "The right structure at 5 engineers is wrong at 25. The right structure for a monolith is wrong for a monorepo. Good engineers revisit structure when it starts causing friction — when PRs consistently touch too many directories, when new team members can't find things, when deleting a feature takes a day instead of an hour. Code organization is a living thing, not a founding principle.",
+              take: "The right structure at 5 engineers is wrong at 25. The right structure for a monolith is wrong for a monorepo. Good engineers revisit structure when it starts causing friction - when PRs consistently touch too many directories, when new team members can't find things, when deleting a feature takes a day instead of an hour. Code organization is a living thing, not a founding principle.",
             },
           ].map(({ mistake, take }) => (
             <div
@@ -955,7 +955,7 @@ export { NotificationBell } from '../features/notifications/NotificationBell'`}
             >
               Code organization decides <em>where</em> components live.
               Component Composition covers <em>how</em> they&apos;re
-              structured internally — compound components, render props,
+              structured internally - compound components, render props,
               headless patterns. The two are complementary: feature folders
               tell you where a component lives; composition patterns tell you
               how it&apos;s built.
@@ -980,7 +980,7 @@ export { NotificationBell } from '../features/notifications/NotificationBell'`}
               style={{ color: "hsl(var(--content-text-muted))" }}
             >
               Design systems live in the <InlineCode>shared/</InlineCode> or{" "}
-              <InlineCode>components/ui/</InlineCode> layer — code that is
+              <InlineCode>components/ui/</InlineCode> layer - code that is
               genuinely used everywhere. The Design System Architecture
               framework covers how to build that layer: tokens, variant
               systems, and headless primitives.

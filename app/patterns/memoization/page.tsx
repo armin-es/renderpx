@@ -4,7 +4,7 @@ import { Callout, InlineCode } from '@/components/ui'
 import { RelatedContent } from '@/components/RelatedContent'
 import { patternRelations } from '@/lib/related-content'
 
-const NAIVE_CODE = `// Expensive computation and new object on every render — children re-render
+const NAIVE_CODE = `// Expensive computation and new object on every render - children re-render
 function Parent({ items }: { items: Item[] }) {
   const sorted = items.slice().sort((a, b) => a.name.localeCompare(b.name))
   const config = { theme: 'dark', pageSize: 10 }
@@ -83,7 +83,7 @@ export default function MemoizationPatternPage() {
       <section id="remaining-issues" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">Remaining issues</h2>
         <ul className="list-disc pl-6 space-y-2 text-content">
-          <li><strong>When to memo:</strong> Not everywhere—memo has a cost (prop comparison). Use when the parent re-renders often and the child is expensive, or when you need a stable reference for <InlineCode>useEffect</InlineCode> / <InlineCode>useMemo</InlineCode> deps.</li>
+          <li><strong>When to memo:</strong> Not everywhere -memo has a cost (prop comparison). Use when the parent re-renders often and the child is expensive, or when you need a stable reference for <InlineCode>useEffect</InlineCode> / <InlineCode>useMemo</InlineCode> deps.</li>
           <li><strong>useCallback:</strong> For callbacks passed to memoized children, use <InlineCode>useCallback</InlineCode> so the function reference is stable; otherwise the child sees a new prop every time.</li>
           <li><strong>Dependency array:</strong> Wrong deps can cause stale values or unnecessary recomputation; keep deps accurate.</li>
         </ul>
@@ -92,7 +92,7 @@ export default function MemoizationPatternPage() {
       <section id="production-pattern" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">Production pattern</h2>
         <p className="text-content mb-4">
-          Use <InlineCode>useMemo</InlineCode> for: expensive derivations, or objects/arrays passed to memoized children (so the reference is stable). Use <InlineCode>useCallback</InlineCode> for handlers passed to memoized children or listed in effect deps. Use <InlineCode>React.memo</InlineCode> on leaf or list-item components that are expensive and receive stable props. Don’t memo by default—profile first; add memoization where you measure a real win.
+          Use <InlineCode>useMemo</InlineCode> for: expensive derivations, or objects/arrays passed to memoized children (so the reference is stable). Use <InlineCode>useCallback</InlineCode> for handlers passed to memoized children or listed in effect deps. Use <InlineCode>React.memo</InlineCode> on leaf or list-item components that are expensive and receive stable props. Don’t memo by default -profile first; add memoization where you measure a real win.
         </p>
         <CodeBlock code={PRODUCTION_CODE} lang="tsx" />
       </section>

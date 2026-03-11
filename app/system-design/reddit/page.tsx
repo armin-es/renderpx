@@ -449,7 +449,7 @@ sequenceDiagram
   else Failure (rate limit / auth)
     API-->>UI: 4xx
     UI->>UI: Rollback both cache entries from snapshot
-    UI->>User: Toast "Couldn't vote — try again"
+    UI->>User: Toast "Couldn't vote. Try again."
   end
         `} />
         <Callout variant="info" title="Why not normalize?" className="mt-6">
@@ -461,7 +461,7 @@ sequenceDiagram
       <section id="real-time-strategy" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">Real-Time Strategy</h2>
         <p className="text-content mb-4">
-          Reddit does not use WebSockets for the feed or comments in its standard experience. This surprises people. The actual strategy is deliberate polling - and it's the right call for most surfaces:
+          Reddit does not use WebSockets for the feed or comments in its standard experience. This surprises people. The actual strategy is deliberate polling, and it's the right call for most surfaces:
         </p>
         <ul className="list-disc pl-6 space-y-2 text-content mb-6">
           <li><strong>Vote counts on the feed:</strong> 60s poll while the page is visible. Users tolerate stale vote counts; a number jumping from 847 to 852 while they're reading doesn't matter.</li>

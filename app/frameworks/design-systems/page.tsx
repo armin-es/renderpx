@@ -17,7 +17,7 @@ import {
 } from "@/lib/designSystemExamples";
 import { Button, Badge, Callout, InlineCode } from "@/components/ui";
 
-const TOKEN_DRIFT_CODE = `// Three teams, three "blues" — all hardcoded, all slightly wrong
+const TOKEN_DRIFT_CODE = `// Three teams, three "blues" - all hardcoded, all slightly wrong
 // checkout/BuyButton.tsx
 <button style={{ backgroundColor: '#2563eb' }}>Buy Now</button>
 
@@ -34,7 +34,7 @@ const TOKEN_DRIFT_CODE = `// Three teams, three "blues" — all hardcoded, all s
 
 const TOKEN_SOLUTION_CODE = `/* globals.css */
 :root {
-  /* Semantic tokens — intent, not appearance */
+  /* Semantic tokens - intent, not appearance */
   --color-primary: 221 83% 53%;
   --color-primary-hover: 221 83% 45%;
 }
@@ -44,7 +44,7 @@ const TOKEN_SOLUTION_CODE = `/* globals.css */
   --color-primary: 221 83% 65%;  /* lighter for dark backgrounds */
 }
 
-/* components/Button.tsx — all three button variants, one token */
+/* components/Button.tsx - all three button variants, one token */
 <button style={{ backgroundColor: 'hsl(var(--color-primary))' }}>
   Buy Now
 </button>
@@ -52,7 +52,7 @@ const TOKEN_SOLUTION_CODE = `/* globals.css */
 // Rebrand? One line in globals.css:
 // --color-primary: 262 83% 58%;   ← blue → purple, everywhere, instantly`;
 
-const VARIANT_SYSTEM_CODE = `// The CVA pattern — TypeScript-safe variant API
+const VARIANT_SYSTEM_CODE = `// The CVA pattern - TypeScript-safe variant API
 // No library needed, but CVA makes it ergonomic
 
 type Variant = 'primary' | 'secondary' | 'destructive' | 'ghost'
@@ -80,7 +80,7 @@ export function Button({ variant = 'primary', size = 'md', ...props }) {
   )
 }
 
-// TypeScript catches typos at authoring time — not in production
+// TypeScript catches typos at authoring time - not in production
 // <Button variant="primari" />  ← TS error: not assignable to type 'Variant'`;
 
 const HEADLESS_CODE = `// Layer 3: Radix UI for behavior, tokens for appearance
@@ -93,7 +93,7 @@ export function Modal({ trigger, title, children }) {
       <Dialog.Trigger asChild>{trigger}</Dialog.Trigger>
       <Dialog.Portal>
         <Dialog.Overlay className="fixed inset-0 bg-black/50" />
-        {/* Focus trapping, escape key, scroll lock — all handled */}
+        {/* Focus trapping, escape key, scroll lock - all handled */}
         <Dialog.Content
           className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
                      w-full max-w-lg rounded-xl border p-6"
@@ -112,7 +112,7 @@ export function Modal({ trigger, title, children }) {
 
 // shadcn/ui is the shortcut: pre-built components with this pattern.
 // Copy-paste into your project, update tokens to match your brand.
-// You own the code — shadcn is not a runtime dependency.`;
+// You own the code - shadcn is not a runtime dependency.`;
 
 const DECISION_MATRIX = [
   {
@@ -213,7 +213,7 @@ export default async function DesignSystemsPage() {
           <CodeWithPreview
             code={TOKEN_DRIFT_CODE}
             lang="tsx"
-            codeLabel="Three teams, three blues — same product, same brand"
+            codeLabel="Three teams, three blues: same product, same brand"
             preview={<TokenDriftDemo />}
             previewLabel="The result after 2 years of independent work"
             layout="stacked"
@@ -377,9 +377,9 @@ export default async function DesignSystemsPage() {
           <CodeWithPreview
             code={TOKEN_SOLUTION_CODE}
             lang="css"
-            codeLabel="One token, total cascade — change the color below and watch"
+            codeLabel="One token, total cascade: change the color below and watch"
             preview={<TokenCascadeDemo />}
-            previewLabel="Live token editor — change --primary, see it cascade"
+            previewLabel="Live token editor: change --primary, see it cascade"
             layout="stacked"
           />
         </div>
@@ -482,9 +482,9 @@ export default async function DesignSystemsPage() {
           <CodeWithPreview
             code={VARIANT_SYSTEM_CODE}
             lang="tsx"
-            codeLabel="CVA variant pattern — TypeScript-safe, self-documenting"
+            codeLabel="CVA variant pattern: TypeScript-safe, self-documenting"
             preview={<VariantSystemDemo />}
-            previewLabel="Button explorer — try different variants and sizes"
+            previewLabel="Button explorer: try different variants and sizes"
             layout="stacked"
           />
         </div>
@@ -589,9 +589,9 @@ export default async function DesignSystemsPage() {
           <CodeWithPreview
             code={HEADLESS_CODE}
             lang="tsx"
-            codeLabel="Radix Dialog — accessibility handled, you own the styles"
+            codeLabel="Radix Dialog: accessibility handled, you own the styles"
             preview={<HeadlessPrimitivesDemo />}
-            previewLabel="Accessible accordion — no library, correct ARIA"
+            previewLabel="Accessible accordion: no library, correct ARIA"
             layout="stacked"
           />
         </div>
@@ -929,7 +929,7 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
             <CodeBlock
               code={`// The coexistence pattern: old and new live together
 
-// Old code stays as-is — deprecated, not deleted
+// Old code stays as-is - deprecated, not deleted
 <button style={{ backgroundColor: '#2563eb' }}>Submit</button>
 
 // New code uses tokens from day one
@@ -1277,7 +1277,7 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
                 Before
               </div>
               <CodeBlock
-                code={`// DocsShell.tsx — repeated on every element
+                code={`// DocsShell.tsx - repeated on every element
 <aside
   style={{
     backgroundColor: 'hsl(var(--sidebar-bg))',
@@ -1296,7 +1296,7 @@ document.documentElement.style.setProperty('--color-primary', config.primary)`}
                 After
               </div>
               <CodeBlock
-                code={`// DocsShell.tsx — semantic Tailwind utilities
+                code={`// DocsShell.tsx - semantic Tailwind utilities
 // CSS variables bridged via tailwind.config.js
 <aside className="bg-sidebar-bg border-sidebar-border">
   <span className="text-content">

@@ -8,7 +8,7 @@ import { CompoundTabsDemo } from "@/components/demos/TabsDemos";
 import { componentCompositionExampleContent } from "@/lib/componentCompositionExamples";
 import { frameworkRelations } from "@/lib/related-content";
 
-const PROPS_TABS_CODE = `// Tabs component owns all rendering — consumer passes data
+const PROPS_TABS_CODE = `// Tabs component owns all rendering - consumer passes data
 function Tabs({ tabs, defaultTab }) {
   const [active, setActive] = useState(defaultTab ?? tabs[0].id)
 
@@ -39,7 +39,7 @@ function Tabs({ tabs, defaultTab }) {
 // The week after: a tooltip on the disabled Settings tab.
 // Each request = a new prop + new logic inside Tabs.`;
 
-const COMPOUND_TABS_CODE = `// Compound components — consumer assembles structure, owns rendering
+const COMPOUND_TABS_CODE = `// Compound components - consumer assembles structure, owns rendering
 const TabsCtx = createContext()
 
 function Tabs({ children, defaultTab }) {
@@ -65,7 +65,7 @@ function TabPanel({ id, children }) {
   return active === id ? <div role="tabpanel">{children}</div> : null
 }
 
-// Consumer: badge lives in consumer JSX — Tabs never needs to change
+// Consumer: badge lives in consumer JSX - Tabs never needs to change
 <Tabs defaultTab="account">
   <TabList>
     <Tab id="account">Account</Tab>
@@ -107,7 +107,7 @@ const PROGRESSIVE_EXAMPLES = [
   {
     id: "05-headless",
     title: "Example 5: Headless Hook",
-    subtitle: "Logic only — consumer renders everything",
+    subtitle: "Logic only - consumer renders everything",
     complexity: "Advanced",
   },
 ];
@@ -265,9 +265,9 @@ export default async function ComponentCompositionPage() {
           <CodeWithPreview
             code={PROPS_TABS_CODE}
             lang="tsx"
-            codeLabel="Props-based Tabs — every feature is a new prop"
+            codeLabel="Props-based Tabs - every feature is a new prop"
             preview={<PropsTabsDemo />}
-            previewLabel="Live — a working Props-based Tabs with a badge prop"
+            previewLabel="Live - a working Props-based Tabs with a badge prop"
             layout="stacked"
           />
         </div>
@@ -324,9 +324,9 @@ export default async function ComponentCompositionPage() {
           <CodeWithPreview
             code={COMPOUND_TABS_CODE}
             lang="tsx"
-            codeLabel="Compound Tabs — consumer owns the rendering"
+            codeLabel="Compound Tabs - consumer owns the rendering"
             preview={<CompoundTabsDemo />}
-            previewLabel="Live — same badge, but consumer JSX. Tabs never changes."
+            previewLabel="Live - same badge, but consumer JSX. Tabs never changes."
             layout="stacked"
           />
         </div>
@@ -543,7 +543,7 @@ export default async function ComponentCompositionPage() {
   const { getTabProps, getPanelProps, isActive } = useTabs(TABS)
 
   return (
-    // Consumer renders whatever they want — sidebar nav, pill tabs,
+    // Consumer renders whatever they want - sidebar nav, pill tabs,
     // a dropdown on mobile. The hook handles state + ARIA.
     <MySidebarNav>
       {TABS.map(tab => (
@@ -982,7 +982,7 @@ export default async function ComponentCompositionPage() {
             },
             {
               mistake: "Wrapping components in divs you don't control",
-              take: "A button that needs to sometimes be a link, sometimes a router link, sometimes a plain div — the right API is asChild (Radix pattern) or the as prop. Not three separate components, not a wrapper div that breaks layout. The asChild pattern merges your component's behavior (click handlers, ARIA) with whatever element the consumer renders. It's cleaner than wrapping and keeps the DOM shallow.",
+              take: "A button that needs to sometimes be a link, sometimes a router link, sometimes a plain div - the right API is asChild (Radix pattern) or the as prop. Not three separate components, not a wrapper div that breaks layout. The asChild pattern merges your component's behavior (click handlers, ARIA) with whatever element the consumer renders. It's cleaner than wrapping and keeps the DOM shallow.",
             },
             {
               mistake: "Reaching for Radix (or Headless UI) for everything",
@@ -1207,12 +1207,12 @@ export default async function ComponentCompositionPage() {
               className="text-sm leading-relaxed"
               style={{ color: "hsl(var(--content-text))" }}
             >
-              Wrote the migration guide before writing the component — documented
+              Wrote the migration guide before writing the component - documented
               the old-prop to subcomponent mapping so consuming teams knew exactly
               what to change. Ran a codemod for the mechanical conversions
               (straightforward prop → wrapper substitutions), left complex cases
               for manual review. Got the two product teams to migrate their most
-              complex card usage first — if the API felt wrong for the hard cases,
+              complex card usage first - if the API felt wrong for the hard cases,
               we needed to know before the simple cases were done. It felt right.
               The backwards-compat shim bought the necessary migration window
               without blocking the product teams from shipping features in parallel.
@@ -1296,7 +1296,7 @@ export default async function ComponentCompositionPage() {
             >
               Compound components use React Context to share state between
               related pieces. Understanding when Context causes re-render
-              problems—and when it doesn&apos;t—directly applies to designing
+              problems -and when it doesn&apos;t -directly applies to designing
               compound APIs.
             </p>
           </div>
@@ -1322,8 +1322,8 @@ export default async function ComponentCompositionPage() {
               style={{ color: "hsl(var(--content-text-muted))" }}
             >
               Headless hooks often manage async state (loading, error, data).
-              The patterns for data fetching—optimistic updates, loading states,
-              cache invalidation—compose naturally with headless component
+              The patterns for data fetching -optimistic updates, loading states,
+              cache invalidation -compose naturally with headless component
               hooks.
             </p>
           </div>

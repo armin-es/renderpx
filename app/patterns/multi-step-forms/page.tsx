@@ -4,7 +4,7 @@ import { Callout, InlineCode } from '@/components/ui'
 import { RelatedContent } from '@/components/RelatedContent'
 import { patternRelations } from '@/lib/related-content'
 
-const NAIVE_CODE = `// One giant form — 20 fields, single submit
+const NAIVE_CODE = `// One giant form - 20 fields, single submit
 function CheckoutForm() {
   const [data, setData] = useState({ name: '', email: '', address: '', card: '', ... })
 

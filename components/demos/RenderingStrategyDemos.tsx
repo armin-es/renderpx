@@ -16,7 +16,7 @@ type WaterfallStep = 'html' | 'js' | 'fetch'
 type WaterfallPhase = 'idle' | 'running' | 'done'
 
 const STEPS: { key: WaterfallStep; label: string; detail: string; durationMs: number }[] = [
-  { key: 'html', label: 'HTML received',      detail: '<div id="root"></div> — empty shell',  durationMs: 600 },
+  { key: 'html', label: 'HTML received',      detail: '<div id="root"></div> - empty shell',  durationMs: 600 },
   { key: 'js',   label: 'JavaScript parsed',  detail: 'Bundle downloaded and executed',       durationMs: 1000 },
   { key: 'fetch',label: 'Data fetch',         detail: 'GET /api/products/123',                durationMs: 800 },
 ]
@@ -149,7 +149,7 @@ export function CsrWaterfallDemo() {
           opacity: phase === 'done' ? 1 : 0,
         }}
       >
-          Each step blocks the next — that&apos;s the waterfall.
+          Each step blocks the next - that&apos;s the waterfall.
       </div>
     </div>
   )
@@ -173,11 +173,11 @@ const MODE_DATA: Record<
   csr: {
     label: 'CSR',
     ttfb: '< 5ms',
-    htmlPreview: '<div id="root"></div>\n<!-- empty — JS fills this in -->',
+    htmlPreview: '<div id="root"></div>\n<!-- empty - JS fills this in -->',
     cached: true,
     personalized: true,
     seoCrawlable: false,
-    freshnessNote: 'Always fresh — fetched in browser on every load',
+    freshnessNote: 'Always fresh - fetched in browser on every load',
   },
   ssr: {
     label: 'SSR',
@@ -186,7 +186,7 @@ const MODE_DATA: Record<
     cached: false,
     personalized: true,
     seoCrawlable: true,
-    freshnessNote: 'Always fresh — re-renders on every request',
+    freshnessNote: 'Always fresh - re-renders on every request',
   },
   ssg: {
     label: 'SSG',

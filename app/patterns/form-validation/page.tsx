@@ -4,7 +4,7 @@ import { Callout, InlineCode } from '@/components/ui'
 import { RelatedContent } from '@/components/RelatedContent'
 import { patternRelations } from '@/lib/related-content'
 
-const NAIVE_CODE = `// Validate only on submit — user sees errors after clicking Submit
+const NAIVE_CODE = `// Validate only on submit - user sees errors after clicking Submit
 function SignupForm() {
   const [email, setEmail] = useState('')
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -181,7 +181,7 @@ export default function FormValidationPatternPage() {
       <section id="problem" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">The problem I keep seeing</h2>
         <p className="text-content mb-4">
-          Forms need validation: required fields, format (email, phone), length, and business rules (e.g. “email not already taken”). If you only validate on the server, the user gets errors after a round-trip and a full submit. If you only validate on the client, you’re not secure—anyone can bypass the client. You want both: client-side for UX, server-side for correctness and security, with one schema if possible so rules don’t drift.
+          Forms need validation: required fields, format (email, phone), length, and business rules (e.g. “email not already taken”). If you only validate on the server, the user gets errors after a round-trip and a full submit. If you only validate on the client, you’re not secure -anyone can bypass the client. You want both: client-side for UX, server-side for correctness and security, with one schema if possible so rules don’t drift.
         </p>
         <p className="text-content">
           The other trap: showing errors too early (on first keystroke) is noisy; showing them only on submit is late. A good default is validate on blur and on submit, and optionally on change after the field has been touched.

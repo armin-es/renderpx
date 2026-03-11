@@ -87,7 +87,7 @@ export default function StaleWhileRevalidatePatternPage() {
       <section id="problem" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">The problem I keep seeing</h2>
         <p className="text-content mb-4">
-          Users navigate away and back, or switch tabs. If every visit waits for a fresh network response, the UI feels slow and flickers (empty → content). You want to show something immediately—ideally the last data you had—and then refresh in the background so the screen updates when new data is ready.
+          Users navigate away and back, or switch tabs. If every visit waits for a fresh network response, the UI feels slow and flickers (empty → content). You want to show something immediately -ideally the last data you had -and then refresh in the background so the screen updates when new data is ready.
         </p>
       </section>
 

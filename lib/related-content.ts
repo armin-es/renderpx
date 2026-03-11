@@ -32,7 +32,7 @@ export const frameworkRelations: Record<string, RelatedContent> = {
   },
   'state-architecture': {
     patterns: [
-      { href: '/patterns/controlled-vs-uncontrolled', title: 'Controlled vs Uncontrolled', description: 'Where does form state live—in React or the DOM?' },
+      { href: '/patterns/controlled-vs-uncontrolled', title: 'Controlled vs Uncontrolled', description: 'Where does form state live -in React or the DOM?' },
       { href: '/patterns/compound-components', title: 'Compound Components', description: 'Share state implicitly between parent and children.' },
       { href: '/patterns/hocs-vs-composition', title: 'HOCs vs Composition', description: 'Trade-offs between wrapping and prop passing.' },
       { href: '/patterns/dependent-fields', title: 'Dependent Fields', description: 'Update one field based on changes in another.' },
@@ -258,7 +258,7 @@ export const deepDiveRelations: Record<string, RelatedContent> = {
       { href: '/frameworks/state-architecture', title: 'State Architecture', description: 'Where state lives and how it flows.' },
     ],
     patterns: [
-      { href: '/patterns/controlled-vs-uncontrolled', title: 'Controlled vs Uncontrolled', description: 'Where does form state live—in React or the DOM?' },
+      { href: '/patterns/controlled-vs-uncontrolled', title: 'Controlled vs Uncontrolled', description: 'Where does form state live -in React or the DOM?' },
     ],
   },
 };

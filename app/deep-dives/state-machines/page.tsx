@@ -29,8 +29,8 @@ export default function StateMachinesPage() {
       <section id="the-problem" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">The Problem</h2>
         <p className="text-lg leading-relaxed text-content mb-4">
-          Most async state starts with three boolean flags. This feels natural — each flag
-          answers one question — but it creates bugs that are hard to reproduce and harder to
+          Most async state starts with three boolean flags. This feels natural - each flag
+          answers one question - but it creates bugs that are hard to reproduce and harder to
           explain.
         </p>
         <CodeBlock
@@ -68,7 +68,7 @@ export default function StateMachinesPage() {
             <p className="text-sm text-content-muted">
               The <InlineCode>.catch</InlineCode> block sets <InlineCode>isError = true</InlineCode> but
               never resets <InlineCode>isLoading</InlineCode>. The component renders{" "}
-              <InlineCode>{"<Spinner />"}</InlineCode> forever — not because the request is running,
+              <InlineCode>{"<Spinner />"}</InlineCode> forever - not because the request is running,
               but because no one flipped the flag back. This is a real bug that ships to production
               because it requires a network error in testing to trigger.
             </p>
@@ -79,7 +79,7 @@ export default function StateMachinesPage() {
             <p className="text-sm text-content-muted mb-2">
               The user navigates from <InlineCode>/profile/1</InlineCode> to{" "}
               <InlineCode>/profile/2</InlineCode>. <InlineCode>setIsLoading(true)</InlineCode>{" "}
-              fires — but <InlineCode>data</InlineCode> and <InlineCode>isError</InlineCode> are
+              fires - but <InlineCode>data</InlineCode> and <InlineCode>isError</InlineCode> are
               independent variables. They are not reset.
             </p>
             <CodeBlock
@@ -92,7 +92,7 @@ export default function StateMachinesPage() {
 
 // 3. What renders?
 if (isLoading) return <Spinner />
-// The guard hides the stale data — fine for a simple spinner.
+// The guard hides the stale data - fine for a simple spinner.
 // But skeleton UIs intentionally show previous data while loading new data:
 if (isLoading && data) return <ProfileSkeleton name={data.name} />
 //                                                   ↑ renders "Alice" while loading "Bob"`}
@@ -100,7 +100,7 @@ if (isLoading && data) return <ProfileSkeleton name={data.name} />
             />
             <p className="text-xs text-content-muted mt-3">
               Note: a related but distinct problem is the{" "}
-              <em>race condition</em> — where an old slow request resolves after a new fast
+              <em>race condition</em> - where an old slow request resolves after a new fast
               one and overwrites the correct data. That bug is not about state shape; it
               requires <InlineCode>AbortController</InlineCode> or a cleanup flag to fix.{" "}
               <Link href="/deep-dives/useeffect-async-cleanup" className="text-primary hover:underline">
@@ -113,7 +113,7 @@ if (isLoading && data) return <ProfileSkeleton name={data.name} />
         <p className="mt-6 text-content">
           These bugs share a root cause: three independent boolean flags can be in{" "}
           <strong>8 combinations</strong> (2³), but only 4 of those represent valid states.
-          The other 4 are impossible states that exist only in code — and they produce
+          The other 4 are impossible states that exist only in code - and they produce
           impossible UI: a spinner with loaded data behind it, an error banner that won't
           clear, stale content from a previous request.
         </p>
@@ -133,7 +133,7 @@ if (isLoading && data) return <ProfileSkeleton name={data.name} />
         </h2>
         <p className="text-content mb-4">
           A TypeScript discriminated union collapses 8 combinations into exactly 4 valid
-          states — enforced at compile time, at zero runtime cost.
+          states - enforced at compile time, at zero runtime cost.
         </p>
         <CodeBlock
           code={`type FetchState<T> =
@@ -176,7 +176,7 @@ function UserProfile({ userId }: { userId: string }) {
             <p className="text-sm text-content-muted">
               <InlineCode>setState({"{ status: 'error', message }"  })</InlineCode> is a single
               call that transitions the entire state. There is no <InlineCode>isLoading</InlineCode>{" "}
-              flag to forget. The transition is atomic — either you&apos;re in{" "}
+              flag to forget. The transition is atomic - either you&apos;re in{" "}
               <InlineCode>&apos;error&apos;</InlineCode> or you&apos;re not.
             </p>
           </div>
@@ -185,7 +185,7 @@ function UserProfile({ userId }: { userId: string }) {
             <p className="text-sm text-content-muted">
               When <InlineCode>userId</InlineCode> changes, the first call is{" "}
               <InlineCode>setState({"{ status: 'loading' }"})</InlineCode>. This replaces the
-              entire previous state — including any stale <InlineCode>data</InlineCode> from the
+              entire previous state - including any stale <InlineCode>data</InlineCode> from the
               previous user. There is no stale data floating independently in{" "}
               <InlineCode>data: user1</InlineCode> while <InlineCode>isLoading</InlineCode> is
               true.
@@ -197,14 +197,14 @@ function UserProfile({ userId }: { userId: string }) {
           A discriminated union is just a TypeScript type. No dependencies, no runtime overhead,
           no new mental model beyond <InlineCode>useState</InlineCode>. This is the right default
           for any component that models an async operation. React Query uses exactly this shape
-          internally — <InlineCode>status: &apos;pending&apos; | &apos;success&apos; | &apos;error&apos;</InlineCode> — which is
+          internally - <InlineCode>status: &apos;pending&apos; | &apos;success&apos; | &apos;error&apos;</InlineCode> - which is
           why you rarely need to build it yourself when using a data fetching library.
         </Callout>
 
         <p className="mt-4 text-content-muted text-sm">
           A discriminated union works well up to about 4–6 states. When transitions between
-          states become <em>conditional</em> — when a step can go to different next states
-          depending on context — a union stops being enough.
+          states become <em>conditional</em> - when a step can go to different next states
+          depending on context - a union stops being enough.
         </p>
       </section>
 
@@ -215,8 +215,8 @@ function UserProfile({ userId }: { userId: string }) {
         </h2>
         <p className="text-content mb-4">
           A discriminated union with <InlineCode>useState</InlineCode> works well for 2–4 states
-          with straightforward transitions. When transitions become conditional — the next state
-          depends on the current state <em>and</em> the event — transition logic starts spreading
+          with straightforward transitions. When transitions become conditional - the next state
+          depends on the current state <em>and</em> the event - transition logic starts spreading
           across multiple handlers. <InlineCode>useReducer</InlineCode> pulls all of that into one
           place.
         </p>
@@ -271,7 +271,7 @@ function reducer(state: CheckoutState, event: CheckoutEvent): CheckoutState {
 function CheckoutFlow() {
   const [state, dispatch] = useReducer(reducer, { step: 'email' })
 
-  // Handlers dispatch events — no transition logic lives here
+  // Handlers dispatch events - no transition logic lives here
   async function handlePaymentSubmit(card: Card) {
     dispatch({ type: 'SUBMIT_PAYMENT' })
     try {
@@ -301,23 +301,23 @@ function CheckoutFlow() {
             <ul className="space-y-2 text-sm text-content-muted">
               <li className="flex gap-2">
                 <span className="shrink-0 text-green-500">✓</span>
-                <span>All transition logic in one place — the reducer <em>is</em> the transition table, readable in one pass</span>
+                <span>All transition logic in one place - the reducer <em>is</em> the transition table, readable in one pass</span>
               </li>
               <li className="flex gap-2">
                 <span className="shrink-0 text-green-500">✓</span>
                 <span>
-                  Invalid transitions return <InlineCode>state</InlineCode> unchanged — jumping
+                  Invalid transitions return <InlineCode>state</InlineCode> unchanged - jumping
                   from <InlineCode>email</InlineCode> to <InlineCode>success</InlineCode> is
                   silently ignored
                 </span>
               </li>
               <li className="flex gap-2">
                 <span className="shrink-0 text-green-500">✓</span>
-                <span>Event handlers become thin — dispatch an event, let the reducer decide what happens next</span>
+                <span>Event handlers become thin - dispatch an event, let the reducer decide what happens next</span>
               </li>
               <li className="flex gap-2">
                 <span className="shrink-0 text-green-500">✓</span>
-                <span>Testable in isolation — the reducer is a pure function, no component mounting required</span>
+                <span>Testable in isolation - the reducer is a pure function, no component mounting required</span>
               </li>
             </ul>
           </div>
@@ -326,15 +326,15 @@ function CheckoutFlow() {
             <h3 className="font-bold mb-2 text-content">Where useReducer reaches its limit</h3>
             <ul className="space-y-2 text-sm text-content-muted">
               <li className="flex gap-2">
-                <span className="shrink-0">—</span>
+                <span className="shrink-0">•</span>
                 <span>
                   <strong>Delayed transitions:</strong> a 5-second redirect after{" "}
                   <InlineCode>success</InlineCode> is a separate <InlineCode>useEffect</InlineCode>{" "}
-                  — not co-located with the transition that triggers it
+                  - not co-located with the transition that triggers it
                 </span>
               </li>
               <li className="flex gap-2">
-                <span className="shrink-0">—</span>
+                <span className="shrink-0">•</span>
                 <span>
                   <strong>Parallel states:</strong> if the form also needs to track an auto-saving
                   indicator running independently of the checkout step, that becomes a second
@@ -342,10 +342,10 @@ function CheckoutFlow() {
                 </span>
               </li>
               <li className="flex gap-2">
-                <span className="shrink-0">—</span>
+                <span className="shrink-0">•</span>
                 <span>
                   <strong>Visualizability:</strong> the reducer is the transition table, but you
-                  can&apos;t auto-generate a diagram from it — at 8+ states, reading it requires
+                  can&apos;t auto-generate a diagram from it - at 8+ states, reading it requires
                   building the mental model from scratch
                 </span>
               </li>
@@ -354,8 +354,8 @@ function CheckoutFlow() {
         </div>
 
         <Callout variant="success" title="useReducer is usually enough" className="mt-6">
-          Most multi-step flows in production — checkout flows, onboarding wizards, multi-step
-          forms with conditional paths — are well-served by a discriminated union +{" "}
+          Most multi-step flows in production - checkout flows, onboarding wizards, multi-step
+          forms with conditional paths - are well-served by a discriminated union +{" "}
           <InlineCode>useReducer</InlineCode>. The move to XState is warranted when delayed
           transitions or parallel states make the reducer unwieldy, or when the team needs to
           reason about the flow without reading code.
@@ -412,7 +412,7 @@ function CheckoutFlow({ isLoggedIn, isDigital }) {
       await submitPayment(card)
       setStep('success')
       setRedirectCountdown(5)
-      // Start countdown — but now this logic is scattered in a useEffect elsewhere
+      // Start countdown - but now this logic is scattered in a useEffect elsewhere
     } catch (err) {
       setPaymentError(err.message)
       setStep('payment')  // go back, but remember the error
@@ -421,7 +421,7 @@ function CheckoutFlow({ isLoggedIn, isDigital }) {
 
   // The valid transitions are: email→shipping, shipping→payment (or stay),
   // payment→review, review→submitting, submitting→success|failed, success→redirect
-  // But none of that is visible here — it's buried across 6 handlers and 3 useEffects.
+  // But none of that is visible here - it's buried across 6 handlers and 3 useEffects.
 }`}
           lang="tsx"
         />
@@ -476,7 +476,7 @@ const checkoutMachine = createMachine({
 
 // Every valid transition is visible in one place.
 // Invalid transitions (e.g. jumping from 'email' to 'success') are silently ignored.
-// You can draw this on a whiteboard — the code is just an encoding of that diagram.`}
+// You can draw this on a whiteboard - the code is just an encoding of that diagram.`}
             lang="tsx"
           />
         </div>
@@ -485,7 +485,7 @@ const checkoutMachine = createMachine({
           XState&apos;s API surface is substantial: actors, guards, actions, delays, parallel
           states. A new developer joining your codebase will spend real time learning the
           library before they can contribute. That cost is worth it when the state is
-          genuinely complex — when you could draw a transition diagram on a whiteboard and
+          genuinely complex - when you could draw a transition diagram on a whiteboard and
           still need the diagram to understand the code. It is not worth it for a simple
           async fetch or a login form.
         </Callout>
@@ -499,7 +499,7 @@ const checkoutMachine = createMachine({
         <p className="text-content mb-4">
           A login form has states:{" "}
           <InlineCode>pristine → touched → validating → submitting → success | error</InlineCode>.
-          That looks like a state machine problem. It isn&apos;t — not one you need XState to solve.
+          That looks like a state machine problem. It isn&apos;t - not one you need XState to solve.
         </p>
         <p className="text-content mb-6">
           React Hook Form already models this lifecycle internally. It tracks touched, dirty,
@@ -508,7 +508,7 @@ const checkoutMachine = createMachine({
         </p>
 
         <CodeBlock
-          code={`// ❌ XState for a login form — rebuilding what RHF already does
+          code={`// ❌ XState for a login form - rebuilding what RHF already does
 const loginMachine = createMachine({
   id: 'login',
   initial: 'idle',
@@ -523,7 +523,7 @@ const loginMachine = createMachine({
 // You're writing boilerplate to encode a flow that React Hook Form handles for you.
 
 
-// ✅ React Hook Form — form lifecycle is built in
+// ✅ React Hook Form - form lifecycle is built in
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 
@@ -556,7 +556,7 @@ function LoginForm() {
         <Callout variant="info" title="The heuristic" className="mt-4">
           If the problem is &quot;validating user input and submitting to an API,&quot; use React Hook Form.
           If the problem is &quot;a multi-step workflow where the path forward depends on previous
-          steps or external events,&quot; use a discriminated union first — and XState when the
+          steps or external events,&quot; use a discriminated union first - and XState when the
           discriminated union grows past ~6 states or needs conditional transitions.
         </Callout>
       </section>
@@ -578,7 +578,7 @@ function LoginForm() {
               {[
                 {
                   situation: "Single async operation (loading / success / error)",
-                  tool: "Discriminated union — or just React Query, which models this for you",
+                  tool: "Discriminated union, or just React Query, which models this for you",
                 },
                 {
                   situation: "Form with validation and submission",
@@ -590,19 +590,19 @@ function LoginForm() {
                 },
                 {
                   situation: "States with conditional transitions (different next state depending on context)",
-                  tool: "Discriminated union + useReducer with guards — or XState if transitions are > 6",
+                  tool: "Discriminated union + useReducer with guards, or XState if transitions are > 6",
                 },
                 {
                   situation: "Multi-step wizard with branching paths",
-                  tool: "XState — draw the transition diagram first, then encode it",
+                  tool: "XState: draw the transition diagram first, then encode it",
                 },
                 {
                   situation: "Connection lifecycle (WebSocket, SSE) with retries and backoff",
-                  tool: "XState — delayed transitions and guards are built-in",
+                  tool: "XState: delayed transitions and guards are built in",
                 },
                 {
                   situation: "10+ states, nested states, or parallel states",
-                  tool: "XState — the ceremony is worth it at this complexity",
+                  tool: "XState: the ceremony is worth it at this complexity",
                 },
               ].map((row, i) => (
                 <tr
@@ -618,7 +618,7 @@ function LoginForm() {
         </div>
 
         <Callout variant="success" title="Start here">
-          Default to a discriminated union. It costs nothing — no library, no new mental model,
+          Default to a discriminated union. It costs nothing - no library, no new mental model,
           just a TypeScript type and a <InlineCode>switch</InlineCode> statement. If you find yourself
           adding guards (&quot;go to X, but only if Y&quot;) or delayed transitions (&quot;after 5 seconds,
           do Z&quot;), that&apos;s the signal to reach for XState. The diagram is the machine; the
@@ -637,7 +637,7 @@ function LoginForm() {
             <div>
               <div className="font-medium text-content">State Architecture</div>
               <div className="text-sm text-content-muted">
-                Where state lives and why — the broader framework
+                Where state lives and why - the broader framework
               </div>
             </div>
             <ChevronRight size={20} className="text-content-muted shrink-0" />

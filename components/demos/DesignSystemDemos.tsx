@@ -3,7 +3,7 @@
 import { useState } from 'react'
 
 // ─── Demo 1: Token Drift Problem ──────────────────────────────────────────────
-// Shows three "blue" buttons built by different teams — all hardcoded, all wrong
+// Shows three "blue" buttons built by different teams - all hardcoded, all wrong
 
 export function TokenDriftDemo() {
   return (
@@ -64,7 +64,7 @@ export function TokenDriftDemo() {
 }
 
 // ─── Demo 2: Token Cascade ────────────────────────────────────────────────────
-// Change one CSS variable — every component updates immediately
+// Change one CSS variable - every component updates immediately
 
 const PRESETS = [
   { label: 'Blue', hue: 221 },
@@ -94,7 +94,7 @@ export function TokenCascadeDemo() {
           <code className="px-1.5 py-0.5 rounded" style={{ backgroundColor: 'hsl(var(--inline-code-bg))' }}>
             --primary
           </code>{' '}
-          — all components update from a single variable:
+          - all components update from a single variable:
         </p>
         <div className="flex flex-wrap gap-1.5">
           {PRESETS.map((preset) => (
@@ -340,7 +340,7 @@ export function VariantSystemDemo() {
 }
 
 // ─── Demo 4: Headless Primitives ──────────────────────────────────────────────
-// Accessible accordion built without a library — proper ARIA attributes
+// Accessible accordion built without a library - proper ARIA attributes
 
 const ACCORDION_ITEMS = [
   {
@@ -356,7 +356,7 @@ const ACCORDION_ITEMS = [
   {
     question: "Does shadcn/ui replace Radix?",
     answer:
-      "No — shadcn/ui builds on Radix primitives. It gives you pre-styled, copy-paste components using Radix under the hood. You still own the code; shadcn is a starter, not a runtime dependency you update.",
+      "No - shadcn/ui builds on Radix primitives. It gives you pre-styled, copy-paste components using Radix under the hood. You still own the code; shadcn is a starter, not a runtime dependency you update.",
   },
 ]
 
@@ -366,7 +366,7 @@ export function HeadlessPrimitivesDemo() {
   return (
     <div className="space-y-1 p-4">
       <p className="text-xs mb-3" style={{ color: 'hsl(var(--content-text-muted))' }}>
-        Accessible accordion — no library. Correct{' '}
+        Accessible accordion - no library. Correct{' '}
         <code className="px-1 rounded" style={{ backgroundColor: 'hsl(var(--inline-code-bg))' }}>
           aria-expanded
         </code>

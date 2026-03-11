@@ -30,7 +30,7 @@ export default function UseEffectAsyncCleanupPage() {
         <h2 className="text-2xl font-bold mb-4 text-content">The Race Condition</h2>
         <p className="text-lg leading-relaxed text-content mb-4">
           Every <InlineCode>useEffect</InlineCode> fetch has a latent race condition. It only
-          surfaces when two requests are in-flight simultaneously — which happens whenever a
+          surfaces when two requests are in-flight simultaneously - which happens whenever a
           prop that the effect depends on changes quickly.
         </p>
         <CodeBlock
@@ -72,12 +72,12 @@ export default function UseEffectAsyncCleanupPage() {
                 {
                   t: "t=80ms",
                   event: "user2 response arrives. setUser(user2).",
-                  state: "user: user2 ✓ — correct",
+                  state: "user: user2 ✓ - correct",
                 },
                 {
                   t: "t=200ms",
                   event: "user1 response arrives (slow). setUser(user1).",
-                  state: "user: user1 ✗ — wrong user, no error",
+                  state: "user: user1 ✗ - wrong user, no error",
                 },
               ].map((row, i) => (
                 <tr key={row.t} className={i % 2 === 0 ? "bg-content-bg" : ""}>
@@ -91,7 +91,7 @@ export default function UseEffectAsyncCleanupPage() {
         </div>
 
         <Callout variant="warning" title="Why it's hard to catch">
-          This only happens when user1&apos;s request is slower than user2&apos;s — a timing
+          This only happens when user1&apos;s request is slower than user2&apos;s - a timing
           condition that doesn&apos;t exist in local development (where the &quot;API&quot; is
           often instant) but happens regularly in production under load or on slow connections.
           The result is wrong data in the UI with no error, no warning, and no way for the user
@@ -99,7 +99,7 @@ export default function UseEffectAsyncCleanupPage() {
         </Callout>
       </section>
 
-      {/* Section 2: Fix 1 — Cancelled flag */}
+      {/* Section 2: Fix 1 - Cancelled flag */}
       <section id="fix-cancelled-flag" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">Fix 1: The Cancelled Flag</h2>
         <p className="text-content mb-4">
@@ -150,7 +150,7 @@ export default function UseEffectAsyncCleanupPage() {
                 {
                   t: "t=200ms",
                   event: "user1 response arrives. cancelled₁ = true → setUser skipped.",
-                  result: "user: user2 ✓ — stale response discarded",
+                  result: "user: user2 ✓ - stale response discarded",
                 },
               ].map((row, i) => (
                 <tr key={row.t} className={i % 2 === 0 ? "bg-content-bg" : ""}>
@@ -164,21 +164,21 @@ export default function UseEffectAsyncCleanupPage() {
         </div>
 
         <Callout variant="info" title="What this does and doesn't do">
-          The cancelled flag prevents the stale response from updating state — but the network
+          The cancelled flag prevents the stale response from updating state - but the network
           request for user1 still runs to completion. The bandwidth is wasted, and the
           connection slot is occupied. For most apps this is fine. For mobile users on metered
           connections, or for requests that trigger server-side work, you want to cancel the
-          request itself — not just discard the response.
+          request itself - not just discard the response.
         </Callout>
       </section>
 
-      {/* Section 3: Fix 2 — AbortController */}
+      {/* Section 3: Fix 2 - AbortController */}
       <section id="fix-abortcontroller" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">Fix 2: AbortController</h2>
         <p className="text-content mb-4">
           <InlineCode>AbortController</InlineCode> is a Web API that cancels the network
           request itself. The browser closes the connection when{" "}
-          <InlineCode>abort()</InlineCode> is called — no response is received, no bandwidth
+          <InlineCode>abort()</InlineCode> is called - no response is received, no bandwidth
           is used past that point.
         </p>
         <CodeBlock
@@ -189,7 +189,7 @@ export default function UseEffectAsyncCleanupPage() {
     .then(res => res.json())
     .then(data => setUser(data))
     .catch(err => {
-      if (err.name === 'AbortError') return  // expected — ignore it
+      if (err.name === 'AbortError') return  // expected - ignore it
       setError(err)
     })
 
@@ -218,8 +218,8 @@ export default function UseEffectAsyncCleanupPage() {
                 },
                 {
                   label: "Cancels the network request",
-                  flag: "✗ — request completes",
-                  abort: "✓ — connection closed",
+                  flag: "✗ - request completes",
+                  abort: "✓ - connection closed",
                 },
                 {
                   label: "Saves bandwidth",
@@ -234,7 +234,7 @@ export default function UseEffectAsyncCleanupPage() {
                 {
                   label: "Works with non-fetch async (setTimeout, WebSocket, etc.)",
                   flag: "✓",
-                  abort: "✗ — fetch-specific",
+                  abort: "✗ - fetch-specific",
                 },
                 {
                   label: "Browser support",
@@ -304,7 +304,7 @@ export default function UseEffectAsyncCleanupPage() {
   const { data: user, isPending, isError } = useQuery({
     queryKey: ['user', userId],
     queryFn: ({ signal }) =>
-      // ✅ AbortController is handled for you — signal passed automatically
+      // ✅ AbortController is handled for you - signal passed automatically
       fetch(\`/api/users/\${userId}\`, { signal }).then(r => r.json()),
     staleTime: 60_000,
   })
@@ -315,7 +315,7 @@ export default function UseEffectAsyncCleanupPage() {
 }
 
 // ✅ Race condition: handled (AbortController passed via queryFn signal)
-// ✅ Caching: 60s staleTime — navigate away and back → instant from cache
+// ✅ Caching: 60s staleTime - navigate away and back → instant from cache
 // ✅ Deduplication: two components, one request
 // ✅ Background refresh: on tab focus when stale
 // ✅ Retry: 3 attempts with backoff on failure`}
@@ -326,7 +326,7 @@ export default function UseEffectAsyncCleanupPage() {
         <Callout variant="info" title="Note on the queryFn signal" className="mt-4">
           React Query passes an <InlineCode>AbortController</InlineCode> signal into{" "}
           <InlineCode>queryFn</InlineCode> automatically. When a query is cancelled (because
-          the component unmounts, or because a newer query supersedes it), the signal aborts —
+          the component unmounts, or because a newer query supersedes it), the signal aborts -
           and the network request is cancelled. You get the correct behavior without writing
           the cleanup code yourself.
         </Callout>
@@ -351,7 +351,7 @@ export default function UseEffectAsyncCleanupPage() {
             {
               label: "Non-HTTP async work",
               detail:
-                "Reading from IndexedDB, Web Workers, or WebRTC. These aren't HTTP requests — AbortController doesn't apply and React Query's model doesn't fit.",
+                "Reading from IndexedDB, Web Workers, or WebRTC. These aren't HTTP requests - AbortController doesn't apply and React Query's model doesn't fit.",
             },
             {
               label: "Mutations with no return value",
@@ -369,8 +369,8 @@ export default function UseEffectAsyncCleanupPage() {
         <Callout variant="success" title="The rule of thumb" className="mt-6">
           If you need the data in a React component and it comes from a server, use React
           Query. If the async work is a side effect that isn&apos;t directly tied to
-          rendering — or if you&apos;re in a context where React Query doesn&apos;t make
-          sense — use <InlineCode>useEffect</InlineCode> with <InlineCode>AbortController</InlineCode>{" "}
+          rendering - or if you&apos;re in a context where React Query doesn&apos;t make
+          sense - use <InlineCode>useEffect</InlineCode> with <InlineCode>AbortController</InlineCode>{" "}
           (for fetch) or a cancelled flag (for everything else).
         </Callout>
       </section>
@@ -386,7 +386,7 @@ export default function UseEffectAsyncCleanupPage() {
             <div>
               <div className="font-medium text-content">Data Fetching &amp; Sync</div>
               <div className="text-sm text-content-muted">
-                useEffect → React Query → RSC — the full spectrum
+                useEffect → React Query → RSC - the full spectrum
               </div>
             </div>
             <ChevronRight size={20} className="text-content-muted shrink-0" />
@@ -398,7 +398,7 @@ export default function UseEffectAsyncCleanupPage() {
             <div>
               <div className="font-medium text-content">State Machines</div>
               <div className="text-sm text-content-muted">
-                The other useEffect bug — stale state shape when flags aren&apos;t reset atomically
+                The other useEffect bug - stale state shape when flags aren&apos;t reset atomically
               </div>
             </div>
             <ChevronRight size={20} className="text-content-muted shrink-0" />

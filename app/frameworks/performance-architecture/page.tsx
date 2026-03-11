@@ -11,7 +11,7 @@ import {
 import { Callout, InlineCode } from "@/components/ui";
 import { frameworkRelations } from "@/lib/related-content";
 
-const BASELINE_MEASUREMENT_CODE = `// next.config.js — add bundle analyzer
+const BASELINE_MEASUREMENT_CODE = `// next.config.js - add bundle analyzer
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
@@ -20,14 +20,14 @@ module.exports = withBundleAnalyzer({})
 // Run: ANALYZE=true pnpm build
 // Opens an interactive treemap in your browser`;
 
-const VITALS_CODE = `// app/layout.tsx — report Web Vitals
+const VITALS_CODE = `// app/layout.tsx - report Web Vitals
 export function reportWebVitals(metric) {
   switch (metric.name) {
-    case 'LCP':  // Largest Contentful Paint — main content visible
-    case 'FID':  // First Input Delay — first interaction response
-    case 'CLS':  // Cumulative Layout Shift — visual stability
-    case 'INP':  // Interaction to Next Paint — all interaction response
-    case 'TTFB': // Time to First Byte — server response
+    case 'LCP':  // Largest Contentful Paint - main content visible
+    case 'FID':  // First Input Delay - first interaction response
+    case 'CLS':  // Cumulative Layout Shift - visual stability
+    case 'INP':  // Interaction to Next Paint - all interaction response
+    case 'TTFB': // Time to First Byte - server response
       analytics.track(metric.name, { value: metric.value })
   }
 }`;
@@ -112,10 +112,10 @@ function onRenderCallback(
   <ProductList products={products} />
 </Profiler>`;
 
-const FONT_CODE = `// ❌ System font stack — no loading delay, but less control
+const FONT_CODE = `// ❌ System font stack - no loading delay, but less control
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
 
-// ✅ Next.js font optimization — zero layout shift, self-hosted
+// ✅ Next.js font optimization - zero layout shift, self-hosted
 import { Inter } from 'next/font/google'
 
 const inter = Inter({
@@ -129,10 +129,10 @@ export default function Layout({ children }) {
 // Next.js downloads the font at build time, serves it from your domain.
 // No third-party DNS lookup. No FOUT. No CLS.`;
 
-const IMAGE_CODE = `// ❌ Raw <img> — no optimization
+const IMAGE_CODE = `// ❌ Raw <img> - no optimization
 <img src="/hero.jpg" alt="Hero" />
 
-// ✅ Next.js <Image> — automatic optimization
+// ✅ Next.js <Image> - automatic optimization
 import Image from 'next/image'
 
 <Image
@@ -172,7 +172,7 @@ export default function PerformanceArchitecturePage() {
         </h2>
         <div className="space-y-4 text-content">
           <p>
-            Performance problems in React apps come in three distinct flavors — and most developers
+            Performance problems in React apps come in three distinct flavors - and most developers
             treat them all the same way.
           </p>
           <p>
@@ -182,7 +182,7 @@ export default function PerformanceArchitecturePage() {
           </p>
           <p>
             <strong>Render performance</strong> is about wasted React work. One state change at
-            the top of your tree can trigger hundreds of unnecessary re-renders — and the user
+            the top of your tree can trigger hundreds of unnecessary re-renders - and the user
             feels it as choppy interactions, janky typing, and sluggish filters.
           </p>
           <p>
@@ -194,7 +194,7 @@ export default function PerformanceArchitecturePage() {
           <Callout variant="warning" title="The trap">
             Optimizing without measuring. Developers add{" "}
             <InlineCode>memo()</InlineCode> everywhere, split every component into its own
-            chunk, and virtualize every list — before checking if these are actually the
+            chunk, and virtualize every list - before checking if these are actually the
             bottlenecks. The result: added complexity, no measurable improvement.
           </Callout>
         </div>
@@ -287,7 +287,7 @@ export default function PerformanceArchitecturePage() {
           The Framework: Measure, Identify, Fix
         </h2>
         <p className="mb-6 text-content">
-          Every performance investigation follows the same three steps. The order matters —
+          Every performance investigation follows the same three steps. The order matters -
           skipping straight to &quot;fix&quot; is how developers spend a week optimizing
           something that wasn&apos;t the bottleneck.
         </p>
@@ -366,7 +366,7 @@ export default function PerformanceArchitecturePage() {
                   the fix worked. If it didn&apos;t move, you fixed the wrong thing.
                 </p>
                 <Callout variant="success">
-                  The goal is a measurable number improving — not &quot;this code looks more
+                  The goal is a measurable number improving - not &quot;this code looks more
                   optimized.&quot; Don&apos;t stop until you can show before/after metrics.
                 </Callout>
               </div>
@@ -440,7 +440,7 @@ export default function PerformanceArchitecturePage() {
         </h2>
         <p className="mb-6 text-content">
           The most common render performance issue: a state change in a parent component
-          triggers re-renders in every child — even children that have no dependency on that
+          triggers re-renders in every child - even children that have no dependency on that
           state. Type in the input below to see the difference.
         </p>
         <div className="mb-6">
@@ -451,7 +451,7 @@ export default function PerformanceArchitecturePage() {
           <InlineCode>memo()</InlineCode> semantics automatically. It analyzes your
           component&apos;s dependencies at the AST level and only re-renders what actually
           changed. On React 19+, you don&apos;t need to write{" "}
-          <InlineCode>memo()</InlineCode> manually — the compiler does it for you, and does
+          <InlineCode>memo()</InlineCode> manually - the compiler does it for you, and does
           it more precisely than manual annotations.
         </Callout>
       </section>
@@ -462,7 +462,7 @@ export default function PerformanceArchitecturePage() {
           Bundle Splitting in Action
         </h2>
         <p className="mb-6 text-content">
-          Heavy libraries like chart tools and rich text editors are often loaded eagerly —
+          Heavy libraries like chart tools and rich text editors are often loaded eagerly -
           even on pages where the user never opens them. Code splitting defers these to
           on-demand chunks that only download when actually needed.
         </p>
@@ -483,7 +483,7 @@ export default function PerformanceArchitecturePage() {
         </h2>
         <p className="mb-6 text-content-muted">
           Five escalating optimization patterns for a product dashboard. Each example builds on the
-          previous — you wouldn&apos;t apply all five simultaneously; you apply the ones your measurements
+          previous - you wouldn&apos;t apply all five simultaneously; you apply the ones your measurements
           point to.
         </p>
         <ExampleViewer
@@ -508,9 +508,9 @@ export default function PerformanceArchitecturePage() {
             <p className="mb-4 text-content-muted">
               React DevTools&apos; Profiler is the correct tool for diagnosing render
               performance. It shows you exactly which components rendered, why they rendered,
-              and how long they took — organized as a flamegraph.
+              and how long they took - organized as a flamegraph.
             </p>
-            <CodeBlock code={PROFILER_CODE} lang="tsx" label="React Profiler — programmatic" />
+            <CodeBlock code={PROFILER_CODE} lang="tsx" label="React Profiler - programmatic" />
           </div>
 
           {/* Images */}
@@ -535,7 +535,7 @@ export default function PerformanceArchitecturePage() {
               Google Fonts loaded via <InlineCode>{"<link>"}</InlineCode> tags cause a
               third-party DNS lookup + stylesheet fetch before text can render. Next.js{" "}
               <InlineCode>next/font</InlineCode> downloads and self-hosts the font at build
-              time — eliminating the network round-trip entirely.
+              time - eliminating the network round-trip entirely.
             </p>
             <CodeBlock code={FONT_CODE} lang="tsx" label="Font loading strategy" />
           </div>
@@ -594,12 +594,12 @@ export default function PerformanceArchitecturePage() {
             {
               take: "Choosing the right rendering strategy is worth more than any optimization",
               detail:
-                "Switching a CSR page to ISR can take a 4-second LCP to 300ms — no memoization, no virtualization, no bundle splitting needed. Architecture-level decisions (where rendering happens) have higher leverage than code-level optimizations. Fix the architecture before micro-optimizing.",
+                "Switching a CSR page to ISR can take a 4-second LCP to 300ms - no memoization, no virtualization, no bundle splitting needed. Architecture-level decisions (where rendering happens) have higher leverage than code-level optimizations. Fix the architecture before micro-optimizing.",
             },
             {
               take: "React Compiler makes manual memo() mostly obsolete",
               detail:
-                "React 19's compiler automatically memoizes components and values based on actual dependency tracking — better than what humans write by hand. If you're starting a new project, use React 19 and skip writing memo/useCallback/useMemo for optimization purposes. You still use useMemo for semantics (stable identity), but not for performance.",
+                "React 19's compiler automatically memoizes components and values based on actual dependency tracking - better than what humans write by hand. If you're starting a new project, use React 19 and skip writing memo/useCallback/useMemo for optimization purposes. You still use useMemo for semantics (stable identity), but not for performance.",
             },
           ].map((item) => (
             <div
@@ -629,7 +629,7 @@ export default function PerformanceArchitecturePage() {
           className="text-sm mb-8"
           style={{ color: "hsl(var(--content-text-muted))" }}
         >
-          What it looks like to diagnose a performance problem correctly — and
+          What it looks like to diagnose a performance problem correctly - and
           why the fix is almost never what the team first assumes.
         </p>
         <div className="space-y-8">
@@ -647,7 +647,7 @@ export default function PerformanceArchitecturePage() {
               className="text-sm leading-relaxed"
               style={{ color: "hsl(var(--content-text))" }}
             >
-              E-commerce product listing page — React SPA, fully client-side
+              E-commerce product listing page - React SPA, fully client-side
               rendered. The page ranked on Google. Core Web Vitals started
               failing in Search Console: LCP on mobile averaging 4.1s against a
               2.5s green threshold. Four engineers on the frontend team, all
@@ -676,7 +676,7 @@ export default function PerformanceArchitecturePage() {
               >
                 memo()
               </code>{" "}
-              everywhere — it was the performance tool people knew. But running
+              everywhere - it was the performance tool people knew. But running
               the React Profiler showed no unusually expensive renders. The
               problem wasn&apos;t in React at all. The main bundle was 2.1MB
               parsed and executed before a single pixel rendered. On a throttled
@@ -701,10 +701,10 @@ export default function PerformanceArchitecturePage() {
             >
               Identified the bottleneck in the Network + Perceived layers, not
               the Render layer. Two decisions: switch product listing pages from
-              CSR to SSG with ISR — the content was the same for all users,
+              CSR to SSG with ISR - the content was the same for all users,
               there was no reason to render it client-side on every request.
               And split the analytics library (400KB) and chart library (900KB)
-              out of the main bundle — both were loaded eagerly on every page
+              out of the main bundle - both were loaded eagerly on every page
               but only used in the{" "}
               <code
                 className="text-xs px-1 py-0.5 rounded"
@@ -741,7 +741,7 @@ export default function PerformanceArchitecturePage() {
               pushed back on splitting the library: &ldquo;if it&apos;s not
               loaded eagerly, we&apos;ll miss events on first page load.&rdquo;
               Opened the bundle analyzer together. Showed that the 3KB analytics
-              snippet — the part that fires events — was a separate entry point
+              snippet - the part that fires events - was a separate entry point
               from the 400KB dashboard library (charts, tables) that had no
               business being on the product listing page. After the split, the
               snippet stayed eager; the dashboard code went on-demand. Also ran
@@ -774,7 +774,7 @@ export default function PerformanceArchitecturePage() {
                 memo()
               </code>{" "}
               work the team had originally planned would have had zero
-              measurable impact on LCP. The bottleneck was never in React — it
+              measurable impact on LCP. The bottleneck was never in React - it
               was in the bundle size and rendering strategy decisions made years
               earlier when the app was small enough that neither mattered.
             </p>
@@ -795,7 +795,7 @@ export default function PerformanceArchitecturePage() {
             {
               href: "/frameworks/rendering-strategy",
               title: "Rendering Strategy",
-              desc: "SSR, SSG, ISR, RSC — the biggest lever for LCP and TTFB.",
+              desc: "SSR, SSG, ISR, RSC - the biggest lever for LCP and TTFB.",
             },
             {
               href: "/frameworks/state-architecture",

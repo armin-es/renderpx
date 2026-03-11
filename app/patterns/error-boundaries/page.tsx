@@ -6,7 +6,7 @@ import { ErrorBoundaryDemo } from '@/components/demos/ErrorBoundaryDemo'
 import { RelatedContent } from '@/components/RelatedContent'
 import { patternRelations } from '@/lib/related-content'
 
-const NAIVE_CODE = `// No boundary — one throw takes down the whole app
+const NAIVE_CODE = `// No boundary - one throw takes down the whole app
 function App() {
   return (
     <div>
@@ -83,7 +83,7 @@ class ErrorBoundary extends React.Component<
 </ErrorBoundary>
 // reset() clears error state → boundary re-renders children → they mount fresh.`;
 
-const HOOKS_LIMITATION_CODE = `// Error boundaries must be class components — there is no useErrorBoundary hook (yet).
+const HOOKS_LIMITATION_CODE = `// Error boundaries must be class components - there is no useErrorBoundary hook (yet).
 // React catches errors during render and in lifecycle; hooks run in the same phase,
 // so a hook can't "catch" an error and switch to fallback. Use a small class wrapper.`;
 

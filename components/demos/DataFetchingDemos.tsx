@@ -55,7 +55,7 @@ export function UseEffectProblemDemo() {
     <div className="space-y-4 p-4" style={{ color: 'hsl(var(--content-text))' }}>
       <p className="text-sm" style={{ color: 'hsl(var(--content-text-muted))' }}>
         Click <strong>User 2 → User 1</strong> quickly. User 2 takes 1200ms, User 1 takes 400ms.
-        User 1 arrives first — but User 2&apos;s response overwrites it.
+        User 1 arrives first - but User 2&apos;s response overwrites it.
       </p>
 
       <div className="flex gap-2 flex-wrap">
@@ -178,7 +178,7 @@ export function UseEffectSolutionDemo() {
     <div className="space-y-4 p-4" style={{ color: 'hsl(var(--content-text))' }}>
       <p className="text-sm" style={{ color: 'hsl(var(--content-text-muted))' }}>
         Same test: click <strong>User 2 → User 1</strong> quickly. Stale responses are now
-        ignored — the correct user always wins.
+        ignored - the correct user always wins.
       </p>
 
       <div className="flex gap-2 flex-wrap">
@@ -284,7 +284,7 @@ function useSimulatedQuery(userId: number) {
     const isStale = cached ? Date.now() - cached.timestamp > STALE_TIME : false
 
     if (cached && !isStale) {
-      // Cache hit, fresh — instant return
+      // Cache hit, fresh - instant return
       setState(prev => ({ ...prev, data: cached.data, loading: false, isStale: false }))
       return
     }
@@ -334,7 +334,7 @@ export function ReactQueryStyleDemo() {
     <div className="space-y-4 p-4" style={{ color: 'hsl(var(--content-text))' }}>
       <p className="text-sm" style={{ color: 'hsl(var(--content-text-muted))' }}>
         Switch users, then come back. Previously visited users load <strong>instantly from cache</strong>.
-        Cache expires after 5 seconds — stale data shows immediately while background refresh runs.
+        Cache expires after 5 seconds - stale data shows immediately while background refresh runs.
       </p>
 
       <div className="flex gap-2 flex-wrap">
@@ -384,7 +384,7 @@ export function ReactQueryStyleDemo() {
               <span className="font-semibold">{data.name}</span>
               {isStale && (
                 <span className="text-xs px-1.5 py-0.5 rounded" style={{ backgroundColor: 'hsl(var(--box-warning-bg))', color: 'hsl(38 92% 40%)' }}>
-                  stale — refreshing
+                  stale - refreshing
                 </span>
               )}
             </div>

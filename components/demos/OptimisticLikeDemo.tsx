@@ -16,7 +16,7 @@ export function OptimisticLikeDemo() {
       setMessage('Saved.')
     } catch {
       setLiked(false)
-      setMessage('Failed — rolled back.')
+      setMessage('Failed - rolled back.')
     } finally {
       setLoading(false)
     }
@@ -31,7 +31,7 @@ export function OptimisticLikeDemo() {
       setMessage('Saved.')
     } catch {
       setLiked(true)
-      setMessage('Failed — rolled back.')
+      setMessage('Failed - rolled back.')
     } finally {
       setLoading(false)
     }

@@ -4,7 +4,7 @@ import { Callout, InlineCode } from '@/components/ui'
 import { RelatedContent } from '@/components/RelatedContent'
 import { patternRelations } from '@/lib/related-content'
 
-const NAIVE_CODE = `// One big component with every variant — props explosion
+const NAIVE_CODE = `// One big component with every variant - props explosion
 function Card({ title, subtitle, image, footer, variant, size, ... }: CardProps) {
   return (
     <div className={cn('rounded border', variant === 'outlined' && 'border-2', size === 'large' && 'p-6')}>

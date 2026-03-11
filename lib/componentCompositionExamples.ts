@@ -55,11 +55,11 @@ function Tabs({ tabs, defaultTab }: {
 • Tab labels are always simple strings
 • The layout never needs to change
 • You're building a one-off, not a library component`,
-    whenThisBreaks: `Product asks for a notification badge on the Messages tab. You add a "badge" prop. Then they want icons. Another prop. Then disabled tabs. Then a tooltip on hover. Each feature is a prop bolted onto the component — and the component grows to handle every possible rendering variation.`,
+    whenThisBreaks: `Product asks for a notification badge on the Messages tab. You add a "badge" prop. Then they want icons. Another prop. Then disabled tabs. Then a tooltip on hover. Each feature is a prop bolted onto the component - and the component grows to handle every possible rendering variation.`,
   },
 
   '02-render-props': {
-    description: 'Pass a function as a prop — the component provides state, the consumer provides rendering for specific parts.',
+    description: 'Pass a function as a prop - the component provides state, the consumer provides rendering for specific parts.',
     code: `// Component provides tab data + active state; consumer controls how each tab renders
 function Tabs({ tabs, defaultTab, renderTab }: {
   tabs: Array<{ id: string; label: string; content: React.ReactNode }>
@@ -89,7 +89,7 @@ function Tabs({ tabs, defaultTab, renderTab }: {
   )
 }
 
-// Consumer with a badge — no changes to Tabs needed:
+// Consumer with a badge - no changes to Tabs needed:
 <Tabs
   tabs={notificationTabs}
   renderTab={(tab, isActive) => (
@@ -102,11 +102,11 @@ function Tabs({ tabs, defaultTab, renderTab }: {
   )}
 />`,
     explanation: `Render props give the consumer control over one specific rendering slot. The component handles state and structure; the consumer handles visual output. Works well for single customization points (like tab labels) without surrendering full control.`,
-    whenThisBreaks: `Gets verbose fast. If you need render props for tabs AND panels AND the tab list container, the JSX becomes deeply nested callbacks. Harder to read than either the props approach or compound components. Also: you can only pass one "renderTab" — if two different consumers want different tab rendering, you can't compose them.`,
+    whenThisBreaks: `Gets verbose fast. If you need render props for tabs AND panels AND the tab list container, the JSX becomes deeply nested callbacks. Harder to read than either the props approach or compound components. Also: you can only pass one "renderTab" - if two different consumers want different tab rendering, you can't compose them.`,
   },
 
   '03-children': {
-    description: 'Accept children instead of a data array — consumers pass elements, not configuration objects.',
+    description: 'Accept children instead of a data array - consumers pass elements, not configuration objects.',
     code: `// Consumer passes Tab elements as children; component inspects them for state
 function Tabs({ children, defaultTab }: {
   children: React.ReactNode
@@ -155,12 +155,12 @@ function Tab({ id, label, children }: TabProps) {
   <Tab id="account" label="Account"><AccountPanel /></Tab>
   <Tab id="billing" label="Billing"><BillingPanel /></Tab>
 </Tabs>`,
-    explanation: `Children-based APIs feel natural in JSX. Content lives next to its tab label — better co-location than a separate \`tabs\` array. Radix UI accordion uses this pattern. No callback syntax needed.`,
-    whenThisBreaks: `React.Children inspection is fragile: it breaks with fragments, arrays, and conditional children. The Tab component is a "ghost" that never renders — confusing to new developers. You also can't separate the tab list from the panels (they must stay nested together).`,
+    explanation: `Children-based APIs feel natural in JSX. Content lives next to its tab label - better co-location than a separate \`tabs\` array. Radix UI accordion uses this pattern. No callback syntax needed.`,
+    whenThisBreaks: `React.Children inspection is fragile: it breaks with fragments, arrays, and conditional children. The Tab component is a "ghost" that never renders - confusing to new developers. You also can't separate the tab list from the panels (they must stay nested together).`,
   },
 
   '04-compound': {
-    description: 'Separate components share implicit state via Context — the consumer assembles them freely.',
+    description: 'Separate components share implicit state via Context - the consumer assembles them freely.',
     code: `// Shared state lives in context; components are independent
 const TabsContext = createContext<{
   active: string
@@ -211,7 +211,7 @@ function TabPanel({ id, children }: { id: string; children: React.ReactNode }) {
   <TabList>
     <Tab id="account">Account</Tab>
     <Tab id="messages">
-      Messages <span className="badge">3</span>  {/* easy — consumer owns it */}
+      Messages <span className="badge">3</span>  {/* easy - consumer owns it */}
     </Tab>
     <Tab id="settings">Settings</Tab>
   </TabList>
@@ -219,12 +219,12 @@ function TabPanel({ id, children }: { id: string; children: React.ReactNode }) {
   <TabPanel id="messages"><MessagesPanel /></TabPanel>
   <TabPanel id="settings"><SettingsPanel /></TabPanel>
 </Tabs>`,
-    explanation: `Compound components are idiomatic React. Each component has a single responsibility. The consumer controls the full structure — tabs can go in a sidebar, panels in a modal, no constraints. Adding a badge, icon, or tooltip to a tab requires zero changes to the library. This is how Radix UI, Headless UI, and React Aria are built.`,
-    whenThisBreaks: `Context adds a small overhead — fine for UI state, but not for high-frequency updates (100+ changes/second). Also: discoverability suffers. A new developer sees \`<Tabs>\` in the import list and must know to look for TabList, Tab, TabPanel. Export them as \`Tabs.List\`, \`Tabs.Tab\`, \`Tabs.Panel\` (or via a namespace export) to signal they belong together.`,
+    explanation: `Compound components are idiomatic React. Each component has a single responsibility. The consumer controls the full structure - tabs can go in a sidebar, panels in a modal, no constraints. Adding a badge, icon, or tooltip to a tab requires zero changes to the library. This is how Radix UI, Headless UI, and React Aria are built.`,
+    whenThisBreaks: `Context adds a small overhead - fine for UI state, but not for high-frequency updates (100+ changes/second). Also: discoverability suffers. A new developer sees \`<Tabs>\` in the import list and must know to look for TabList, Tab, TabPanel. Export them as \`Tabs.List\`, \`Tabs.Tab\`, \`Tabs.Panel\` (or via a namespace export) to signal they belong together.`,
   },
 
   '05-headless': {
-    description: 'A hook returns only state and behavior — the consumer renders everything from scratch.',
+    description: 'A hook returns only state and behavior - the consumer renders everything from scratch.',
     code: `// useTabs: pure logic, zero rendering
 function useTabs(tabs: Array<{ id: string }>, defaultTab?: string) {
   const [active, setActive] = useState(defaultTab ?? tabs[0]?.id)
@@ -233,7 +233,7 @@ function useTabs(tabs: Array<{ id: string }>, defaultTab?: string) {
     active,
     isActive: (id: string) => active === id,
     select: (id: string) => setActive(id),
-    // ARIA-ready prop getters — consumer spreads these
+    // ARIA-ready prop getters - consumer spreads these
     getTabProps: (id: string) => ({
       role: 'tab' as const,
       'aria-selected': active === id,
@@ -277,7 +277,7 @@ function AccountSettings() {
     </div>
   )
 }`,
-    explanation: `Headless components are the foundation of design systems. The hook handles all the hard parts (keyboard navigation, ARIA attributes, state) while giving consumers complete rendering control. Headless UI and Radix UI expose both headless hooks and compound components — use whichever fits your abstraction level. Prop getters (\`getTabProps\`) are a clean pattern: spreads the minimum necessary attributes, consumer can override or extend.`,
-    whenThisBreaks: `More code at the call site. Every consumer writes their own tab/panel JSX — that's fine for a design system (each consumer has a unique design), but overkill for an app where you want a consistent, reusable \`<Tabs>\` you can drop anywhere. Start with compound components. Reach for headless when consumers genuinely need full rendering control.`,
+    explanation: `Headless components are the foundation of design systems. The hook handles all the hard parts (keyboard navigation, ARIA attributes, state) while giving consumers complete rendering control. Headless UI and Radix UI expose both headless hooks and compound components - use whichever fits your abstraction level. Prop getters (\`getTabProps\`) are a clean pattern: spreads the minimum necessary attributes, consumer can override or extend.`,
+    whenThisBreaks: `More code at the call site. Every consumer writes their own tab/panel JSX - that's fine for a design system (each consumer has a unique design), but overkill for an app where you want a consistent, reusable \`<Tabs>\` you can drop anywhere. Start with compound components. Reach for headless when consumers genuinely need full rendering control.`,
   },
 }

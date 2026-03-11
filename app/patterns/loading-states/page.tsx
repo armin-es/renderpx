@@ -4,7 +4,7 @@ import { Callout, InlineCode } from '@/components/ui'
 import { RelatedContent } from '@/components/RelatedContent'
 import { patternRelations } from '@/lib/related-content'
 
-const NAIVE_CODE = `// Boolean loading — empty or content, no in-between
+const NAIVE_CODE = `// Boolean loading - empty or content, no in-between
 function UserProfile({ userId }: { userId: string }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -44,9 +44,9 @@ function UserProfile({ userId }: { userId: string }) {
   }
   return <ProfileCard user={user} />
 }
-// Same layout as final content — no jump. User sees "something is loading" not a blank spin.`;
+// Same layout as final content - no jump. User sees "something is loading" not a blank spin.`;
 
-const PRODUCTION_CODE = `// React Query: isPending, isFetching, isRefetching — use the right one
+const PRODUCTION_CODE = `// React Query: isPending, isFetching, isRefetching - use the right one
 function UserProfile({ userId }: { userId: string }) {
   const { data: user, isPending, isError, error } = useQuery({
     queryKey: ['user', userId],
@@ -120,7 +120,7 @@ export default function LoadingStatesPatternPage() {
         <h2 className="text-2xl font-bold mb-4 text-content">Remaining issues</h2>
         <ul className="list-disc pl-6 space-y-2 text-content">
           <li><strong>Initial vs refetch:</strong> When data is already on screen and you’re refetching (e.g. after a mutation or refetchInterval), you usually don’t want a full skeleton. Use <InlineCode>isPending</InlineCode> for “no data yet” and <InlineCode>isFetching</InlineCode> / <InlineCode>isRefetching</InlineCode> for background updates.</li>
-          <li><strong>Error state:</strong> Loading isn’t the only state—you need an error UI (message + retry) so the user isn’t stuck on a spinner forever if the request fails.</li>
+          <li><strong>Error state:</strong> Loading isn’t the only state -you need an error UI (message + retry) so the user isn’t stuck on a spinner forever if the request fails.</li>
           <li><strong>Accessibility:</strong> Announce loading to screen readers (<InlineCode>aria-live</InlineCode>, <InlineCode>aria-busy</InlineCode>) and avoid making the skeleton focusable or announced as content.</li>
         </ul>
       </section>
@@ -142,7 +142,7 @@ export default function LoadingStatesPatternPage() {
           <li><strong>No indicator for refetch:</strong> When showing stale data and refetching in the background, often no extra UI is best; the data updates when the refetch completes.</li>
         </ul>
         <Callout variant="info" title="Suspense" className="mt-4">
-          With React Suspense, you get a declarative loading boundary: wrap the component that reads async data in <InlineCode>Suspense</InlineCode> and provide a <InlineCode>fallback</InlineCode>. The same UX rules apply—prefer a fallback that matches the content layout where possible.
+          With React Suspense, you get a declarative loading boundary: wrap the component that reads async data in <InlineCode>Suspense</InlineCode> and provide a <InlineCode>fallback</InlineCode>. The same UX rules apply -prefer a fallback that matches the content layout where possible.
         </Callout>
       </section>
 

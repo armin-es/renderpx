@@ -33,8 +33,8 @@ export const reactCompilerContent = {
       title: "Before & After: Memoization Strategy",
       subtitleBefore: "React 18: Manual memoization required",
       subtitleAfter: "React 19: Compiler handles it automatically",
-      codeBeforeLabel: "React 18 — Manual memoization",
-      codeAfterLabel: "React 19 — Compiler optimizes automatically",
+      codeBeforeLabel: "React 18 - Manual memoization",
+      codeAfterLabel: "React 19 - Compiler optimizes automatically",
       codeBefore: `import { useState, useCallback, useMemo, memo } from 'react'
 
 // ❌ React 18: Manual dependencies everywhere
@@ -88,14 +88,14 @@ const ProductPage = memo(function ProductPage() {
 function ProductFilter({ onFilterChange }) {
   const [filters, setFilters] = useState({ price: 0, category: '' })
 
-  // No useCallback needed — Compiler stabilizes this
+  // No useCallback needed - Compiler stabilizes this
   const handlePriceChange = (newPrice) => {
     const newFilters = { ...filters, price: newPrice }
     setFilters(newFilters)
     onFilterChange(newFilters)
   }
 
-  // No useMemo needed — Compiler memoizes this
+  // No useMemo needed - Compiler memoizes this
   const sortedCategories = ['Electronics', 'Clothing', 'Books'].sort()
 
   return (
@@ -118,7 +118,7 @@ function ProductFilter({ onFilterChange }) {
   )
 }
 
-// Parent components don't need memo — Compiler skips unnecessary renders
+// Parent components don't need memo - Compiler skips unnecessary renders
 function ProductPage() {
   const handleFilterChange = (filters) => {
     // Propagate filters up
@@ -187,7 +187,7 @@ function OptimizedFiltersProvider({ children }) {
   const [price, setPrice] = useState(0)
   const [sortBy, setSortBy] = useState('name')
 
-  // Compiler optimizes these — but they're separate providers
+  // Compiler optimizes these - but they're separate providers
   return (
     <PriceFilterContext.Provider value={{ price, setPrice }}>
       <SortContext.Provider value={{ sortBy, setSortBy }}>
@@ -336,7 +336,7 @@ function Header() {
       before:
         "Considering Context for all shared state to avoid external dependencies.",
       after:
-        "Use Zustand when consumers are scattered or state changes frequently. The Compiler can't optimize fine-grained subscriptions—external stores will always be better here.",
+        "Use Zustand when consumers are scattered or state changes frequently. The Compiler can't optimize fine-grained subscriptions -external stores will always be better here.",
       note: "Compiler + Context = better, but still not as good as Zustand for this use case.",
     },
     {

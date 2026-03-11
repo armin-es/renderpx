@@ -33,10 +33,10 @@ export default function GraphqlCachingPage() {
           separate cache entries:
         </p>
         <CodeBlock
-          code={`// Query A: user list — includes { id: '42', name: 'Alice', role: 'admin' }
+          code={`// Query A: user list - includes { id: '42', name: 'Alice', role: 'admin' }
 useQuery({ queryKey: ['users'], queryFn: getUsers })
 
-// Query B: user detail — includes the same user
+// Query B: user detail - includes the same user
 useQuery({ queryKey: ['user', '42'], queryFn: () => getUser('42') })
 
 // A mutation updates Alice's role from 'admin' to 'member'
@@ -54,7 +54,7 @@ useMutation({
         />
         <p className="mt-4 text-content">
           In a REST app with a handful of queries, this is manageable. In a GraphQL app where every
-          page composes different slices of the same entities — users, posts, comments — it becomes a
+          page composes different slices of the same entities - users, posts, comments - it becomes a
           maintenance problem. A mutation that updates a user needs to know every query key that
           might have fetched that user, across the entire codebase.
         </p>
@@ -75,7 +75,7 @@ useMutation({
 useMutation({
   mutationFn: updateUser,
   onSuccess: () => {
-    // Invalidate by prefix — catches ['user', '42'], ['users'], ['user-search', ...]
+    // Invalidate by prefix - catches ['user', '42'], ['users'], ['user-search', ...]
     queryClient.invalidateQueries({ queryKey: ['user'] })
   },
 })
@@ -111,16 +111,16 @@ queryClient.invalidateQueries({ queryKey: ['user', userId] })  // specific user`
           A normalized cache stores each entity exactly once, keyed by type and ID. Every query
           that includes <InlineCode>User:42</InlineCode> references the same object in the cache.
           When a mutation updates that object, every query that references it reflects the change
-          automatically — no manual invalidation required.
+          automatically - no manual invalidation required.
         </p>
         <CodeBlock
           code={`// Apollo Client's InMemoryCache normalizes automatically
 // using __typename + id from GraphQL responses.
 
-// Query A: user list — Alice stored as User:42 in the cache
+// Query A: user list - Alice stored as User:42 in the cache
 const { data: users } = useQuery(GET_USERS)
 
-// Query B: user detail — references the same User:42 object
+// Query B: user detail - references the same User:42 object
 const { data: user } = useQuery(GET_USER, { variables: { id: '42' } })
 
 // Mutation: update Alice's role
@@ -143,8 +143,8 @@ const [updateUser] = useMutation(UPDATE_USER, {
 
         <Callout variant="info" title="What normalization buys you" className="mt-4">
           Consistency across queries is automatic. A mutation that updates <InlineCode>User:42</InlineCode>{" "}
-          propagates to every component that displays that user — the user list, the detail page,
-          the sidebar, the comment author — without any coordination code. This is the core value
+          propagates to every component that displays that user - the user list, the detail page,
+          the sidebar, the comment author - without any coordination code. This is the core value
           of Apollo and URQL over React Query for GraphQL.
         </Callout>
 
@@ -183,8 +183,8 @@ const [updateUser] = useMutation(UPDATE_USER, {
                   },
                   {
                     label: "Learning curve",
-                    apollo: "Higher — policies, reactive variables, cache APIs",
-                    urql: "Lower — more composable, smaller surface",
+                    apollo: "Higher - policies, reactive variables, cache APIs",
+                    urql: "Lower - more composable, smaller surface",
                   },
                   {
                     label: "Use when",
@@ -216,7 +216,7 @@ const [updateUser] = useMutation(UPDATE_USER, {
           from the store instead of from React Query directly.
         </p>
         <p className="text-content mb-6">
-          This pattern solves the consistency problem — but creates several worse ones.
+          This pattern solves the consistency problem - but creates several worse ones.
         </p>
         <CodeBlock
           code={`// The 4-hop data pipeline this creates:
@@ -246,9 +246,9 @@ function UserCard({ userId }) {
 // Problems:
 // 1. Two sources of truth: React Query cache AND Jotai store
 // 2. React Query's staleTime, background refresh, and retry all work on the cache,
-//    not on the Jotai atoms — so components can show stale atoms even after a refresh
+//    not on the Jotai atoms - so components can show stale atoms even after a refresh
 // 3. You've written and now own the normalization logic that Apollo provides for free
-// 4. Devtools show React Query's cache; the real state is in Jotai — hard to debug
+// 4. Devtools show React Query's cache; the real state is in Jotai - hard to debug
 // 5. The onSuccess callback was deprecated in React Query v5`}
           lang="tsx"
         />
@@ -322,7 +322,7 @@ function UserCard({ userId }) {
                 },
                 {
                   situation: "React Query + custom Jotai/Zustand normalization store",
-                  approach: "Migrate to Apollo/URQL or remove the custom store — this is two sources of truth",
+                  approach: "Migrate to Apollo/URQL or remove the custom store - this is two sources of truth",
                 },
               ].map((row, i) => (
                 <tr key={row.situation} className={i % 2 === 0 ? "bg-content-bg" : ""}>
@@ -353,7 +353,7 @@ function UserCard({ userId }) {
             <div>
               <div className="font-medium text-content">Data Fetching &amp; Sync</div>
               <div className="text-sm text-content-muted">
-                useEffect → React Query → RSC — the full spectrum
+                useEffect → React Query → RSC - the full spectrum
               </div>
             </div>
             <ChevronRight size={20} className="text-content-muted shrink-0" />
@@ -365,7 +365,7 @@ function UserCard({ userId }) {
             <div>
               <div className="font-medium text-content">State Architecture</div>
               <div className="text-sm text-content-muted">
-                Server state vs client state — the distinction that makes this decision clear
+                Server state vs client state - the distinction that makes this decision clear
               </div>
             </div>
             <ChevronRight size={20} className="text-content-muted shrink-0" />

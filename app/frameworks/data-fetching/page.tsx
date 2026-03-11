@@ -62,7 +62,7 @@ const SOLUTION_CODE = `function UserProfile({ userId }) {
 
 const REACT_QUERY_CODE = `import { useQuery } from '@tanstack/react-query'
 
-// That's it. Caching, deduplication, race conditions — all handled.
+// That's it. Caching, deduplication, race conditions - all handled.
 function UserProfile({ userId }) {
   const { data: user, isPending, isError } = useQuery({
     queryKey: ['user', userId],
@@ -81,15 +81,15 @@ function UserProfile({ userId }) {
 // ✅ Tab refocused → background refresh if stale`;
 
 const RSC_CODE = `// React Server Components: fetch on the server, zero client JS for data logic
-// No loading state, no useEffect, no useQuery — it's just async/await
+// No loading state, no useEffect, no useQuery - it's just async/await
 
 async function UserProfile({ userId }: { userId: string }) {
-  // This runs on the server — can use DB/ORM directly, or fetch internal APIs
+  // This runs on the server - can use DB/ORM directly, or fetch internal APIs
   const user = await fetch(\`https://internal-api/users/\${userId}\`, {
     next: { revalidate: 60 },  // Next.js: cache for 60s, revalidate in background
   }).then(r => r.json())
 
-  // Rendered HTML sent to client — no client-side JS needed
+  // Rendered HTML sent to client - no client-side JS needed
   return (
     <div>
       <h1>{user.name}</h1>
@@ -272,9 +272,9 @@ export default async function DataFetchingPage() {
           <CodeWithPreview
             code={PROBLEM_CODE}
             lang="tsx"
-            codeLabel="useEffect fetch — race condition"
+            codeLabel="useEffect fetch - race condition"
             preview={<UseEffectProblemDemo />}
-            previewLabel="Live — click User 2 then User 1 quickly to trigger the race condition"
+            previewLabel="Live - click User 2 then User 1 quickly to trigger the race condition"
             layout="stacked"
           />
         </div>
@@ -332,14 +332,14 @@ export default async function DataFetchingPage() {
           <CodeWithPreview
             code={SOLUTION_CODE}
             lang="tsx"
-            codeLabel="Cancellation flag — stale responses ignored"
+            codeLabel="Cancellation flag - stale responses ignored"
             preview={<UseEffectSolutionDemo />}
-            previewLabel="Live — same test: stale responses are now discarded (watch the network log)"
+            previewLabel="Live - same test: stale responses are now discarded (watch the network log)"
             layout="stacked"
           />
         </div>
 
-        {/* But wait — there's more */}
+        {/* But wait - there's more */}
         <div
           className="mt-6 p-4 rounded-lg border"
           style={{
@@ -420,9 +420,9 @@ export default async function DataFetchingPage() {
           <CodeWithPreview
             code={REACT_QUERY_CODE}
             lang="tsx"
-            codeLabel="React Query — caching, deduplication, background refresh"
+            codeLabel="React Query - caching, deduplication, background refresh"
             preview={<ReactQueryStyleDemo />}
-            previewLabel="Live — green dot = cached. Switch users and come back to see instant cache hits."
+            previewLabel="Live - green dot = cached. Switch users and come back to see instant cache hits."
             layout="stacked"
           />
         </div>
@@ -891,7 +891,7 @@ function UserList() {
     queryKey: ['users'],
     queryFn: () => fetch('/api/users').then(r => r.json()),
   })
-  // ✅ caching, deduplication, background refresh — zero extra code
+  // ✅ caching, deduplication, background refresh - zero extra code
   // ✅ old useEffect version can coexist during migration
 }`}
               lang="tsx"
@@ -1120,7 +1120,7 @@ function UserList() {
             </div>
           ))}
 
-          {/* GraphQL normalization anti-pattern — separate because it includes a link */}
+          {/* GraphQL normalization anti-pattern - separate because it includes a link */}
           <div
             className="p-4 rounded-lg border"
             style={{ borderColor: "hsl(var(--content-border))" }}

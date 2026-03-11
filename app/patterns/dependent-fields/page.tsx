@@ -18,7 +18,7 @@ function AddressForm() {
       <select value={city} onChange={e => setCity(e.target.value)}>
         <option value="nyc">New York</option>
         <option value="la">Los Angeles</option>
-        {/* Same list for every country — wrong. */}
+        {/* Same list for every country - wrong. */}
       </select>
     </>
   )

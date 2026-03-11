@@ -37,7 +37,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
 // 2. Skeleton (JS ran, fetch started)
 // 3. Product (fetch resolved)`,
     explanation: `Works when:\n• Internal tools where SEO doesn't matter\n• Content behind authentication (crawlers can't see it anyway)\n• Highly dynamic, user-specific data\n• Rapid prototyping\n\nZero backend complexity. Works on any static host (GitHub Pages, S3).`,
-    whenThisBreaks: `Product pages with CSR are invisible to search engines — Googlebot sees an empty HTML shell.\n\nThe loading waterfall is also the main UX problem:\n• Browser requests HTML → receives empty shell\n• Browser parses and runs JS bundle\n• JS kicks off fetch to /api/products/123\n• Fetch resolves → component renders\n\nOn a slow mobile connection that's 4–6 seconds of nothing. Lighthouse will punish you with a low LCP score.`,
+    whenThisBreaks: `Product pages with CSR are invisible to search engines - Googlebot sees an empty HTML shell.\n\nThe loading waterfall is also the main UX problem:\n• Browser requests HTML → receives empty shell\n• Browser parses and runs JS bundle\n• JS kicks off fetch to /api/products/123\n• Fetch resolves → component renders\n\nOn a slow mobile connection that's 4–6 seconds of nothing. Lighthouse will punish you with a low LCP score.`,
   },
 
   '02-ssr': {
@@ -68,11 +68,11 @@ export async function getServerSideProps({ params }) {
 //   <p>In stock: 142 units</p>
 // </div>
 //
-// ✅ Fully populated — crawlers see real content
+// ✅ Fully populated - crawlers see real content
 // ✅ No client-side waterfall
-// ⚠️  Every request hits the server — no caching benefit`,
+// ⚠️  Every request hits the server - no caching benefit`,
     explanation: `Works when:\n• Data changes frequently (inventory counts, live prices)\n• Pages are personalized per user\n• SEO matters AND content is dynamic\n• Cache is not viable (user-specific, auth-gated)\n\nGood default for authenticated dashboards.`,
-    whenThisBreaks: `Runs on every request — if your product page gets 50,000 hits/hour, your server runs the DB query 50,000 times. No CDN can cache it.\n\nTTFB (Time to First Byte) is also slower than SSG because the server must finish the DB query before sending any HTML. On a cold DB or slow query, users see nothing for 300–800ms.\n\nFor product pages that rarely change, you're spending compute on nothing.`,
+    whenThisBreaks: `Runs on every request - if your product page gets 50,000 hits/hour, your server runs the DB query 50,000 times. No CDN can cache it.\n\nTTFB (Time to First Byte) is also slower than SSG because the server must finish the DB query before sending any HTML. On a cold DB or slow query, users see nothing for 300–800ms.\n\nFor product pages that rarely change, you're spending compute on nothing.`,
   },
 
   '03-ssg': {
@@ -83,7 +83,7 @@ export default function ProductPage({ product }: { product: Product }) {
   return <ProductCard product={product} />
 }
 
-// Runs at build time — generates a static HTML file per product
+// Runs at build time - generates a static HTML file per product
 export async function getStaticProps({ params }) {
   const product = await db.products.findById(params.id)
   return { props: { product } }
@@ -103,11 +103,11 @@ export async function getStaticPaths() {
 // /products/124.html
 // /products/125.html
 //
-// ✅ Fastest possible response — no server, no DB
+// ✅ Fastest possible response - no server, no DB
 // ✅ Scales to any traffic level for free
 // ❌ Price is stale until next build`,
     explanation: `Works when:\n• Content is the same for all users\n• Data changes infrequently (marketing copy, blog posts)\n• You can afford to rebuild on data changes (CI/CD on content update)\n• SEO is critical and performance matters\n\nBlog posts, documentation, landing pages, product catalogs with stable data.`,
-    whenThisBreaks: `A 1,000-product catalog with daily price changes needs a full rebuild daily. With 10,000 products, build times creep into minutes.\n\nAnd "stale at build time" is a real problem: a product sold out between builds — the static page still shows "In Stock." A price changed — users see the old price. You need a real-time signal, which SSG fundamentally can't provide.\n\nYou also can't easily personalize: the HTML is the same for everyone.`,
+    whenThisBreaks: `A 1,000-product catalog with daily price changes needs a full rebuild daily. With 10,000 products, build times creep into minutes.\n\nAnd "stale at build time" is a real problem: a product sold out between builds - the static page still shows "In Stock." A price changed - users see the old price. You need a real-time signal, which SSG fundamentally can't provide.\n\nYou also can't easily personalize: the HTML is the same for everyone.`,
   },
 
   '04-isr': {
@@ -145,19 +145,19 @@ async function ProductPage({ params }: { params: { id: string } }) {
 // ✅ Data refreshes every 60s automatically
 // ✅ No server compute on every request`,
     explanation: `Works when:\n• Content changes, but not every second (product prices, inventory)\n• SEO matters\n• You want static performance with a freshness guarantee\n• Traffic is high (CDN absorbs it; server only runs periodically)\n\nThe sweet spot for most e-commerce, content, and marketing pages.`,
-    whenThisBreaks: `The "stale-while-revalidate" model means someone will always see stale data — the user who hits the page right after the TTL expires sees old data while revalidation runs in the background.\n\nFor high-stakes updates (flash sale prices, stock going to zero), 60 seconds too long. You can set revalidate: 1 but at that point you're doing SSR with extra steps.\n\nAlso can't personalize — still serves the same HTML to every user.`,
+    whenThisBreaks: `The "stale-while-revalidate" model means someone will always see stale data - the user who hits the page right after the TTL expires sees old data while revalidation runs in the background.\n\nFor high-stakes updates (flash sale prices, stock going to zero), 60 seconds too long. You can set revalidate: 1 but at that point you're doing SSR with extra steps.\n\nAlso can't personalize - still serves the same HTML to every user.`,
   },
 
   '05-rsc': {
     description:
       'React Server Components: rendering decisions made per-component, not per-page. Server components fetch data inline; client components handle interaction. Streaming delivers pieces as they resolve.',
-    code: `// app/products/[id]/page.tsx (Next.js App Router — RSC by default)
-// This is a Server Component — runs on server, streams HTML to client
+    code: `// app/products/[id]/page.tsx (Next.js App Router - RSC by default)
+// This is a Server Component - runs on server, streams HTML to client
 
 import { Suspense } from 'react'
 import { AddToCartButton } from './AddToCartButton'  // 'use client'
 
-// Parallel data fetching — no waterfall
+// Parallel data fetching - no waterfall
 async function ProductPage({ params }: { params: { id: string } }) {
   // Both requests fire in parallel (Promise.all or separate awaits in streaming)
   const [product, reviews] = await Promise.all([
@@ -167,15 +167,15 @@ async function ProductPage({ params }: { params: { id: string } }) {
 
   return (
     <div>
-      {/* Server-rendered — no client JS for static content */}
+      {/* Server-rendered - no client JS for static content */}
       <h1>{product.name}</h1>
       <p>{product.price}</p>
       <p>{product.description}</p>
 
-      {/* Client component — only this part ships JS to the browser */}
+      {/* Client component - only this part ships JS to the browser */}
       <AddToCartButton productId={product.id} />
 
-      {/* Reviews stream in independently — product doesn't wait for them */}
+      {/* Reviews stream in independently - product doesn't wait for them */}
       <Suspense fallback={<ReviewsSkeleton />}>
         <ReviewsList reviews={reviews} />
       </Suspense>
@@ -188,6 +188,6 @@ async function ProductPage({ params }: { params: { id: string } }) {
 // { cache: 'no-store' }         ← always fresh (SSR-style)
 // (default)                     ← static, cache forever until next deploy`,
     explanation: `Works when:\n• Different parts of a page have different freshness requirements\n• You want minimal client-side JS (RSC content ships as HTML, not JS)\n• SEO matters for content, interactivity needed for UI\n• You're on Next.js App Router\n\nThe most capable model for complex pages with mixed rendering needs.`,
-    whenThisBreaks: `RSC is Next.js App Router-specific. You can't use this model in Vite/CRA/Remix without framework support.\n\nThe Server/Client component split also has a learning curve: you can't import a Server Component inside a Client Component (but you can pass one as children). State and event handlers can only live in Client Components.\n\nOver-using 'use client' at the top level defeats the purpose — you're back to CSR with extra boilerplate.`,
+    whenThisBreaks: `RSC is Next.js App Router-specific. You can't use this model in Vite/CRA/Remix without framework support.\n\nThe Server/Client component split also has a learning curve: you can't import a Server Component inside a Client Component (but you can pass one as children). State and event handlers can only live in Client Components.\n\nOver-using 'use client' at the top level defeats the purpose - you're back to CSR with extra boilerplate.`,
   },
 }

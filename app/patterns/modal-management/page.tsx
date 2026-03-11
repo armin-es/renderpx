@@ -4,7 +4,7 @@ import { Callout, InlineCode } from '@/components/ui'
 import { RelatedContent } from '@/components/RelatedContent'
 import { patternRelations } from '@/lib/related-content'
 
-const NAIVE_CODE = `// Modal open state local to each screen — no shared pattern
+const NAIVE_CODE = `// Modal open state local to each screen - no shared pattern
 function UserList() {
   const [open, setOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
@@ -72,7 +72,7 @@ openModal({ type: 'user-details', user })
 // Radix handles focus trap, Escape, click outside, and aria.`;
 
 const STACK_CODE = `// Multiple modals (e.g. confirm inside a details modal): stack or queue
-// Option A: Stack — render modals in order; top one receives Escape
+// Option A: Stack - render modals in order; top one receives Escape
 const [stack, setStack] = useState<ModalState[]>([])
 const push = (m: ModalState) => setStack(s => [...s, m])
 const pop = () => setStack(s => s.slice(0, -1))

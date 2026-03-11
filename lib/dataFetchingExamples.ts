@@ -51,8 +51,8 @@ Also: every mount re-fetches, even if the data is seconds old. Two <UserProfile 
 
   '02-custom-hook': {
     description:
-      'Extract the fetch logic into a reusable custom hook. Adds a cancellation flag to fix race conditions. Still no caching — every hook instance fetches independently.',
-    code: `// Reusable hook — handles race conditions and error state
+      'Extract the fetch logic into a reusable custom hook. Adds a cancellation flag to fix race conditions. Still no caching - every hook instance fetches independently.',
+    code: `// Reusable hook - handles race conditions and error state
 function useUser(userId: string) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(false)
@@ -89,7 +89,7 @@ function useUser(userId: string) {
   return { user, loading, error }
 }
 
-// Clean consumer — no async logic, just presentation
+// Clean consumer - no async logic, just presentation
 function UserProfile({ userId }: { userId: string }) {
   const { user, loading, error } = useUser(userId)
 
@@ -98,13 +98,13 @@ function UserProfile({ userId }: { userId: string }) {
   return <ProfileCard user={user} />
 }`,
     explanation: `Better because:
-• Race condition is fixed — stale responses are ignored
+• Race condition is fixed - stale responses are ignored
 • Logic is extracted and reusable across components
 • Clean separation: hook owns async, component owns rendering
 • Easy to test the hook in isolation`,
-    whenThisBreaks: `Two <UserProfile userId="1"> components still make two API calls — no deduplication.
+    whenThisBreaks: `Two <UserProfile userId="1"> components still make two API calls - no deduplication.
 
-Re-mounting re-fetches every time — navigate away and back, another request fires.
+Re-mounting re-fetches every time - navigate away and back, another request fires.
 
 No background refresh. No way to trigger a refetch from outside the component. Retry on failure requires custom logic. Manual cache invalidation is not possible.`,
   },
@@ -123,7 +123,7 @@ function App() {
   )
 }
 
-// 2. Fetch with useQuery — that's it
+// 2. Fetch with useQuery - that's it
 function UserProfile({ userId }: { userId: string }) {
   const { data: user, isPending, isError, error } = useQuery({
     queryKey: ['user', userId],  // cache key
@@ -232,13 +232,13 @@ function UserProfile({ userId }: { userId: string }) {
         disabled={followMutation.isPending}
       >
         {user.isFollowing ? 'Unfollow' : 'Follow'}
-        {/* ✅ Updates instantly — no wait for server */}
+        {/* ✅ Updates instantly - no wait for server */}
         ({user.followerCount})
       </button>
     </div>
   )
 }`,
-    explanation: `Optimistic updates give the UI instant feedback — no loading spinner for every interaction.
+    explanation: `Optimistic updates give the UI instant feedback - no loading spinner for every interaction.
 
 The three steps are always the same:
 1. onMutate: snapshot → apply change → save snapshot in context
@@ -250,7 +250,7 @@ React Query's cancelQueries in onMutate prevents a background refetch from overw
 
 Complex dependent data (user A following user B affects both profiles) requires careful invalidation of multiple query keys.
 
-Avoid optimistic updates for destructive actions (delete, payment) — instant feedback on "Success" for a failed payment is worse than a spinner.`,
+Avoid optimistic updates for destructive actions (delete, payment) - instant feedback on "Success" for a failed payment is worse than a spinner.`,
   },
 
   '05-realtime': {
@@ -278,7 +278,7 @@ function useLiveQuery<T>(queryKey: unknown[], wsUrl: string, queryFn: () => Prom
   // Initial data via React Query (caching, loading, error handling)
   const query = useQuery({ queryKey, queryFn })
 
-  // WebSocket pushes invalidations — React Query re-fetches
+  // WebSocket pushes invalidations - React Query re-fetches
   useEffect(() => {
     const ws = new WebSocket(wsUrl)
 
@@ -339,7 +339,7 @@ Polling: simplest, works for anything that updates every 30+ seconds. Notificati
 WebSocket: true push for anything that needs sub-second updates. Chat, collaborative cursors, live scores. Pattern: React Query handles initial load + cache; WebSocket delivers invalidations; React Query re-fetches.
 
 The combination of optimistic updates + WebSocket is how modern chat UIs work: your message appears instantly (optimistic), server confirms or rejects, WebSocket delivers other users' messages.`,
-    whenThisBreaks: `WebSocket reconnection logic adds complexity — handle onclose, implement exponential backoff, manage connection state.
+    whenThisBreaks: `WebSocket reconnection logic adds complexity - handle onclose, implement exponential backoff, manage connection state.
 
 Server-Sent Events (SSE) are simpler than WebSockets for one-directional push (server → client). Use SSE unless you need bidirectional communication.
 

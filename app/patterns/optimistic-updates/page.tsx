@@ -6,7 +6,7 @@ import { OptimisticLikeDemo } from '@/components/demos/OptimisticLikeDemo'
 import { RelatedContent } from '@/components/RelatedContent'
 import { patternRelations } from '@/lib/related-content'
 
-const NAIVE_CODE = `// User clicks "Like" — we wait for the server, then update
+const NAIVE_CODE = `// User clicks "Like" - we wait for the server, then update
 function LikeButton({ postId }: { postId: string }) {
   const [liked, setLiked] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -53,7 +53,7 @@ function LikeButton({ postId }: { postId: string }) {
   )
 }
 // Feels instant. But: what if we're reading from a cache (e.g. React Query)?
-// Manual setState doesn't update the cache — next refetch overwrites our change.`;
+// Manual setState doesn't update the cache - next refetch overwrites our change.`;
 
 const PRODUCTION_CODE = `import { useMutation, useQueryClient } from '@tanstack/react-query'
 
@@ -107,7 +107,7 @@ export default function OptimisticUpdatesPatternPage() {
       <section id="problem" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">The problem I keep seeing</h2>
         <p className="text-content mb-4">
-          Every like, follow, or toggle that waits for the server before updating the UI feels sluggish. On slow or flaky networks, users assume the tap didn’t register and tap again. The fix is to show the new state immediately and reconcile with the server in the background—optimistic updates.
+          Every like, follow, or toggle that waits for the server before updating the UI feels sluggish. On slow or flaky networks, users assume the tap didn’t register and tap again. The fix is to show the new state immediately and reconcile with the server in the background -optimistic updates.
         </p>
         <p className="text-content">
           The catch: if the request fails, you must roll back. And if you’re using a cache (e.g. React Query), the optimistic change has to live in that cache so refetches and other components stay in sync.
@@ -133,7 +133,7 @@ export default function OptimisticUpdatesPatternPage() {
             lang="tsx"
             codeLabel="Optimistic setState + rollback"
             preview={<OptimisticLikeDemo />}
-            previewLabel="Click Like — instant toggle; failure would roll back"
+            previewLabel="Click Like - instant toggle; failure would roll back"
             layout="stacked"
           />
         </div>
@@ -169,7 +169,7 @@ export default function OptimisticUpdatesPatternPage() {
           <li><strong>Skip:</strong> Destructive or high-stakes actions (delete, payment, publish). A rollback after “Success” is worse than a spinner; use loading state and confirm only after the server responds.</li>
         </ul>
         <Callout variant="info" title="Decision" className="mt-4">
-          If rolling back would confuse or alarm the user, don’t be optimistic—show loading and wait for the server.
+          If rolling back would confuse or alarm the user, don’t be optimistic -show loading and wait for the server.
         </Callout>
       </section>
 

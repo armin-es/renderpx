@@ -20,10 +20,10 @@ function SettingsForm() {
 
   return (
     <FormContext.Provider value={{ formData, setFormData }}>
-      <StickyActionBar />  {/* sticky — needs formData */}
-      <Sidebar />          {/* does NOT need it — re-renders anyway */}
-      <Content />          {/* scrollable — needs formData */}
-      <Footer />           {/* does NOT need it — re-renders anyway */}
+      <StickyActionBar />  {/* sticky - needs formData */}
+      <Sidebar />          {/* does NOT need it - re-renders anyway */}
+      <Content />          {/* scrollable - needs formData */}
+      <Footer />           {/* does NOT need it - re-renders anyway */}
     </FormContext.Provider>
   )
 }
@@ -34,12 +34,12 @@ const SOLUTION_CODE = `// Fix: narrow the provider to wrap only StickyActionBar 
 function SettingsForm() {
   return (
     <>
-      <Sidebar />              {/* outside provider — never re-renders */}
+      <Sidebar />              {/* outside provider - never re-renders */}
       <FormStateWrapper>
-        <StickyActionBar />    {/* sticky — re-renders (reads formData) */}
-        <Content />            {/* scrollable — re-renders (fills inputs) */}
+        <StickyActionBar />    {/* sticky - re-renders (reads formData) */}
+        <Content />            {/* scrollable - re-renders (fills inputs) */}
       </FormStateWrapper>
-      <Footer />               {/* outside provider — never re-renders */}
+      <Footer />               {/* outside provider - never re-renders */}
     </>
   )
 }
@@ -110,7 +110,7 @@ export default async function StateArchitecturePage() {
             lang="tsx"
             codeLabel="Problem"
             preview={<ProblemDemo />}
-            previewLabel="Type email — Sidebar & Footer re-render unnecessarily"
+            previewLabel="Type email: Sidebar & Footer re-render unnecessarily"
             layout="stacked"
           />
         </div>
@@ -140,7 +140,7 @@ export default async function StateArchitecturePage() {
             lang="tsx"
             codeLabel="Narrow the provider"
             preview={<SolutionDemo />}
-            previewLabel="Type email — only sticky bar & form re-render"
+            previewLabel="Type email: only sticky bar & form re-render"
             layout="stacked"
           />
         </div>
@@ -169,25 +169,25 @@ export default async function StateArchitecturePage() {
             One context per concern so each component only subscribes to what it needs.
           </p>
           <CodeWithPreview
-            code={`// ❌ Single context — Filter re-renders when sort changes, Sort when filter changes
+            code={`// ❌ Single context - Filter re-renders when sort changes, Sort when filter changes
 const ProductContext = createContext()
 // value={{ filters, setFilters, sortBy, setSortBy }}`}
             lang="tsx"
             codeLabel="Problem"
             preview={<ProblemContextDemo />}
-            previewLabel="Change sort or filter — both controls re-render"
+            previewLabel="Change sort or filter: both controls re-render"
             layout="stacked"
           />
           <div className="mt-4">
             <CodeWithPreview
-              code={`// ✅ Split: FiltersContext + SortContext — each component only subscribes to one
+              code={`// ✅ Split: FiltersContext + SortContext - each component only subscribes to one
 const FiltersContext = createContext()
 const SortContext = createContext()
 // ProductList uses FiltersContext; SortControl uses SortContext`}
               lang="tsx"
               codeLabel="Split contexts"
               preview={<SolutionContextDemo />}
-              previewLabel="Change sort or filter — only the relevant control re-renders"
+              previewLabel="Change sort or filter: only the relevant control re-renders"
               layout="stacked"
             />
           </div>
@@ -218,7 +218,7 @@ const useFormStore = create((set) => ({
             lang="tsx"
             codeLabel="Zustand"
             preview={<ZustandDemo />}
-            previewLabel="Type email — only StickyBar & inputs re-render"
+            previewLabel="Type email: only StickyBar & inputs re-render"
             layout="stacked"
           />
         </div>

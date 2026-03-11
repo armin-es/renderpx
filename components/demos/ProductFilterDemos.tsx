@@ -51,7 +51,7 @@ function ProductGrid({ products }: { products: { id: string; name: string }[] })
   )
 }
 
-// 01: Local state — filter and list in one component
+// 01: Local state - filter and list in one component
 function LocalStateDemo() {
   const [filter, setFilter] = useState('')
   const filtered = useMemo(
@@ -67,7 +67,7 @@ function LocalStateDemo() {
   )
 }
 
-// 02: Lifted state — parent holds filter, children receive props
+// 02: Lifted state - parent holds filter, children receive props
 function FilterBar({ filter, onFilterChange }: { filter: string; onFilterChange: (v: string) => void }) {
   return <FilterInput value={filter} onChange={onFilterChange} />
 }
@@ -93,7 +93,7 @@ function LiftedStateDemo() {
   )
 }
 
-// 03: Browser persistent — filter persists in URL or localStorage
+// 03: Browser persistent - filter persists in URL or localStorage
 function BrowserPersistentDemo() {
   const [query, setQuery] = useState(() => {
     // Simulate reading from URL on mount
@@ -129,7 +129,7 @@ function BrowserPersistentDemo() {
   )
 }
 
-// 04: Server persistent — server is source of truth, filter params sent to API
+// 04: Server persistent - server is source of truth, filter params sent to API
 function ServerPersistentDemo() {
   const [filter, setFilter] = useState('')
   const [loading, setLoading] = useState(false)

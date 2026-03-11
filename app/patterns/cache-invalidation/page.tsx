@@ -12,7 +12,7 @@ function EditProfileForm({ userId }: { userId: string }) {
 
   const handleSubmit = (data) => {
     mutation.mutate(data)
-    // User navigates away and back — might see stale profile until refetch
+    // User navigates away and back - might see stale profile until refetch
   }
 }
 // No explicit invalidation; cache can stay stale until staleTime expires or manual refetch.`;
@@ -73,7 +73,7 @@ export default function CacheInvalidationPatternPage() {
       <section id="problem" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">The problem I keep seeing</h2>
         <p className="text-content mb-4">
-          You update a resource (e.g. edit profile, add a post). The server succeeds, but the client still has the old data in its cache. If you don’t invalidate (or update) that cache, the user sees stale content until the next refetch or page load. You need a consistent way to say “this data is out of date” after a mutation so that the next read gets fresh data—or you update the cache directly when the server returns the new resource.
+          You update a resource (e.g. edit profile, add a post). The server succeeds, but the client still has the old data in its cache. If you don’t invalidate (or update) that cache, the user sees stale content until the next refetch or page load. You need a consistent way to say “this data is out of date” after a mutation so that the next read gets fresh data -or you update the cache directly when the server returns the new resource.
         </p>
         <p className="text-content">
           The flip side: invalidating too broadly causes a storm of refetches; invalidating too narrowly leaves other views stale. You want to invalidate the right keys (and optionally use <InlineCode>setQueryData</InlineCode> when you already have the new data).
@@ -133,7 +133,7 @@ export default function CacheInvalidationPatternPage() {
         <h2 className="text-2xl font-bold mb-4 text-content">Gotchas</h2>
         <ul className="list-disc pl-6 space-y-2 text-content">
           <li><strong>Key matching:</strong> <InlineCode>{`invalidateQueries({ queryKey: ['user'] })`}</InlineCode> matches all keys that start with <InlineCode>{`['user']`}</InlineCode> (e.g. <InlineCode>{`['user', '1']`}</InlineCode>). Use <InlineCode>{`exact: true`}</InlineCode> to match only <InlineCode>{`['user']`}</InlineCode>.</li>
-          <li><strong>Timing:</strong> Invalidate in <InlineCode>onSettled</InlineCode> (not only <InlineCode>onSuccess</InlineCode>) so you refetch after an error too—e.g. if the mutation failed after an optimistic update, the refetch restores the previous data.</li>
+          <li><strong>Timing:</strong> Invalidate in <InlineCode>onSettled</InlineCode> (not only <InlineCode>onSuccess</InlineCode>) so you refetch after an error too -e.g. if the mutation failed after an optimistic update, the refetch restores the previous data.</li>
           <li><strong>Dependent queries:</strong> If view B depends on data from query A (e.g. a detail page that uses the list’s item), invalidate A when the detail is updated so the list reflects the change when the user goes back.</li>
         </ul>
       </section>

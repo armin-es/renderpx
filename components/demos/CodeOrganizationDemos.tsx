@@ -307,8 +307,8 @@ export function FeatureAddDemo() {
         <span className="font-bold text-base">{dirsTouched}</span>
         <span>
           {dirsTouched > 1
-            ? `directories touched — spread across ${dirsTouched} separate folders`
-            : 'directory — everything in one place'}
+            ? `directories touched - spread across ${dirsTouched} separate folders`
+            : 'directory - everything in one place'}
         </span>
       </div>
 

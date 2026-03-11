@@ -108,7 +108,7 @@ export function PropsTabsDemo() {
         Badge requires a <code
           className="px-1 py-0.5 rounded text-[11px]"
           style={{ backgroundColor: 'hsl(var(--inline-code-bg))' }}
-        >badge</code> prop on the component — new features need library changes.
+        >badge</code> prop on the component - new features need library changes.
       </div>
       <PropsBasedTabs tabs={tabs} defaultTab="account" />
     </div>
@@ -187,7 +187,7 @@ export function CompoundTabsDemo() {
         className="text-xs mb-3 px-1"
         style={{ color: 'hsl(var(--content-text-muted))' }}
       >
-        Badge lives in consumer JSX — the Tabs component never needs to change.
+        Badge lives in consumer JSX - the Tabs component never needs to change.
       </div>
       <CompoundTabs defaultTab="account">
         <CompoundTabList>

@@ -4,7 +4,7 @@ import { Callout, InlineCode } from '@/components/ui'
 import { RelatedContent } from '@/components/RelatedContent'
 import { patternRelations } from '@/lib/related-content'
 
-const NAIVE_CODE = `// Render every item — 10,000 list items = 10,000 DOM nodes
+const NAIVE_CODE = `// Render every item - 10,000 list items = 10,000 DOM nodes
 function BigList({ items }: { items: Item[] }) {
   return (
     <ul className="h-[600px] overflow-auto">

@@ -4,10 +4,10 @@ import { DocsShell } from '@/components/DocsShell'
 import { ThemeProvider } from '@/components/ThemeProvider'
 
 export const metadata: Metadata = {
-  title: 'renderpx — Armin Eslami',
+  title: 'renderpx · Armin Eslami',
   description: 'Frontend architecture frameworks, patterns, and deep dives by Armin Eslami, Senior Frontend Engineer.',
   openGraph: {
-    title: 'renderpx — Frontend Architecture by Armin Eslami',
+    title: 'renderpx · Frontend Architecture by Armin Eslami',
     description: 'Decision frameworks and implementation patterns from 8+ years building production React applications.',
     url: 'https://renderpx.dev',
     siteName: 'renderpx',
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'renderpx — Frontend Architecture by Armin Eslami',
+    title: 'renderpx · Frontend Architecture by Armin Eslami',
     description: 'Decision frameworks and implementation patterns from 8+ years building production React applications.',
   },
 }

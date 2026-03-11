@@ -76,7 +76,7 @@ export default function RenderPropsVsHooksPatternPage() {
       <section id="problem" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">The problem I keep seeing</h2>
         <p className="text-content mb-4">
-          You have logic that multiple components need—mouse position, window size, a subscription—and you don’t want to duplicate the effect and state in every component. You need a way to reuse the behavior and let each consumer render its own UI. Two common patterns: render props (a component that calls a function with the value) and custom hooks (a function that returns the value).
+          You have logic that multiple components need -mouse position, window size, a subscription -and you don’t want to duplicate the effect and state in every component. You need a way to reuse the behavior and let each consumer render its own UI. Two common patterns: render props (a component that calls a function with the value) and custom hooks (a function that returns the value).
         </p>
       </section>
 

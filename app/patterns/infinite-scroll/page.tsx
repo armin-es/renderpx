@@ -4,7 +4,7 @@ import { Callout, InlineCode } from '@/components/ui'
 import { RelatedContent } from '@/components/RelatedContent'
 import { patternRelations } from '@/lib/related-content'
 
-const NAIVE_CODE = `// Load everything at once — fine for 20 items, death for 10,000
+const NAIVE_CODE = `// Load everything at once - fine for 20 items, death for 10,000
 function Feed() {
   const [items, setItems] = useState([])
   const [loading, setLoading] = useState(true)
@@ -98,7 +98,7 @@ function Feed() {
 // For true "infinite scroll" (load when user nears bottom), use IntersectionObserver:
 // Put a sentinel <div ref={sentinelRef} /> at the end; when it enters view, call fetchNextPage().`;
 
-const SENTINEL_CODE = `// Sentinel at bottom of list — when visible, load next page
+const SENTINEL_CODE = `// Sentinel at bottom of list - when visible, load next page
 function useInfiniteScroll(
   fetchNextPage: () => void,
   hasNextPage: boolean,
@@ -141,7 +141,7 @@ export default function InfiniteScrollPatternPage() {
       <section id="problem" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">The problem I keep seeing</h2>
         <p className="text-content mb-4">
-          Long feeds (social timelines, product grids, activity logs) can’t load all items at once: slow initial load, huge DOM, and wasted bandwidth. You need pagination. The UX question is whether to use a “Load more” button or to load automatically when the user scrolls near the bottom—infinite scroll.
+          Long feeds (social timelines, product grids, activity logs) can’t load all items at once: slow initial load, huge DOM, and wasted bandwidth. You need pagination. The UX question is whether to use a “Load more” button or to load automatically when the user scrolls near the bottom -infinite scroll.
         </p>
         <p className="text-content">
           Infinite scroll is familiar from Twitter, Instagram, and many dashboards. The implementation pitfalls: cursor vs offset pagination, avoiding duplicate or missing items when the list changes, and (if the list is very long) combining with virtualization so you don’t mount thousands of DOM nodes.
@@ -188,7 +188,7 @@ export default function InfiniteScrollPatternPage() {
       <section id="when-i-use-this" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">When I use this</h2>
         <ul className="list-disc pl-6 space-y-2 text-content">
-          <li><strong>Use:</strong> Feeds, timelines, product grids, activity logs—any long list where the user scrolls to consume content. Prefer cursor-based pagination for feeds that update in real time.</li>
+          <li><strong>Use:</strong> Feeds, timelines, product grids, activity logs -any long list where the user scrolls to consume content. Prefer cursor-based pagination for feeds that update in real time.</li>
           <li><strong>Consider “Load more” instead:</strong> When you need a stable scroll position for accessibility (e.g. “Back to top” or predictable focus). Infinite scroll can make it hard to reach footer or repeat a “load more” action.</li>
           <li><strong>Combine with virtualization:</strong> If the list has thousands of items in the DOM (even loaded in chunks), use a virtualized list so only visible rows are mounted.</li>
         </ul>

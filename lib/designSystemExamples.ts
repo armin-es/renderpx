@@ -73,13 +73,13 @@ export function SaveButton({ onClick }) {
   )
 }`,
     explanation: `Works when:\n• Prototyping or proof-of-concept\n• Solo project with no expectation of maintenance\n• One-off components that won't be reused\n\nFast to write. No abstractions to learn. Just ship it.`,
-    whenThisBreaks: `When the design team updates the primary color, you search-and-replace across the codebase and inevitably miss one. You end up with a product where 3 different blues coexist in production.\n\nWhen you need a "disabled" state or "loading" state, every team implements it differently.\n\nWhen a new engineer joins and asks "what's our primary button?", there's no answer — there are seven slightly different versions scattered around.`,
+    whenThisBreaks: `When the design team updates the primary color, you search-and-replace across the codebase and inevitably miss one. You end up with a product where 3 different blues coexist in production.\n\nWhen you need a "disabled" state or "loading" state, every team implements it differently.\n\nWhen a new engineer joins and asks "what's our primary button?", there's no answer - there are seven slightly different versions scattered around.`,
   },
 
   '02-constants': {
     description:
-      'Extract design values into shared JavaScript constants. Better than inline styles, but the abstraction is shallow — JavaScript constants don\'t cascade like CSS, and TypeScript types don\'t enforce visual consistency.',
-    code: `// ✅ Step up: shared constants — one source of truth for values
+      'Extract design values into shared JavaScript constants. Better than inline styles, but the abstraction is shallow - JavaScript constants don\'t cascade like CSS, and TypeScript types don\'t enforce visual consistency.',
+    code: `// ✅ Step up: shared constants - one source of truth for values
 
 // lib/design-tokens.ts
 export const colors = {
@@ -143,21 +143,21 @@ export function Button({
   )
 }`,
     explanation: `Works when:\n• Small team with a shared constants file\n• You want TypeScript safety on your design values\n• Theming isn't a requirement\n\nOne change to \`colors.primary\` updates every component that uses it. Better than copy-pasted hex values.`,
-    whenThisBreaks: `JavaScript constants don't support dark mode naturally — you need conditional logic everywhere: \`isDark ? colors.darkPrimary : colors.primary\`.\n\nYou can't override a constant at runtime without React state threading it through your component tree.\n\nBrowser devtools show \`background: #2563eb\` — no semantic name, no easy debugging. The abstraction leaks.`,
+    whenThisBreaks: `JavaScript constants don't support dark mode naturally - you need conditional logic everywhere: \`isDark ? colors.darkPrimary : colors.primary\`.\n\nYou can't override a constant at runtime without React state threading it through your component tree.\n\nBrowser devtools show \`background: #2563eb\` - no semantic name, no easy debugging. The abstraction leaks.`,
   },
 
   '03-css-tokens': {
     description:
       'Replace JavaScript constants with CSS custom properties (design tokens). One variable change cascades to every component simultaneously. Dark mode becomes a single class swap, not a conditional in every component.',
-    code: `/* globals.css — semantic design tokens */
+    code: `/* globals.css - semantic design tokens */
 :root {
-  /* Primitive tokens — raw values */
+  /* Primitive tokens - raw values */
   --blue-500: 221 83% 53%;
   --blue-600: 221 83% 45%;
   --red-500: 0 84% 60%;
   --red-600: 0 84% 50%;
 
-  /* Semantic tokens — intent, not appearance */
+  /* Semantic tokens - intent, not appearance */
   --color-primary: var(--blue-500);
   --color-primary-hover: var(--blue-600);
   --color-destructive: var(--red-500);
@@ -212,15 +212,15 @@ export function Button({ variant = 'primary', size = 'md', children }) {
 }
 .btn--sm { padding: var(--spacing-sm); border-radius: var(--radius-sm); }
 .btn--md { padding: var(--spacing-md); border-radius: var(--radius-md); }`,
-    explanation: `Works when:\n• You need dark mode without conditional logic in components\n• You want devtools to show \`hsl(var(--color-primary))\` — semantic and debuggable\n• The design team uses a token-based design system in Figma\n\nChange one root variable, every component updates. Themes become a single class on \`<html>\`.`,
-    whenThisBreaks: `CSS classes for variants start to multiply: \`.btn--primary-outlined\`, \`.btn--secondary-ghost\`, \`.btn--loading\`. The CSS file becomes a maintenance burden.\n\nNo TypeScript safety on which variants exist. \`<Button variant="primari" />\` silently fails — no error, no fallback.\n\nComplex variants (e.g. "outline with hover fill") require manual class combinations that are easy to miscombine.`,
+    explanation: `Works when:\n• You need dark mode without conditional logic in components\n• You want devtools to show \`hsl(var(--color-primary))\` - semantic and debuggable\n• The design team uses a token-based design system in Figma\n\nChange one root variable, every component updates. Themes become a single class on \`<html>\`.`,
+    whenThisBreaks: `CSS classes for variants start to multiply: \`.btn--primary-outlined\`, \`.btn--secondary-ghost\`, \`.btn--loading\`. The CSS file becomes a maintenance burden.\n\nNo TypeScript safety on which variants exist. \`<Button variant="primari" />\` silently fails - no error, no fallback.\n\nComplex variants (e.g. "outline with hover fill") require manual class combinations that are easy to miscombine.`,
   },
 
   '04-variant-system': {
     description:
       'Add a TypeScript variant system (CVA pattern) on top of CSS tokens. Every valid combination of variant + size is explicitly typed. The component API is self-documenting and impossible to misuse.',
     code: `// The CVA (class-variance-authority) pattern
-// Works with or without the library — it's just a mapping function
+// Works with or without the library - it's just a mapping function
 
 // Without the library (plain TypeScript):
 type Variant = 'primary' | 'secondary' | 'destructive' | 'ghost'
@@ -292,13 +292,13 @@ const button = cva('font-medium transition-colors', {
   defaultVariants: { variant: 'primary', size: 'md' },
 })`,
     explanation: `Works when:\n• You're using Tailwind CSS (variant maps are just className strings)\n• You want TypeScript to catch \`variant="primari"\` at build time\n• You need a component library that's easy to document (Storybook stories are trivial)\n\nEvery valid combination is explicit. Adding a new variant is one object key.`,
-    whenThisBreaks: `Tailwind's JIT purging can strip dynamic classes built at runtime (\`\`btn-\${variant}\`\`). You must use complete class strings, not string interpolation.\n\nFor complex interactive components (modals, dropdowns, tooltips), variant classes alone aren't enough — you also need state machine logic and ARIA attributes that are hard to get right.`,
+    whenThisBreaks: `Tailwind's JIT purging can strip dynamic classes built at runtime (\`\`btn-\${variant}\`\`). You must use complete class strings, not string interpolation.\n\nFor complex interactive components (modals, dropdowns, tooltips), variant classes alone aren't enough - you also need state machine logic and ARIA attributes that are hard to get right.`,
   },
 
   '05-headless': {
     description:
       "Layer headless primitives (Radix UI) under your token + variant system. Accessibility is handled by the primitive. Your tokens handle the look. The result: a component library that's accessible by default and fully customizable.",
-    code: `// Layer 3: Headless primitives — accessibility handled, you own the look
+    code: `// Layer 3: Headless primitives - accessibility handled, you own the look
 
 // Radix UI provides the state machine + ARIA. You provide styles via tokens.
 
@@ -307,7 +307,7 @@ import * as Select from '@radix-ui/react-select'
 import { cva } from 'class-variance-authority'
 
 // ──────────────────────────────────────────────────────────────────────────
-// Dialog — focus trapping, escape key, scroll lock, ARIA: all handled
+// Dialog - focus trapping, escape key, scroll lock, ARIA: all handled
 // ──────────────────────────────────────────────────────────────────────────
 export function Modal({ trigger, title, children }) {
   return (
@@ -342,7 +342,7 @@ export function Modal({ trigger, title, children }) {
 }
 
 // ──────────────────────────────────────────────────────────────────────────
-// Select — keyboard nav, screen reader announcements, all handled
+// Select - keyboard nav, screen reader announcements, all handled
 // ──────────────────────────────────────────────────────────────────────────
 export function TokenSelect({ options, value, onChange }) {
   return (
@@ -387,8 +387,8 @@ export function TokenSelect({ options, value, onChange }) {
 
 // shadcn/ui is the shortcut: pre-built components using this exact pattern.
 // You copy the files in, own the code, update tokens to match your brand.`,
-    explanation: `Works when:\n• You need truly accessible interactive components (modals, selects, menus)\n• You want to skip re-implementing focus trapping and keyboard navigation\n• Your team uses shadcn/ui — copy-paste their components, then replace token values\n\nRadix handles WCAG. You handle pixels. The separation is clean.`,
-    whenThisBreaks: `Radix + CVA + CSS tokens is a meaningful architectural investment — wrong choice for prototypes or a solo project with a 3-week deadline.\n\nIf you're migrating an existing codebase, wrapping old components in Radix doesn't automatically fix accessibility. You still need to audit ARIA labels, focus order, and announcements.\n\nSome Radix components have complex styling requirements (e.g. Select popover position, Dialog z-index). Budget time for that.`,
+    explanation: `Works when:\n• You need truly accessible interactive components (modals, selects, menus)\n• You want to skip re-implementing focus trapping and keyboard navigation\n• Your team uses shadcn/ui - copy-paste their components, then replace token values\n\nRadix handles WCAG. You handle pixels. The separation is clean.`,
+    whenThisBreaks: `Radix + CVA + CSS tokens is a meaningful architectural investment - wrong choice for prototypes or a solo project with a 3-week deadline.\n\nIf you're migrating an existing codebase, wrapping old components in Radix doesn't automatically fix accessibility. You still need to audit ARIA labels, focus order, and announcements.\n\nSome Radix components have complex styling requirements (e.g. Select popover position, Dialog z-index). Budget time for that.`,
   },
 }
 
@@ -396,19 +396,19 @@ export const designSystemExamples = [
   {
     id: '01-hardcoded',
     title: 'Example 1: Hardcoded Styles',
-    subtitle: 'Inline styles per-component — fast to write, impossible to maintain',
+    subtitle: 'Inline styles per-component - fast to write, impossible to maintain',
     complexity: 'Naive',
   },
   {
     id: '02-constants',
     title: 'Example 2: JavaScript Constants',
-    subtitle: 'Shared token file — one source of truth, but no cascade',
+    subtitle: 'Shared token file - one source of truth, but no cascade',
     complexity: 'Better',
   },
   {
     id: '03-css-tokens',
     title: 'Example 3: CSS Custom Properties',
-    subtitle: 'Design tokens as CSS variables — cascade + dark mode for free',
+    subtitle: 'Design tokens as CSS variables - cascade + dark mode for free',
     complexity: 'Production',
   },
   {
@@ -420,7 +420,7 @@ export const designSystemExamples = [
   {
     id: '05-headless',
     title: 'Example 5: Headless Primitives',
-    subtitle: 'Radix UI for behavior, tokens for appearance — accessible by default',
+    subtitle: 'Radix UI for behavior, tokens for appearance - accessible by default',
     complexity: 'Advanced',
   },
 ]

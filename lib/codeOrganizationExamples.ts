@@ -6,7 +6,7 @@ export const codeOrgExamples = [
   {
     id: '01-flat',
     title: 'Example 1: Flat',
-    subtitle: 'Everything at root — works until ~15 files',
+    subtitle: 'Everything at root - works until ~15 files',
     complexity: 'Starter',
   },
   {
@@ -24,7 +24,7 @@ export const codeOrgExamples = [
   {
     id: '04-module-contracts',
     title: 'Example 4: Module Contracts',
-    subtitle: 'Public API via index.ts — internals are private',
+    subtitle: 'Public API via index.ts - internals are private',
     complexity: 'Advanced',
   },
   {
@@ -49,8 +49,8 @@ export const codeOrgExampleContent: Record<
 > = {
   '01-flat': {
     description:
-      'The natural starting point for every project. All files live at the same level. There are no rules, no abstractions — just code. This works perfectly at small scale and requires zero upfront decisions.',
-    code: `// ✅ Works great at < 15 files — no ceremony required
+      'The natural starting point for every project. All files live at the same level. There are no rules, no abstractions - just code. This works perfectly at small scale and requires zero upfront decisions.',
+    code: `// ✅ Works great at < 15 files - no ceremony required
 
 src/
   UserAvatar.tsx
@@ -72,7 +72,7 @@ src/
 import { UserAvatar } from './UserAvatar'
 import { useCart } from './useCart'`,
     explanation:
-      'Zero friction — start building immediately.\nNo mental overhead deciding where a file belongs.\nEverything is one directory away.',
+      'Zero friction - start building immediately.\nNo mental overhead deciding where a file belongs.\nEverything is one directory away.',
     whenThisBreaks:
       'At ~15–20 files, scrolling through a flat list becomes painful. Related files (ProductCard.tsx, useProduct.ts, productService.ts) are scattered alphabetically. There\'s no way to tell which files belong to which feature.',
   },
@@ -80,7 +80,7 @@ import { useCart } from './useCart'`,
   '02-type-based': {
     description:
       'The most common first refactor: separate files by their technical role. Components go in components/, hooks in hooks/, utilities in utils/. This feels intuitive and mirrors the mental model most developers start with.',
-    code: `// ⚠️ Common at medium scale — but adds friction as features grow
+    code: `// ⚠️ Common at medium scale - but adds friction as features grow
 
 src/
   components/
@@ -114,7 +114,7 @@ src/
 // Deleting Notifications means hunting across all 5 directories.
 // grep -r "notification" src/ --include="*.ts" --include="*.tsx"`,
     explanation:
-      'Familiar structure — any developer knows where to look for a component or hook.\nEasy to enforce as a team convention.\nWorks well when the codebase has few features that change independently.',
+      'Familiar structure - any developer knows where to look for a component or hook.\nEasy to enforce as a team convention.\nWorks well when the codebase has few features that change independently.',
     whenThisBreaks:
       'When one feature spans 5+ directories, every change becomes a multi-directory safari. The "delete test" fails: you can\'t delete a feature by deleting one folder. Teams working on different features collide in the same directories.',
   },
@@ -152,19 +152,19 @@ src/
       Button.tsx       // design system primitives
       Modal.tsx
 
-// Adding Notifications: create features/notifications/ — done.
-// Deleting Cart: rm -rf features/cart/ — done.
+// Adding Notifications: create features/notifications/ - done.
+// Deleting Cart: rm -rf features/cart/ - done.
 // The directory structure "screams" what the app does.`,
     explanation:
-      'The "delete test" passes: remove a feature by removing one folder.\nRelated code changes together — no more multi-directory commits for one feature.\nNew team members understand the product domain from the folder names.',
+      'The "delete test" passes: remove a feature by removing one folder.\nRelated code changes together - no more multi-directory commits for one feature.\nNew team members understand the product domain from the folder names.',
     whenThisBreaks:
       'Cross-feature dependencies become implicit. Feature A imports from Feature B directly, creating hidden coupling. When Feature B changes, Feature A breaks unexpectedly. The next step is to make those dependencies explicit.',
   },
 
   '04-module-contracts': {
     description:
-      'Add an explicit public API to each feature using an index.ts barrel file. Only what\'s exported from index.ts is part of the public contract. Internal files are implementation details — other features must not import them directly.',
-    code: `// ✅ Explicit boundaries — know exactly what each feature exposes
+      'Add an explicit public API to each feature using an index.ts barrel file. Only what\'s exported from index.ts is part of the public contract. Internal files are implementation details - other features must not import them directly.',
+    code: `// ✅ Explicit boundaries - know exactly what each feature exposes
 
 src/
   features/
@@ -181,7 +181,7 @@ export { ProductCard } from './ProductCard'
 export { ProductList } from './ProductList'
 export { useProduct } from './useProduct'
 export type { Product, ProductFilters } from './types'
-// productService.ts is NOT exported — it's an internal detail
+// productService.ts is NOT exported - it's an internal detail
 
 // Consuming in another feature:
 import { ProductCard, useProduct } from '@/features/products'
@@ -213,7 +213,7 @@ app/
     [id]/
       page.tsx
       ProductDetail.tsx   ← only used by this route
-      AddToCartButton.tsx ← 'use client' — only used here
+      AddToCartButton.tsx ← 'use client' - only used here
       loading.tsx
 
   cart/
@@ -237,8 +237,8 @@ components/
 // YES → keep it colocated
 // NO  → it belongs in components/`,
     explanation:
-      'Deleting a route removes its components too — no orphaned files.\nRoute-specific code is invisible from other routes (no accidental reuse).\nNew team members look in the route folder first — they find what they need.\nAligns with how Next.js itself thinks about page-level code.',
+      'Deleting a route removes its components too - no orphaned files.\nRoute-specific code is invisible from other routes (no accidental reuse).\nNew team members look in the route folder first - they find what they need.\nAligns with how Next.js itself thinks about page-level code.',
     whenThisBreaks:
-      'When a component is genuinely shared between routes, it shouldn\'t live in either route folder. The judgment call — "is this shared enough to promote?" — is the discipline. Premature sharing creates coupling; late sharing creates duplication.',
+      'When a component is genuinely shared between routes, it shouldn\'t live in either route folder. The judgment call - "is this shared enough to promote?" - is the discipline. Premature sharing creates coupling; late sharing creates duplication.',
   },
 }

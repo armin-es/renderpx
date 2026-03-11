@@ -4,7 +4,7 @@ import { Callout, InlineCode } from '@/components/ui'
 import { RelatedContent } from '@/components/RelatedContent'
 import { patternRelations } from '@/lib/related-content'
 
-const NAIVE_CODE = `// Inline state per screen — toasts only where you call setToast
+const NAIVE_CODE = `// Inline state per screen - toasts only where you call setToast
 function SaveButton() {
   const [toast, setToast] = useState<{ message: string } | null>(null)
 
@@ -27,7 +27,7 @@ function SaveButton() {
 }
 // Every component that needs toasts duplicates state and markup; only one toast at a time per component.`;
 
-const FIRST_IMPROVEMENT_CODE = `// Global toast state (Context + useState) — any component can trigger
+const FIRST_IMPROVEMENT_CODE = `// Global toast state (Context + useState) - any component can trigger
 const ToastContext = createContext<((msg: string) => void) | null>(null)
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
@@ -79,7 +79,7 @@ export default function ToastsPatternPage() {
       <section id="problem" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">The problem I keep seeing</h2>
         <p className="text-content mb-4">
-          After a save, delete, or error, the user needs feedback. Inline messages clutter the form; modals are heavy. You want a small, non-blocking notification (toast) that appears briefly and can be triggered from anywhere—mutations, API errors, background jobs—without passing callbacks through the tree.
+          After a save, delete, or error, the user needs feedback. Inline messages clutter the form; modals are heavy. You want a small, non-blocking notification (toast) that appears briefly and can be triggered from anywhere -mutations, API errors, background jobs -without passing callbacks through the tree.
         </p>
       </section>
 

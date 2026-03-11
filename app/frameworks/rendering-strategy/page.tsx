@@ -68,21 +68,21 @@ import { Suspense } from 'react'
 import { AddToCartButton } from './AddToCartButton'  // 'use client'
 
 export default async function ProductPage({ params }) {
-  // Cached 60s — stable content, SEO-critical
+  // Cached 60s - stable content, SEO-critical
   const product = await fetch(\`/api/products/\${params.id}\`, {
     next: { revalidate: 60 },
   }).then(r => r.json())
 
   return (
     <div>
-      {/* Server component — no JS shipped to client for static content */}
+      {/* Server component - no JS shipped to client for static content */}
       <h1>{product.name}</h1>
       <p>{product.price}</p>
 
-      {/* Client component — JS only for this interactive island */}
+      {/* Client component - JS only for this interactive island */}
       <AddToCartButton productId={product.id} />
 
-      {/* Streams in separately — product page doesn't wait for reviews */}
+      {/* Streams in separately - product page doesn't wait for reviews */}
       <Suspense fallback={<ReviewsSkeleton />}>
         <ReviewsFeed productId={product.id} />
       </Suspense>
@@ -90,7 +90,7 @@ export default async function ProductPage({ params }) {
   )
 }
 
-// ReviewsFeed: 'no-store' — always fresh (live review count)
+// ReviewsFeed: 'no-store' - always fresh (live review count)
 async function ReviewsFeed({ productId }) {
   const reviews = await fetch(\`/api/products/\${productId}/reviews\`, {
     cache: 'no-store',
@@ -108,13 +108,13 @@ const PROGRESSIVE_EXAMPLES = [
   {
     id: "02-ssr",
     title: "Example 2: Server-Side Rendering",
-    subtitle: "Full HTML per request — SEO-friendly, no CDN",
+    subtitle: "Full HTML on every request; SEO-friendly, no CDN",
     complexity: "Better",
   },
   {
     id: "03-ssg",
     title: "Example 3: Static Site Generation",
-    subtitle: "Built at deploy time — fastest delivery, stale data",
+    subtitle: "Built at deploy time; fastest delivery, but can go stale",
     complexity: "Production",
   },
   {
@@ -156,7 +156,7 @@ const DECISION_MATRIX = [
     freshness: "Always fresh",
     personalized: "Yes",
     useWhen: "User-specific pages that need SEO (profile pages, account views)",
-    avoid: "High-traffic, uncached content — every request hits your server",
+    avoid: "High-traffic, uncached content where every request would hit your server",
   },
   {
     strategy: "SSG",
@@ -164,7 +164,7 @@ const DECISION_MATRIX = [
     seo: "Yes",
     freshness: "Stale until rebuild",
     personalized: "No",
-    useWhen: "Marketing pages, docs, blog posts — content that rarely changes",
+    useWhen: "Marketing pages, docs, blog posts where content rarely changes",
     avoid: "Data that changes more often than you can afford to rebuild",
   },
   {
@@ -173,7 +173,7 @@ const DECISION_MATRIX = [
     seo: "Yes",
     freshness: "Stale up to TTL",
     personalized: "No",
-    useWhen: "Product catalogs, news, e-commerce — content that changes, but not per-second",
+    useWhen: "Product catalogs, news, e-commerce where content changes, but not per-second",
     avoid: "Data where a 60-second window of staleness is unacceptable",
   },
   {
@@ -182,7 +182,7 @@ const DECISION_MATRIX = [
     seo: "Yes",
     freshness: "Per-component",
     personalized: "Yes (via Server Actions / auth)",
-    useWhen: "Complex pages with mixed rendering needs — different components have different data",
+    useWhen: "Complex pages with mixed rendering needs where different components have different data",
     avoid: "Teams new to React or not on Next.js App Router",
   },
 ];
@@ -230,14 +230,14 @@ export default async function RenderingStrategyPage() {
         </div>
 
         <div className="mt-8">
-          <CodeWithPreview
-            code={CSR_PROBLEM_CODE}
-            lang="tsx"
-            codeLabel="CSR product page — SEO-invisible, slow waterfall"
-            preview={<CsrWaterfallDemo />}
-            previewLabel="Simulation — each step blocks the next"
-            layout="stacked"
-          />
+            <CodeWithPreview
+              code={CSR_PROBLEM_CODE}
+              lang="tsx"
+              codeLabel="CSR product page: SEO-invisible, slow waterfall"
+              preview={<CsrWaterfallDemo />}
+              previewLabel="Simulation where each step blocks the next"
+              layout="stacked"
+            />
         </div>
       </section>
 
@@ -305,21 +305,21 @@ export default async function RenderingStrategyPage() {
             {
               question: "How often does this data change?",
               options: [
-                { label: "Never / rarely", hint: "SSG — build it once" },
-                { label: "Every few minutes/hours", hint: "ISR — CDN with revalidation" },
-                { label: "Every request", hint: "SSR — always fresh" },
-                { label: "On user action", hint: "CSR — fetch in browser" },
+                { label: "Never / rarely", hint: "SSG: build it once" },
+                { label: "Every few minutes/hours", hint: "ISR: CDN with revalidation" },
+                { label: "Every request", hint: "SSR: always fresh" },
+                { label: "On user action", hint: "CSR: fetch in browser" },
               ],
               cardClass: "bg-box-info-bg border-box-info-border",
             },
             {
               question: "Is this data the same for all users?",
               options: [
-                { label: "Yes — same HTML for everyone", hint: "SSG or ISR (CDN-cacheable)" },
-                { label: "No — varies per user", hint: "SSR (server knows the user) or CSR (client knows auth)" },
+                { label: "Yes, the same HTML for everyone", hint: "SSG or ISR (CDN-cacheable)" },
+                { label: "No, it varies per user", hint: "SSR (server knows the user) or CSR (client knows auth)" },
                 {
-                  label: "Mixed — static shell + dynamic parts",
-                  hint: "RSC — per-component control",
+                  label: "Mixed: static shell + dynamic parts",
+                  hint: "RSC for per-component control",
                 },
               ],
               cardClass: "bg-box-success-bg border-box-success-border",
@@ -337,7 +337,8 @@ export default async function RenderingStrategyPage() {
                   <li key={label} className="text-sm text-content">
                     <span className="font-medium">{label}</span>
                     <span className="text-content-muted">
-                      {" "}→ {hint}
+                      {" "}
+                      → {hint}
                     </span>
                   </li>
                 ))}
@@ -592,7 +593,7 @@ export function ProductCard({ productId }) {
 }
 
 // After: same component, now called from an SSG page
-// The component didn't change — only its rendering context did
+// The component didn't change - only its rendering context did
 export async function generateStaticParams() {
   const products = await db.products.findAll()
   return products.map(p => ({ id: p.id }))
@@ -602,7 +603,7 @@ export default async function ProductPage({ params }) {
   const product = await fetchProduct(params.id)  // server fetch, build-time
   return <ProductCard product={product} />        // same component
 }
-// ✅ Marketing pages: SSG — same React components, zero CSR waterfall`}
+// ✅ Marketing pages: SSG - same React components, zero CSR waterfall`}
               lang="tsx"
             />
           </div>

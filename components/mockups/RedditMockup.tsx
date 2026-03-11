@@ -5,7 +5,7 @@ const POSTS = [
 ]
 
 const COMMENTS = [
-  { id: 'c1', author: 'senior_dev', score: 892, text: 'The normalized state approach here is key — O(1) moves.', depth: 0 },
+  { id: 'c1', author: 'senior_dev', score: 892, text: 'The normalized state approach here is key; updates stay O(1).', depth: 0 },
   { id: 'c2', author: 'react_fan', score: 234, text: 'Which virtualizer did you use for the tree?', depth: 1 },
   { id: 'c3', author: 'armin_dev', score: 156, text: 'react-window with a flattened tree array.', depth: 2 },
   { id: 'c4', author: 'skeptic_42', score: -8, text: 'Is this actually needed at that scale?', depth: 1 },

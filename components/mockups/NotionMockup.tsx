@@ -17,7 +17,7 @@ const BLOCKS: Block[] = [
   { id: 'h1', type: 'heading1', content: 'Project Overview' },
   { id: 'p1', type: 'paragraph', content: 'Architecture for the new file management system using normalized state.' },
   { id: 'h2', type: 'heading2', content: 'Key Decisions' },
-  { id: 'li1', type: 'bullet', content: 'Flat Map<id, Block> — not a nested tree' },
+  { id: 'li1', type: 'bullet', content: 'Flat Map<id, Block>, not a nested tree' },
   { id: 'li2', type: 'bullet', content: 'Zustand for local mutations + React Query for persistence' },
   { id: 'li3', type: 'bullet', content: 'Yjs CRDT for real-time collaboration', cursor: true },
 ]

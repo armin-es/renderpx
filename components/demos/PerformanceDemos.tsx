@@ -216,7 +216,7 @@ export function MemoDemo() {
 
         <DemoPanel
           title="✅ With memo()"
-          description="ProductList & Summary skip re-renders — props didn't change"
+          description="ProductList & Summary skip re-renders - props didn't change"
         >
           <div className="space-y-4">
             <MemoizedSummary total={total} />
@@ -233,7 +233,7 @@ export function MemoDemo() {
           backgroundColor: 'hsl(var(--code-bg))',
         }}
       >
-        Renders highlighted in orange after 3+. The search query state lives in the parent — the
+        Renders highlighted in orange after 3+. The search query state lives in the parent - the
         product list and summary have no dependency on it.
       </div>
     </div>

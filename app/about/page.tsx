@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 
 export const metadata = {
-  title: 'About — Armin Eslami',
+  title: 'About · Armin Eslami',
   description: 'Senior Frontend Engineer with 8+ years building production React applications.',
 }
 
@@ -61,7 +61,7 @@ export default function AboutPage() {
             <div>
               <div className="flex items-baseline justify-between mb-2">
                 <h3 className="font-bold text-content">Digg</h3>
-                <span className="text-sm text-content-muted">Jan 2026 – Feb 2026</span>
+                <span className="text-sm text-content-muted">Jan 2026 - Feb 2026</span>
               </div>
               <p className="text-sm text-content-muted mb-3">Senior Software Engineer (Front-End) · Remote</p>
               <ul className="space-y-2 text-content-muted text-sm">
@@ -84,7 +84,7 @@ export default function AboutPage() {
             <div>
               <div className="flex items-baseline justify-between mb-2">
                 <h3 className="font-bold text-content">Coalition Inc.</h3>
-                <span className="text-sm text-content-muted">Jul 2022 – Sep 2025</span>
+                <span className="text-sm text-content-muted">Jul 2022 - Sep 2025</span>
               </div>
               <p className="text-sm text-content-muted mb-3">Senior Software Engineer (Front-End) · Remote, San Francisco, CA</p>
               <ul className="space-y-2 text-content-muted text-sm">
@@ -115,7 +115,7 @@ export default function AboutPage() {
             <div>
               <div className="flex items-baseline justify-between mb-2">
                 <h3 className="font-bold text-content">RepRisk North America Inc.</h3>
-                <span className="text-sm text-content-muted">Jul 2019 – Jul 2022</span>
+                <span className="text-sm text-content-muted">Jul 2019 - Jul 2022</span>
               </div>
               <p className="text-sm text-content-muted mb-3">Senior Software Engineer (Front-End) · Toronto, ON</p>
               <ul className="space-y-2 text-content-muted text-sm">

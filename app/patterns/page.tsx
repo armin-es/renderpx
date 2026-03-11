@@ -195,7 +195,7 @@ export default function PatternsPage() {
         </div>
       </div>
 
-      {/* Implementation patterns — full pages */}
+      {/* Implementation patterns: full pages */}
       <section className="mb-12">
         <div className="flex items-center gap-3 mb-6">
           <FileCode size={24} className="text-primary" />

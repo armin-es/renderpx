@@ -16,7 +16,7 @@ function Parent() {
     </form>
   )
 }
-// Fine when parent needs the values. But if you wrap inputs in a reusable component, you have to pass value + onChange for every field — or use refs.`;
+// Fine when parent needs the values. But if you wrap inputs in a reusable component, you have to pass value + onChange for every field - or use refs.`;
 
 const FIRST_IMPROVEMENT_CODE = `// Uncontrolled: ref to read when needed (e.g. submit)
 function UncontrolledForm() {

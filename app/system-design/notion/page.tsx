@@ -359,7 +359,7 @@ export default function NotionSystemDesignPage() {
         <h2 className="text-lg font-semibold text-content mb-3">What we&apos;re building</h2>
         <NotionMockup />
         <p className="text-content-muted text-sm mt-2">
-          A <strong className="text-content">PageNavigator</strong> sidebar, a <strong className="text-content">BlockList</strong> that renders each block by type via <strong className="text-content">BlockRenderer</strong>, and a Zustand store holding a flat <code className="text-[11px] bg-code-bg px-1 rounded">Map&lt;id, Block&gt;</code> — not a nested tree.
+          A <strong className="text-content">PageNavigator</strong> sidebar, a <strong className="text-content">BlockList</strong> that renders each block by type via <strong className="text-content">BlockRenderer</strong>, and a Zustand store holding a flat <code className="text-[11px] bg-code-bg px-1 rounded">Map&lt;id, Block&gt;</code>, not a nested tree.
         </p>
       </div>
 
@@ -558,7 +558,7 @@ sequenceDiagram
   YB->>YB: Merge (conflict-free)
   YB->>B: Update block text
 
-  Note over YA,YB: Concurrent edit — both users type simultaneously
+  Note over YA,YB: Concurrent edit; both users type simultaneously
   B->>YB: Type " world"
   YB->>WS: Broadcast operation
   WS->>YA: Forward operation

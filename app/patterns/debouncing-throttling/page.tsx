@@ -6,7 +6,7 @@ import { DebounceSearchDemo } from '@/components/demos/DebounceSearchDemo'
 import { RelatedContent } from '@/components/RelatedContent'
 import { patternRelations } from '@/lib/related-content'
 
-const NAIVE_CODE = `// Search on every keystroke — N requests for N characters
+const NAIVE_CODE = `// Search on every keystroke - N requests for N characters
 function SearchBox() {
   const [query, setQuery] = useState('')
   const [results, setResults] = useState([])
@@ -87,7 +87,7 @@ function useThrottle<T>(value: T, interval: number): T {
   return throttledValue
 }
 
-// Use for: scroll position, resize, mousemove — limit how often you update state or run logic.`;
+// Use for: scroll position, resize, mousemove - limit how often you update state or run logic.`;
 
 const PRODUCTION_DEBOUNCE_CODE = `// Production: cancel in-flight request when query changes (React Query does this)
 // Plus: abort previous fetch in the queryFn if you use raw fetch
@@ -135,10 +135,10 @@ export default function DebouncingThrottlingPatternPage() {
       <section id="problem" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">The problem I keep seeing</h2>
         <p className="text-content mb-4">
-          Search boxes that hit the API on every keystroke, scroll handlers that run 60 times per second, resize handlers that recompute layout on every pixel—all of that wastes requests, clogs the main thread, and can leave the UI showing stale or out-of-order results. You need to slow down the reaction to high-frequency events without making the UI feel unresponsive.
+          Search boxes that hit the API on every keystroke, scroll handlers that run 60 times per second, resize handlers that recompute layout on every pixel -all of that wastes requests, clogs the main thread, and can leave the UI showing stale or out-of-order results. You need to slow down the reaction to high-frequency events without making the UI feel unresponsive.
         </p>
         <p className="text-content">
-          <strong>Debounce:</strong> run after the user (or event source) has been quiet for a period (e.g. 300ms after last keystroke). <strong>Throttle:</strong> run at most once per period (e.g. scroll handler runs at most every 100ms). Same idea—reduce frequency—different timing model.
+          <strong>Debounce:</strong> run after the user (or event source) has been quiet for a period (e.g. 300ms after last keystroke). <strong>Throttle:</strong> run at most once per period (e.g. scroll handler runs at most every 100ms). Same idea -reduce frequency -different timing model.
         </p>
       </section>
 
@@ -161,7 +161,7 @@ export default function DebouncingThrottlingPatternPage() {
             lang="tsx"
             codeLabel="useDebounce + useQuery"
             preview={<DebounceSearchDemo />}
-            previewLabel="Type quickly — request fires after you pause"
+            previewLabel="Type quickly - request fires after you pause"
             layout="stacked"
           />
         </div>
@@ -193,7 +193,7 @@ export default function DebouncingThrottlingPatternPage() {
         <ul className="list-disc pl-6 space-y-2 text-content">
           <li><strong>Debounce:</strong> Search, filter inputs, any text that drives an API call or heavy computation. “Wait until the user pauses.”</li>
           <li><strong>Throttle:</strong> Scroll position, window resize, mousemove, progress updates. “Run at most every N ms.”</li>
-          <li><strong>Skip:</strong> When the operation is cheap and you need every value (e.g. local state for controlled input). Don’t debounce the input value itself—only the side effect.</li>
+          <li><strong>Skip:</strong> When the operation is cheap and you need every value (e.g. local state for controlled input). Don’t debounce the input value itself -only the side effect.</li>
         </ul>
         <Callout variant="info" title="Rule of thumb" className="mt-4">
           Debounce for “after user stops”; throttle for “while user is doing it but not every frame.”
@@ -205,7 +205,7 @@ export default function DebouncingThrottlingPatternPage() {
         <ul className="list-disc pl-6 space-y-2 text-content">
           <li><strong>Stale closure in throttle:</strong> If you throttle a callback that reads state, the callback may see an old state. Use a ref for the latest value, or ensure the throttled function is recreated when deps change.</li>
           <li><strong>Leading edge:</strong> For “submit on first keystroke after idle” (e.g. run search as soon as user types, then debounce), use a debounce with <InlineCode>leading: true</InlineCode> or a custom implementation.</li>
-          <li><strong>React 18 Strict Mode:</strong> Effects run twice in dev. Your debounce/throttle should still behave correctly—cleanup clears the timer. If you store “last run” in a ref, double-mount doesn’t break it.</li>
+          <li><strong>React 18 Strict Mode:</strong> Effects run twice in dev. Your debounce/throttle should still behave correctly -cleanup clears the timer. If you store “last run” in a ref, double-mount doesn’t break it.</li>
         </ul>
       </section>
 

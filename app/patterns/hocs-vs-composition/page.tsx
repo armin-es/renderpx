@@ -65,7 +65,7 @@ export default function HocsVsCompositionPatternPage() {
       <section id="problem" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">The problem I keep seeing</h2>
         <p className="text-content mb-4">
-          You need to add the same behavior to many components—auth check, theme, tracking. Two options: a higher-order component (HOC) that takes a component and returns a wrapped one, or a wrapper component that uses composition (e.g. <InlineCode>AuthGuard</InlineCode> that renders children only when authenticated). Both work; composition is usually simpler and avoids ref/displayName issues.
+          You need to add the same behavior to many components -auth check, theme, tracking. Two options: a higher-order component (HOC) that takes a component and returns a wrapped one, or a wrapper component that uses composition (e.g. <InlineCode>AuthGuard</InlineCode> that renders children only when authenticated). Both work; composition is usually simpler and avoids ref/displayName issues.
         </p>
       </section>
 

@@ -65,7 +65,7 @@ export default async function StateManagementInternalsPage() {
             </Link>{" "}
             section, we saw that Zustand causes <strong>only the components
             that read from the store</strong> to re-render. But React components
-            re-render when their state or props change — and Zustand&apos;s store
+            re-render when their state or props change - and Zustand&apos;s store
             lives <em>outside</em> React. So how does an external JavaScript object
             trigger a React re-render?
           </p>
@@ -78,14 +78,14 @@ export default async function StateManagementInternalsPage() {
             >
               React.useSyncExternalStore
             </code>{" "}
-            — a React 18 built-in hook designed specifically for this purpose.
+            - a React 18 built-in hook designed specifically for this purpose.
             Understanding this mechanism explains not just Zustand, but Redux,
             Jotai, and any library that manages state outside of React.
           </p>
         </div>
       </section>
 
-      {/* Section 2: The Bridge — useSyncExternalStore */}
+      {/* Section 2: The Bridge - useSyncExternalStore */}
       <section id="usesyncexternalstore" className="mb-16">
         <h2
           className="text-2xl font-bold mb-4 text-content"
@@ -147,7 +147,7 @@ export default async function StateManagementInternalsPage() {
             <p className="text-content">
               React calls this once when the component mounts. You register the
               callback with your store. When the store changes, call the
-              callback — this tells React &quot;something might have changed,
+              callback - this tells React &quot;something might have changed,
               check the snapshot.&quot;
             </p>
           </div>
@@ -346,7 +346,7 @@ function useStore(api, selector = identity) {
               step: "3",
               title: "React calls getSnapshot() for each subscriber",
               detail:
-                'React calls the selector function — e.g. (state) => state.email for StickyBar — and compares the result with the previous snapshot using Object.is().',
+                'React calls the selector function - e.g. (state) => state.email for StickyBar - and compares the result with the previous snapshot using Object.is().',
             },
             {
               step: "4",
@@ -537,7 +537,7 @@ function useStore(selector) {
               React 18 introduced concurrent rendering, where React can pause and resume
               renders. With the old pattern, two components reading from the same store
               during the same render could see <em>different values</em> if the store
-              updated mid-render. This is called &quot;tearing&quot; — the UI becomes
+              updated mid-render. This is called &quot;tearing&quot; - the UI becomes
               inconsistent.
             </p>
           </div>
@@ -852,7 +852,7 @@ const { email, name } = useFormStore(state => ({
 const email = useFormStore(state => state.email)
 const name = useFormStore(state => state.name)
 
-// ✅ Option 2: useShallow — compares object fields individually
+// ✅ Option 2: useShallow - compares object fields individually
 import { useShallow } from 'zustand/react/shallow'
 
 const { email, name } = useFormStore(

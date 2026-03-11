@@ -4,7 +4,7 @@ import { Callout, InlineCode } from '@/components/ui'
 import { RelatedContent } from '@/components/RelatedContent'
 import { patternRelations } from '@/lib/related-content'
 
-const NAIVE_CODE = `// Single "Save" button — user can lose work if they leave or crash
+const NAIVE_CODE = `// Single "Save" button - user can lose work if they leave or crash
 function EditPostForm({ postId }: { postId: string }) {
   const [title, setTitle] = useState('')
   const [body, setBody] = useState('')
@@ -27,7 +27,7 @@ function EditPostForm({ postId }: { postId: string }) {
 }
 // If the user closes the tab or navigates away, changes are lost.`;
 
-const FIRST_IMPROVEMENT_CODE = `// Debounced autosave to localStorage — draft survives refresh
+const FIRST_IMPROVEMENT_CODE = `// Debounced autosave to localStorage - draft survives refresh
 function EditPostForm({ postId }: { postId: string }) {
   const draftKey = \`draft-\${postId}\`
   const [title, setTitle] = useState('')
@@ -123,7 +123,7 @@ export default function AutosaveDraftPatternPage() {
       <section id="problem" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">The problem I keep seeing</h2>
         <p className="text-content mb-4">
-          Long forms and editors with a single “Save” button risk losing work if the user closes the tab, hits back, or the browser crashes. Users expect drafts to be preserved. You need to save periodically in the background—either to local storage (draft per device) or to the server (draft synced, recoverable elsewhere).
+          Long forms and editors with a single “Save” button risk losing work if the user closes the tab, hits back, or the browser crashes. Users expect drafts to be preserved. You need to save periodically in the background -either to local storage (draft per device) or to the server (draft synced, recoverable elsewhere).
         </p>
       </section>
 

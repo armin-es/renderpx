@@ -29,7 +29,7 @@ function useLiveNotifications(userId: string) {
   }, [userId, queryClient])
 }
 
-// Component still uses useQuery for loading, error, and cache — WS only triggers invalidation.`;
+// Component still uses useQuery for loading, error, and cache - WS only triggers invalidation.`;
 
 const HYBRID_CODE = `// Initial load + refetch via React Query; real-time via WebSocket
 function Notifications({ userId }: { userId: string }) {
@@ -74,7 +74,7 @@ export default function PollingVsWebsocketsPatternPage() {
           Fetch once on mount. Data goes stale; the user has to refresh to see new content. For “live” features that’s not acceptable.
         </p>
         <p className="text-content text-sm text-content-muted">
-          (Omitting code—same as a basic useQuery with no refetchInterval or WebSocket.)
+          (Omitting code -same as a basic useQuery with no refetchInterval or WebSocket.)
         </p>
       </section>
 
@@ -92,7 +92,7 @@ export default function PollingVsWebsocketsPatternPage() {
       <section id="remaining-issues" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">Remaining issues</h2>
         <ul className="list-disc pl-6 space-y-2 text-content">
-          <li><strong>Latency:</strong> With a 30s poll, updates can be up to 30s late. For chat or live collaboration that’s too slow—you need push (WebSocket or SSE).</li>
+          <li><strong>Latency:</strong> With a 30s poll, updates can be up to 30s late. For chat or live collaboration that’s too slow -you need push (WebSocket or SSE).</li>
           <li><strong>Waste:</strong> Polling when nothing changed wastes bandwidth and server work. For high-frequency updates, push is more efficient.</li>
           <li><strong>Integration:</strong> When you add a WebSocket, keep using React Query for the data. The WebSocket’s job is to trigger <InlineCode>invalidateQueries</InlineCode> (or <InlineCode>setQueryData</InlineCode>) so the existing cache and UI update; you don’t replace useQuery with raw WS state.</li>
         </ul>
@@ -107,8 +107,8 @@ export default function PollingVsWebsocketsPatternPage() {
         <CodeBlock code={HYBRID_CODE} lang="tsx" className="mt-4" label="Hybrid: WebSocket + polling fallback" />
         <Callout variant="info" title="When to use which" className="mt-4">
           <ul className="list-disc pl-4 space-y-1 text-sm">
-            <li><strong>Polling:</strong> Notifications, dashboard metrics, “last updated” — low frequency, simple.</li>
-            <li><strong>WebSocket:</strong> Chat, presence, live collaboration — high frequency or sub-second latency.</li>
+            <li><strong>Polling:</strong> Notifications, dashboard metrics, “last updated” - low frequency, simple.</li>
+            <li><strong>WebSocket:</strong> Chat, presence, live collaboration - high frequency or sub-second latency.</li>
             <li><strong>Hybrid:</strong> Use WS for real-time, keep <InlineCode>refetchInterval</InlineCode> as fallback when WS disconnects.</li>
           </ul>
         </Callout>
@@ -117,7 +117,7 @@ export default function PollingVsWebsocketsPatternPage() {
       <section id="when-i-use-this" className="mb-16">
         <h2 className="text-2xl font-bold mb-4 text-content">When I use this</h2>
         <ul className="list-disc pl-6 space-y-2 text-content">
-          <li><strong>Polling:</strong> Notifications, dashboard tiles, “last updated” timestamps—anything that can tolerate 15–60s delay. Simpler and easier to scale (stateless HTTP).</li>
+          <li><strong>Polling:</strong> Notifications, dashboard tiles, “last updated” timestamps -anything that can tolerate 15–60s delay. Simpler and easier to scale (stateless HTTP).</li>
           <li><strong>WebSocket:</strong> Chat, presence, live cursors, real-time collaboration. When the user expects instant feedback or the update rate is high.</li>
           <li><strong>Hybrid:</strong> Use WebSocket for the real-time channel and keep <InlineCode>refetchInterval</InlineCode> as backup. Handle reconnect (e.g. exponential backoff) and optionally refetch on focus.</li>
         </ul>

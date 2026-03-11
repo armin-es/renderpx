@@ -24,7 +24,7 @@ export const performanceExamples = [
   {
     id: '04-virtualization',
     title: 'Example 4: Virtualization',
-    subtitle: 'Render only what\'s visible — not all 10,000 rows',
+    subtitle: 'Render only what\'s visible - not all 10,000 rows',
     complexity: 'Advanced',
   },
   {
@@ -49,7 +49,7 @@ export const performanceExampleContent: Record<
 > = {
   '01-baseline': {
     description:
-      'Before optimizing anything, you need a baseline. What does your bundle actually weigh? Where are the slow renders? Which routes cause layout shifts? Without measuring, you\'re guessing — and you\'ll optimize the wrong things.',
+      'Before optimizing anything, you need a baseline. What does your bundle actually weigh? Where are the slow renders? Which routes cause layout shifts? Without measuring, you\'re guessing - and you\'ll optimize the wrong things.',
     code: `// Step 1: Measure your bundle
 // next.config.js
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
@@ -63,11 +63,11 @@ module.exports = withBundleAnalyzer({})
 // Step 2: Add Web Vitals reporting
 // app/layout.tsx
 export function reportWebVitals(metric) {
-  // LCP  — Largest Contentful Paint: when main content appears (<2.5s good)
-  // FID  — First Input Delay: response to first interaction (<100ms good)
-  // CLS  — Cumulative Layout Shift: visual stability (<0.1 good)
-  // INP  — Interaction to Next Paint: response to all interactions
-  // TTFB — Time to First Byte: server response time
+  // LCP  - Largest Contentful Paint: when main content appears (<2.5s good)
+  // FID  - First Input Delay: response to first interaction (<100ms good)
+  // CLS  - Cumulative Layout Shift: visual stability (<0.1 good)
+  // INP  - Interaction to Next Paint: response to all interactions
+  // TTFB - Time to First Byte: server response time
   console.log(metric)
   // Send to your analytics: analytics.track(metric.name, metric.value)
 }
@@ -79,7 +79,7 @@ export function reportWebVitals(metric) {
 //           large subtrees re-rendering from a single state change`,
     explanation: `Measurement is the first optimization.
 
-Without a baseline, you don't know if your changes actually improved anything — or made it worse.
+Without a baseline, you don't know if your changes actually improved anything - or made it worse.
 
 The three tools cover different layers:
 • Bundle Analyzer → network cost (JS to download)  
@@ -89,14 +89,14 @@ The three tools cover different layers:
 Run these before touching a single line of optimization code.`,
     whenThisBreaks: `Measurement overhead in production.
 
-Web Vitals reporting adds a small amount of code. In most apps this is worth it, but for micro-optimized landing pages, use a sampling strategy — report only ~10% of sessions.
+Web Vitals reporting adds a small amount of code. In most apps this is worth it, but for micro-optimized landing pages, use a sampling strategy - report only ~10% of sessions.
 
 React DevTools profiling is a development-only tool. Never ship with the profiler active.`,
   },
 
   '02-code-splitting': {
     description:
-      'The fastest code is code that\'s never downloaded. Code splitting breaks your bundle into smaller chunks that are loaded on demand — when the user navigates to that route or triggers that feature. In a Next.js app, routes split automatically. But heavy components like charts, rich text editors, and modals need manual splitting.',
+      'The fastest code is code that\'s never downloaded. Code splitting breaks your bundle into smaller chunks that are loaded on demand - when the user navigates to that route or triggers that feature. In a Next.js app, routes split automatically. But heavy components like charts, rich text editors, and modals need manual splitting.',
     code: `// ✅ Route-level splitting: automatic in Next.js App Router
 // Each page.tsx becomes its own chunk. Users don't download
 // the dashboard code when they're on the landing page.
@@ -133,7 +133,7 @@ export default function Dashboard() {
   )
 }
 
-// ❌ Don't split every small component — chunk overhead adds up
+// ❌ Don't split every small component - chunk overhead adds up
 // A 2KB component in its own chunk costs more (HTTP overhead)
 // than just including it in the main bundle.
 // Rule of thumb: only split chunks > ~30KB`,
@@ -143,19 +143,19 @@ In a typical React app, the main bundle includes everything: charts, editors, ad
 
 Dynamic imports let users pay only for what they actually use.
 
-Next.js App Router gives you route-level splitting for free. Manual splitting with dynamic() handles the rest — modals, heavy third-party libraries, and below-the-fold content.`,
+Next.js App Router gives you route-level splitting for free. Manual splitting with dynamic() handles the rest - modals, heavy third-party libraries, and below-the-fold content.`,
     whenThisBreaks: `Too many small chunks.
 
 If you split every component, you end up with hundreds of tiny HTTP requests. Each request has overhead (DNS, TCP, TLS, HTTP headers). A 100-chunk app can be slower than a 10-chunk app even if the total bytes are the same.
 
 Also watch for: splitting a component that's used on every page. If RevenueChart appears on 8 different pages, it'll be downloaded 8 times on first visit.
 
-Measure first — check if your target users are on fast connections before aggressively splitting.`,
+Measure first - check if your target users are on fast connections before aggressively splitting.`,
   },
 
   '03-memoization': {
     description:
-      'React re-renders a component whenever its parent re-renders — even if the component\'s props haven\'t changed. In a large tree, one state change at the top can trigger hundreds of wasted renders. React.memo breaks this cascade by memoizing a component\'s output: if the props are the same as last time, React reuses the previous render.',
+      'React re-renders a component whenever its parent re-renders - even if the component\'s props haven\'t changed. In a large tree, one state change at the top can trigger hundreds of wasted renders. React.memo breaks this cascade by memoizing a component\'s output: if the props are the same as last time, React reuses the previous render.',
     code: `// The problem: parent state change cascades down
 function Dashboard() {
   const [filter, setFilter] = useState('all')
@@ -163,9 +163,9 @@ function Dashboard() {
   return (
     <>
       <FilterBar filter={filter} onChange={setFilter} />
-      <MetricsPanel />       {/* Re-renders when filter changes — why? */}
-      <RevenueChart />       {/* Re-renders when filter changes — why? */}
-      <ActivityFeed />       {/* Re-renders when filter changes — why? */}
+      <MetricsPanel />       {/* Re-renders when filter changes - why? */}
+      <RevenueChart />       {/* Re-renders when filter changes - why? */}
+      <ActivityFeed />       {/* Re-renders when filter changes - why? */}
     </>
   )
 }
@@ -206,26 +206,26 @@ function FilterBar({ filter, onChange }) {
 // automatically. You won't need to write memo/useCallback manually.`,
     explanation: `memo() stops re-render cascades at component boundaries.
 
-The key insight: React re-renders by default propagate down the entire subtree. memo() creates a boundary — React checks "did the props change?" before re-rendering. If they didn't, the whole subtree is skipped.
+The key insight: React re-renders by default propagate down the entire subtree. memo() creates a boundary - React checks "did the props change?" before re-rendering. If they didn't, the whole subtree is skipped.
 
 This is especially valuable for:
 • Expensive computations (charts, data tables)
 • Deep component trees where state changes at the top
 • Components that receive the same props but have a parent that frequently re-renders
 
-React Compiler (React 19+) applies these optimizations automatically — it understands your component's dependencies better than manual memo() calls.`,
+React Compiler (React 19+) applies these optimizations automatically - it understands your component's dependencies better than manual memo() calls.`,
     whenThisBreaks: `Object and function props break referential equality.
 
 memo() compares props with Object.is (===). A new object literal {} is never === to another {}, even if they have the same contents. If a parent passes an inline object or arrow function as a prop, memo() is bypassed on every render.
 
-The fix: move objects/arrays outside the component, or wrap them with useMemo/useCallback. But this is the exact kind of manual work React Compiler eliminates — it tracks dependencies at the AST level.
+The fix: move objects/arrays outside the component, or wrap them with useMemo/useCallback. But this is the exact kind of manual work React Compiler eliminates - it tracks dependencies at the AST level.
 
 Don't memo() everything. For cheap components (a simple <div>), the memo() overhead exceeds the benefit. Profile first.`,
   },
 
   '04-virtualization': {
     description:
-      'Rendering 10,000 items creates 10,000 DOM nodes — even if the user can only see 20 of them. Virtualization solves this by rendering only the visible rows (plus a small buffer). As the user scrolls, DOM nodes are recycled: offscreen nodes are removed, incoming nodes are created. The DOM stays small regardless of data size.',
+      'Rendering 10,000 items creates 10,000 DOM nodes - even if the user can only see 20 of them. Virtualization solves this by rendering only the visible rows (plus a small buffer). As the user scrolls, DOM nodes are recycled: offscreen nodes are removed, incoming nodes are created. The DOM stays small regardless of data size.',
     code: `// ❌ Naive list: creates 10,000 DOM nodes
 function ProductCatalog({ products }) {
   // products.length = 10,000
@@ -250,7 +250,7 @@ function ProductCatalog({ products }) {
       width="100%"
     >
       {({ index, style }) => (
-        // style contains the absolute positioning — required
+        // style contains the absolute positioning - required
         <div style={style}>
           <ProductRow product={products[index]} />
         </div>
@@ -293,7 +293,7 @@ A 10,000-item virtualized list:
 react-window is the standard library. react-virtual is a newer alternative with more flexibility for dynamic content.`,
     whenThisBreaks: `Variable heights and dynamic content.
 
-FixedSizeList requires knowing the row height upfront. If rows have dynamic content (variable text, expandable sections), you need VariableSizeList with a height-estimating function — which is significantly more complex.
+FixedSizeList requires knowing the row height upfront. If rows have dynamic content (variable text, expandable sections), you need VariableSizeList with a height-estimating function - which is significantly more complex.
 
 Also: virtualization breaks accessibility patterns. Screen readers expect all content to be in the DOM. For a11y-critical lists, consider pagination instead.
 
@@ -302,7 +302,7 @@ For short lists (< 100 items), virtualization adds complexity without benefit. U
 
   '05-streaming': {
     description:
-      'Traditional SSR is all-or-nothing: the server waits for all data before sending any HTML. If one slow query takes 800ms, the user sees nothing for 800ms. Streaming flips this: the server sends HTML progressively as data becomes ready. The user sees the page shell instantly, then watches it fill in — the same total data, but dramatically better perceived performance.',
+      'Traditional SSR is all-or-nothing: the server waits for all data before sending any HTML. If one slow query takes 800ms, the user sees nothing for 800ms. Streaming flips this: the server sends HTML progressively as data becomes ready. The user sees the page shell instantly, then watches it fill in - the same total data, but dramatically better perceived performance.',
     code: `// Traditional SSR: all-or-nothing
 // Server waits for ALL data before sending ANY HTML
 async function Dashboard() {
@@ -322,12 +322,12 @@ import { Suspense } from 'react'
 // app/dashboard/page.tsx (Next.js App Router)
 export default async function Dashboard() {
   // Fast data: fetched in the component, doesn't block the page shell
-  const user = await getUser()  // 50ms — needed for shell
+  const user = await getUser()  // 50ms - needed for shell
 
   return (
     <DashboardShell user={user}>
 
-      {/* Streams in at ~200ms — doesn't wait for feed */}
+      {/* Streams in at ~200ms - doesn't wait for feed */}
       <Suspense fallback={<MetricsSkeleton />}>
         <Metrics />
       </Suspense>
@@ -337,7 +337,7 @@ export default async function Dashboard() {
         <RecentOrders />
       </Suspense>
 
-      {/* Streams in at ~800ms — but doesn't block anything else */}
+      {/* Streams in at ~800ms - but doesn't block anything else */}
       <Suspense fallback={<FeedSkeleton />}>
         <ActivityFeed />
       </Suspense>
@@ -348,12 +348,12 @@ export default async function Dashboard() {
 
 // Each async component fetches its own data
 async function Metrics() {
-  const data = await getMetrics()   // 200ms — fetched in parallel
+  const data = await getMetrics()   // 200ms - fetched in parallel
   return <MetricsPanel data={data} />
 }
 
 async function ActivityFeed() {
-  const data = await getActivityFeed()  // 800ms — isolated
+  const data = await getActivityFeed()  // 800ms - isolated
   return <FeedList data={data} />
 }
 
@@ -365,14 +365,14 @@ async function ActivityFeed() {
 // User perceives a 150ms page, not an 800ms page`,
     explanation: `Streaming decouples render time from data time.
 
-The key insight: users don't care that all data loaded — they care that the page feels fast. Streaming exploits this by showing a meaningful shell immediately and progressively filling it in.
+The key insight: users don't care that all data loaded - they care that the page feels fast. Streaming exploits this by showing a meaningful shell immediately and progressively filling it in.
 
 Before streaming: perceived load = slowest query (800ms)
 After streaming: perceived load = shell render time (~0ms)
 
 This is a React Server Components + Suspense feature. The server uses HTTP chunked transfer encoding to stream HTML fragments as they complete.
 
-Each Suspense boundary is an independent loading unit. They all fetch in parallel — the 200ms query doesn't wait for the 800ms query.`,
+Each Suspense boundary is an independent loading unit. They all fetch in parallel - the 200ms query doesn't wait for the 800ms query.`,
     whenThisBreaks: `Cumulative Layout Shift (CLS).
 
 Streaming skeletons that have wrong dimensions cause layout shift when real content loads. This tanks your CLS score and feels jarring.
